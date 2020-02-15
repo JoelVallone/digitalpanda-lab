@@ -1,0 +1,22 @@
+---
+localnode ansible_host=127.0.0.1 ansible_user=jva
+
+[x64-build-node]
+localnode
+
+[docker-registry]
+localnode
+
+[frontends]
+localnode
+
+[backends]
+localnode
+
+[cassandra-nodes]
+localnode
+
+[cassandra-test-data-injector]
+localnode
+
+

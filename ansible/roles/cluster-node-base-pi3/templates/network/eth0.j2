@@ -1,0 +1,9 @@
+allow-hotplug eth0
+{% if static_ip %}
+iface eth0 inet static
+      address 192.168.1.10{{ node_id }}
+      netmask 255.255.255.0
+      gateway {{ int_ip_bridge }}
+{% else %}
+iface eth0 inet dhcp
+{% endif %}

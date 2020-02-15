@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+capacity scheduler & queues:
+ - concepts: https://blog.cloudera.com/yarn-capacity-scheduler
+ - config: https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html
+-->
+
+<configuration>
+<property>
+    <name>yarn.scheduler.capacity.root.default.capacity</name>
+    <value>100</value>
+</property>
+<property>
+    <name>yarn.scheduler.capacity.root.maximum-allocation-mb</name>
+    <value>8192</value>
+</property>
+<property>
+    <name>yarn.scheduler.capacity.root.maximum-allocation-vcores</name>
+    <value>4</value>
+</property>
+</configuration>

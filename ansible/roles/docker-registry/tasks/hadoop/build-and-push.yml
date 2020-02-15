@@ -1,0 +1,23 @@
+---
+
+- name: "Build 'hadoop' docker image"
+  become: yes
+  docker_image:
+    path: "{{ docker_images }}/hadoop"
+    name: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/hadoop"
+    tag: latest
+    push: yes
+  when:
+    - inventory_hostname in groups['x64_build_node']
+    - '"hadoop" in required_containers'
+ 
+- name: "Build 'hadoop-arm' docker image"
+  become: yes
+  docker_image:
+    path: "{{ docker_images }}/hadoop-arm"
+    name: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/hadoop-arm"
+    tag: latest
+    push: yes
+  when:
+    - inventory_hostname in groups['arm_build_node']
+    - '"hadoop-arm" in required_containers'

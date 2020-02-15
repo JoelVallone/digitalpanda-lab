@@ -1,0 +1,2 @@
+docker run -p 127.0.0.1:53:53 -p 127.0.0.1:53:53/udp -ti dns-server
+docker build  dns-server .

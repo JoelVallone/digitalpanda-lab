@@ -1,0 +1,19 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	fanless1.digitalpanda.org. root.digitalpanda.org. (
+			      5		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+; main domain name server
+@	IN	NS	fanless1.digitalpanda.org.
+fanless1 IN A 192.168.1.1
+
+; sub-domain definitions
+pi3-1.lab.digitalpanda.org.       IN      A      192.168.1.101
+pi3-2.lab.digitalpanda.org.       IN      A      192.168.1.102
+pi3-3.lab.digitalpanda.org.       IN      A      192.168.1.103
+pi3-4.lab.digitalpanda.org.       IN      A      192.168.1.104

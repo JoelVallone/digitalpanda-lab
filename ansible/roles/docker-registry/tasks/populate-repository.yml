@@ -1,0 +1,11 @@
+---
+- name: "Pull infrastructure code from {{ infrastructure_repo.clone_url }}"
+  git:
+    repo: "{{ infrastructure_repo.clone_url }}"
+    dest: "{{ infrastructure_repo.target_path }}"
+
+- include: "cassandra/build-and-push.yml"
+  when: '"cassandra" in required_containers'
+
+- include: "hadoop/build-and-push.yml"
+  when: '"hadoop" in required_containers'

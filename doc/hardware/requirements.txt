@@ -1,0 +1,58 @@
+n = number of HW nodes
+d = number of disk
+
+Confluent platform  =>  n*(7GiB/3vCPU) [worker] + 2.5GiB/1.5vCPU [master]
+    Zookeeper node:         => min.  2GiB/1vCPU * n [worker]
+
+    Kafka broker:           => min.  5GiB/2vCPU * n [worker]
+        Kafka is not CPU intensive when TLS is disabled
+        Low network latency between nodes is important
+        Relies heavily on OS's disk in-memory-buffer 
+            => lots of ram
+            => write_throughput*buffer_time(30 sec)
+        3 GiB heap & 2 GiB disk buffer
+
+    Connect cassandra sink  =>       2GiB/1vCPU [master] (VS 1GiB/.5vCPU [worker] (distributed))
+        0.5 GiB & 0.25 vCPU * 4 
+
+    Schema regisry          => min. .5GiB/.5vCPU [master]
+
+Cassandra           => n*(5GiB/2vCPU) [worker]
+    favor multiple small nodes with enough cpu for compaction
+    per node (curent use case):    => min.  5GiB/2vCPU * n
+    2 GiB heap, 3 GiB off heap
+
+
+Hadoop YARN & HDFS  => n*(b*2+.5GiB/b*1+.5vCpu) [worker] + 1.5GiB/1.5vCPU  [master]
+https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html
+
+    YARN RessourceManager: 1GiB/1vCPU  [master]
+        min resource increment= 1GiB/1vCPU
+
+    YARN NodeManager: ?GiB/?vCPU * n [worker]
+        one yarn worker per block of resource
+        max node resource 12GiB/3vCPU
+
+    HDFS NameNode:  0.5GiB/0.5vCPU  [master]
+        https://docs.cloudera.com/documentation/enterprise/5-14-x/topics/admin_nn_memory_config.html
+        128 MiB data block
+        low block count as limited files
+           => 0.5 GiB heap size
+
+    HDFS DataNode: 1GiB/.5vCPU * n*d [worker]
+        one hdfs worker per disk d
+        128 MiB data block
+
+1 worker node=16GiB/8vCPU & n=2 & d=1, 
+    =>  16/8 = ?/? + .5/.5 + 7/3 + 5/2
+    =>  ?/? ~= 3GiB/2vCPU
+    =>  CPU over provissioning allowed due to irregular & usually low load => 3GiB/3vCPU
+    =>  Risk of OOM due to hard to control off heap memory usage (Cassandra & Kafka) + limiting factor for NodeManager CPU usage
+        => 32Gib/8vCPU worker => 12GiB/3vCPU for the NodeManager & 7GiB off-heap margin
+
+1 master node=8GiB/4vCPU
+    => used: 4GiB/3vCPU
+    
+
+
+

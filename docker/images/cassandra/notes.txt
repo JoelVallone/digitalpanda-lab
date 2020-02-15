@@ -1,0 +1,95 @@
+online course/tutorial : https://academy.datastax.com/resources/ds201-foundations-apache-cassandra
+Download cassandra from: http://cassandra.apache.org/download/; http://mirror.switch.ch/mirror/apache/dist/cassandra/3.11.2/apache-cassandra-3.11.2-bin.tar.gz
+
+sudo docker build -t cassandra:latest .
+sudo docker run -d --net=host -t cassandra:latest
+CASSANDRA_SINGLE_NODE_ID=$(sudo docker run \
+    -e CONTAINER_AUTO_START=true
+    --name=cassandra-single-node \
+    -v $SCRIPT_FOLDER/data-mount/:/opt/cassandra/ext \
+    --net=host \
+    -d -t cassandra:latest)
+
+=> CQL
+  DESCRIBE KEYSPACES
+  DESCRIBE TABLES 
+  USE <keyspace-name>
+
+
+
+=> Cassandra
+Good for/when:
+ - 
+ - Optimized for: massive writes,  partion based reads => API serving huge datasets
+ - High availability (replication), linear scalability, no master
+ - Even paritionning of data
+ - Time series, Tracking, Historization
+ - Availability, Partition-tollerance (Eventual consistency)
+ - limited range scan with column index
+
+Cannot/Should not:
+ - ACID, Locking
+ - Aggregates
+ - Row updates
+ - Multiple access paths => secondary indexes
+ - Transactions
+ - Batch operations
+ - Join
+ - Count ?
+
+=> Apache Hive (stack)
+ COMPONENTS
+ HDFS for storage, 
+ YARN/ MapReduce for processing, 
+ HiveDriver/Compiler builds map/reduce exec plans based on HiveQL query,
+ Thrift Server provides access to the execution engine with a JDBC connector 
+ Metastore stores hive table metadata.
+
+ CONCEPTS
+ schema on read -> structure SQL-like table data at read time => bad for online fast queries
+ tera/peta byte dataset inspection on HDFS => batch jobs (runs on map/reduce)
+ 
+ CAN
+ in memory caching. aggregate, sort, join, acid, integrates with Druid ans Spark SQL, ACID 
+
+=> Apache HBase
+ CONCEPTS
+ public version of Google's BigTable Key-value store
+ relies on HDFS and Zookeeer
+ grouping/partition :  table (explicit) -> coulumn families (explicit) -> columns (dynamic, schema-less)
+ key-value pair : <rwo-key, col-famiuly, col, timestamp; cell>
+ row : set of cells grouped by row-key
+ range-scan (not full) : returns a range of cells (row) => ordering
+ cell versionning
+ master/slave system => (strict)Consistency and Availability (weak when partitionning)
+ read optimized, single write master
+ simple aggregation
+
+ CAN
+ scans on sparse data, fit for real-time rqueries
+ be hooked into Hive for special use cases
+
+
+=> MongoDB:
+ CONCEPTS
+ Json/Bson document store (schema less)
+ master/slave replication, failover
+ Strong consitency, and Partition tolerant
+ Powerful indexing, query language
+ 
+ CAN
+ RDBMS replacement for webap (No transaction and Join)
+ ~Caching
+
+=> Redis:
+ CAN
+ Extremely fast and basic key-value caching
+
+=> ElasticSearch
+ CONCEPTS
+ Distributed text search engine with powerful indexing
+ Bad at writes (re-index)
+ Not considered as trogae medium but access (replica over subset of main storage)
+ 
+ CAN
+ Answer complex text search queries

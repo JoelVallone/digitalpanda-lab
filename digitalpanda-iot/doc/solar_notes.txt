@@ -1,0 +1,73 @@
+max/conservative/typical
+
+Raspberry pi zero
+    5/2/1 W // typical => (boot & video reading)
+    daily consumption 120/48/24 Wh
+    
+Battery
+    80/32/16 Wh for overnight (16h) rpi-zw operations
+    AGM VS GEL VS LITHIUM : https://www.swiss-green.ch/fr/3068-batteries-solaires-gel-agm-batterie-solaire-gel-agm
+    
+    
+Solar pannel
+    REQUIREMENTS
+        Operation 24/24:
+        X = solar pannel max power
+        Y = system power consumption
+        Worst case cloudy daylight power : 
+            > 8.5 [hour] * 1/3 (cloudy) * X [W] = Y [W] * (8.5(full solar) + 15.5(full on-battery)) [h] 
+            <=> X = (3*24*Y)/8.5 = 8.471 * Y
+            > X = 42/17/8.5 [W]
+            battery sizing : 16 [h] * X 
+            > 672/272/136 [Wh]
+
+    TECHNOLOGIES
+    >thin film
+        + more estheatical
+        + efficient in cloudy day (~1/3 of max power)
+        + more efficient in hot conditions
+        + Flexible
+        - 4x less efficient than crystalin
+        - age faster
+    >mono/poly-crystalin
+        + space efficcient
+        + 4x more power than thin film
+        + long lasting & well characterized
+        - Less efficient than thin film in cloudy or hot day
+        
+Power regulator
+Dispatches curent from solar pannel to battery or power converter   
+> MPPT > convert high voltage pannel to ideal load voltage for battery using DC (16-18 V)  - high frquency AC (20-80Khz) - DC
+
+Power converter
+> pure sinus
+
+Power consumption measurement
+
+
+CUSTOM
+Solar pannel :
+    20W/480 x 350 x 25mm/2.2Kg/50chf
+    https://www.swiss-green.ch/fr/3076-panneaux-solaires-polycristallins-panneau-solaire
+
+Power regulator:
+    MPPT/109chf
+    https://www.swiss-green.ch/fr/regulateurs-charge-solaires-mppt-regulateur-charge-solaire-mppt/39282220-regulateur-solaire-mppt-led-10-a-75-v.html
+    PWM/47chf
+    
+Battery:
+    https://www.swiss-green.ch/fr/batteries-solaires-agm-batterie-solaire-agm/39110100-batterie-solaire-agm-8-ah.html
+    AGM/96Wh/2.1Kg/151 x 65 x 101 mm/32chf
+
+KITS:
+https://www.swiss-green.ch/fr/kits-solaires-standard/39286460-kit-solaire-420-wh-12v.html?gclid=EAIaIQobChMI7IT3lNbn3AIVBbftCh3KWA90EAQYBCABEgLz-_D_BwE
+20W pannel/cables/PWM power regulator/ 96Wh 12v -> 220chf
+
+https://www.swiss-green.ch/fr/kits-solaires-standard/39270200-kit-solaire-1050-wh-12v.html - Victron
+   30W pannel/cables/PWM power regulator/264Wh 12v battery -> 310 chf (Suisse)
+   12 to 5 v power converter missing
+   
+https://www.voltaicsystems.com/17-watt-kit
+    17 W pannel/ cables/ 88Wh 5v/12v battery & power regulation -> 260 chf (US)
+    compact
+    case 50 $

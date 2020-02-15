@@ -1,0 +1,6 @@
+---
+## Perform an action on the cluster depending on tags : "shutdown, ..."
+- hosts: cluster_stressed_worker_nodes
+  gather_facts: no
+  roles: 
+  - manage-workers

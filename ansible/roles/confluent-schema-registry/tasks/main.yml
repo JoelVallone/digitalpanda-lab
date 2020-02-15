@@ -1,0 +1,30 @@
+---
+- name: "Prepare environment for docker instance"
+  include_role:
+    name: docker-pre-image
+
+- name: "Pull image {{ docker_image }} and (re)start container with name {{ docker_instance_name }}"
+  become: yes
+  docker_container:
+    name: "{{ docker_instance_name }}"
+    hostname: "{{ docker_instance_name }}"
+    state: started
+    pull: true
+    restart: yes
+    image: "{{ docker_image }}"
+    ports:
+      - "18081:18081"
+    network_mode: host
+    cpu_quota:   "50000"
+    cpu_period: "100000"
+    memory: "768M"
+    etc_hosts: "{{ lookup('template', 'hosts') }}"
+    env:
+      SCHEMA_REGISTRY_HEAP_OPTS: "-Xmx512M -Xms512M"
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: "{{ groups['cp_zookeeper_nodes'] | join(':2181,')}}:2181"
+      SCHEMA_REGISTRY_HOST_NAME: "{{ inventory_hostname }}"
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:18081"
+      SCHEMA_REGISTRY_DEBUG: "true"
+    restart_policy: always
+    tty: yes
+  when: not (absent_from_node | bool)

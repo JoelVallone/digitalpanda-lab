@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="navbar-brand">
+        <a href="#" title="Home">
+            <img src="/favicon.ico" width="30" height="30" alt="">
+        </a>
+        &nbsp;
+        <a class="navbar-toggler hidden-sm-up" *ngIf="isNavbarCollapsed" title="Live monitoring" [routerLink]="[ '/monitoring/live']"> <i class="far fa-dot-circle"></i></a>
+        &nbsp;
+        <a class="navbar-toggler hidden-sm-up" *ngIf="isNavbarCollapsed" title="Monitoring history" [routerLink]="[ '/monitoring/history']"> <i class="fas fa-chart-line"></i></a>
+
+    </div>
+
+    <button class="navbar-toggler hidden-sm-up" type="button" (click)="isNavbarCollapsed=! isNavbarCollapsed" data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="[ '/home']">Home</a>
+            </li>
+            <li class="nav-item dropdown" ngbDropdown>
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" ngbDropdownToggle>
+                    Monitoring
+                </a>
+                <div class="dropdown-menu bg-light" aria-labelledby="navbarDropdown" ngbDropdownMenu>
+                    <a class="dropdown-item" [routerLink]="[ '/monitoring/live']">Live</a>
+                    <a class="dropdown-item" [routerLink]="[ '/monitoring/history']">History</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>

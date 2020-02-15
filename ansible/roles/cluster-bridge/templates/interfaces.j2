@@ -1,0 +1,24 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface connected to ext. network
+auto {{ ext_interface | mandatory }}
+iface {{ ext_interface | mandatory }} inet static
+  address 192.168.0.102
+  gateway {{ home_gateway }}
+  netmask 255.255.255.0
+  network 192.168.0.0
+  broadcast 192.168.0.255
+  dns-nameservers 8.8.8.8 8.8.4.4
+# The secondary interface connected to cluster network
+auto {{ int_interface | mandatory }}
+iface {{ int_interface | mandatory }} inet static
+  address {{ int_ip_bridge }}
+  netmask 255.255.255.0
+  network 192.168.1.0
+  broadcast 192.168.1.255
+  dns-nameservers 127.0.0.1 8.8.8.8 8.8.4.4

@@ -1,0 +1,101 @@
+
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# digitalpanda-infrastructure
+*~
+*.retry
+*.orig
+*.*#
+.idea/
+scripts/startContainers.sh
+docker/images/backend-java/backend.application-0.1.0.jar
+docker/images/frontend-angular/digitalpanda-frontend/
+doc/cluster-notes/cp-docker-images/
+doc/cluster-notes/cp-more-examples/
+spark/spark-2.4.4-bin-hadoop2.7
+flink/flink-1.9.1
+hadoop/hadoop-2.9.2
+
+
+# digitalpanda-backend
+*.sw?
+.#*
+*#
+.classpath
+.project
+.settings
+bin
+build
+target
+dependency-reduced-pom.xml
+*.sublime-*
+/scratch
+.gradle
+README.html
+*.iml
+.idea
+*.log
+scripts/apache-cassandra-*
+
+
+
+# digitalpanda-bigdata
+**/project/
+**/target/
+*.jar
+
+
+# digitalpanda-frontend
+
+## compiled output
+/dist
+/tmp
+/out-tsc
+
+## dependencies
+/node_modules
+
+## IDEs and editors
+/.idea
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+## IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+## System Files
+.DS_Store
+Thumbs.db
+
+# digitalpanda-iot
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+buildNumber.properties
+.mvn/timing.properties
+2016-11-25-raspbian-jessie-lite.zip
+2016-11-25-raspbian-jessie-lite.img
+2019-07-10-raspbian-buster-lite.zip
+2019-07-10-raspbian-buster-lite.img
+
+
+

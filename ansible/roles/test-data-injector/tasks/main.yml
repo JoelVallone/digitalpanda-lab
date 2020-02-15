@@ -1,0 +1,32 @@
+---
+- name: "Create cassandra test directory on host"
+  become: true
+  file:
+    path: "{{test_data.data_folder}}"
+    state: directory
+    owner: "{{cluster_config_user}}"
+    group: "{{cluster_config_user}}"
+    mode: 0775
+
+- stat: path="{{cassandra.base_folder}}/apache-cassandra-{{cassandra.version}}"
+  register: cassandra_bin_folder
+
+- name: "Add cassandra test_data files on host"
+  become: true
+  template:
+    src: "testData.cql.j2"
+    dest: "{{test_data.data_folder}}/testData.cql"
+
+- name: "Download cassandra binaries zip"
+  get_url:
+    url: "http://mirror.easyname.ch/apache/cassandra/{{cassandra.version}}/apache-cassandra-{{cassandra.version}}-bin.tar.gz"
+    dest: "{{cassandra.base_folder}}/../"
+    mode: 0775
+  when: not cassandra_bin_folder.stat.exists
+
+- name: "Unpack cassandra binaries"
+  shell: "cd {{cassandra.base_folder}}/../ && tar -zxf apache-cassandra-{{cassandra.version}}-bin.tar.gz && rm apache-cassandra-{{cassandra.version}}-bin.tar.gz;"
+  when: not cassandra_bin_folder.stat.exists
+
+- name: "Inject test data from .cql file with cqlsh"
+  shell: "{{cassandra.base_folder}}/../apache-cassandra-{{cassandra.version}}/bin/cqlsh -f {{test_data.data_folder}}/testData.cql"

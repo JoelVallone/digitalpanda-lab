@@ -1,0 +1,38 @@
+---
+- name: "Remove digitalpanda-backend root directory on host"
+  become: true
+  file:
+    path: "{{backend.host.base_folder}}"
+    state: absent
+  when: clear_state
+
+- name: "Create digitalpanda-backend directories on host"
+  become: true
+  file:
+    path: "{{item}}"
+    state: directory
+    recurse: yes
+    owner: "{{cluster_config_user}}"
+    group: "{{cluster_config_user}}"
+    mode: 0775
+  with_dict: "{{backend.host.exposed_folders}}"
+
+
+- name: "Pull image 'digitalpanda-backend' and (re)start container with name 'digitalpanda-backend'"
+  become: yes
+  docker_container:
+    name: "digitalpanda-backend"
+    state: started
+    pull: true
+    restart: yes
+    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-backend:{{ digitalpanda_backend_version }}"
+    volumes:
+      - "{{backend.host.exposed_folders.log}}:{{backend.container.exposed_folders.log}}"
+    ports:
+      - "8081:8081"
+    network_mode: bridge
+    networks:
+      - name: digitalpanda
+    restart_policy: on-failure
+    restart_retries: 50
+    tty: yes

@@ -1,0 +1,55 @@
+With OS image: 2016-11-25-raspbian-jessie-lite.zip
+
+default login:
+username=pi
+password=raspberry
+
+-1)
+  a) identify sd card (df -h /dev/{mmcbk0.*|sdd.*} mmcblk0, mmcblk0p1
+  b) un-mount sd card volumes (umount /dev/???)
+  c) copy uncompressed OS image (might take a few minutes) ex: sudo dd bs=4M if=2016-11-25-raspbian-jessie-lite.img of=/dev/mmcblk0
+
+-0.5) setup keyboard layout
+sudo raspi-config
+ >Generic 105-key (Intl) PC
+ >German Switzerland
+ >German Switzerland - French Switzerland
+sudo reboot
+
+0) save wifi credentials
+sudo echo -e "network={\n\
+ ssid="UPCFA3BE2B"\n\
+ psk="???"\n\
+ }" >> /etc/wpa_supplicant/wpa_supplicant.conf
+
+1) change hostname
+sudo raspi-config
+
+ignore) set static ip in /etc/dhcpd.conf:
+sudo echo -e "interface wlan0\n\
+\n\
+static ip_address=192.168.0.200/24\n\
+static routers=192.168.0.1\n\
+static domain_name_servers=192.168.0.1\n"\
+>> /etc/dhcpcd.conf 
+
+2) enable ssh
+sudo raspi-config
+
+3) change pi user password
+passwd
+
+4) register dev computer public name
+cat > ~/.ssh/authorized_keys
+chmod 640 ~/.ssh/authorized_keys
+
+5) install oracle-java8-jdk :
+sudo apt-get update && sudo apt-get install -y oracle-java8-jdk
+
+6) enable i2c
+sudo raspi-config
+
+7) install & test i2c
+ sudo apt-get install -y i2c-tools wiringPi
+ i2cdetect -y 1 #Should output at least one digit if a device is connected
+

@@ -1,0 +1,63 @@
+<div class="card" [formGroup]="sensorsIdentificationForm">
+    <h5 class="card-header">Measure selection</h5>
+    <div class="card-body">
+        <h5 class="card-title">
+            Location
+        </h5>
+        <div class="row" style="margin-bottom : 10px;">
+            <div class="col-6 text-left">
+                <button style="width: 55px;" *ngIf="!isMeasureTypesByLocationFull()" class="btn btn-outline-success btn-sm" type="button" (click)="selectAllLocations()">
+                    All
+                </button>
+            </div>
+            <div class="col-6 text-right">
+                <button style="width: 55px;" *ngIf="!isMeasureTypesByLocationEmtpy()" class="btn btn-outline-danger btn-sm" type="button" (click)="clearAllLocations()">
+                    Clear
+                </button>
+            </div>
+        </div>
+        <div class="card-text text-center">
+            <div formArrayName="locations" *ngFor="let location of asFormArray(sensorsIdentificationForm.get('locations')).controls; let i=index " class="btn-group btn-group-toggle">
+                <label [formGroupName]="i" class="btn btn-outline-secondary btn-sm" ngbButtonLabel>
+            <input type="checkbox" formControlName="isSelected" ngbButton>{{location.get('location').value}}
+          </label>
+            </div>
+        </div>
+        <div style="margin-top : 30px;" *ngIf="asFormArray(sensorsIdentificationForm.get('locationsMeasures')).length !== 0" class="card-text">
+            <h5> Measure type </h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item" style="padding-top: 20px; padding-left:0px; padding-right:0px; padding-bottom: 20px;" formArrayName="locationsMeasures" *ngFor="let locationMeasures of asFormArray(sensorsIdentificationForm.get('locationsMeasures')).controls; let i=index">
+                <div class="text-center" style="margin-bottom : 5px;">
+                    <i>{{locationMeasures.get('location').value}}</i>
+                </div>
+                <div class="row" style="margin-bottom : 10px;">
+                    <div class="col-6 text-left">
+                        <button style="width: 55px;" *ngIf="!isMeasureTypesForLocationFull(locationMeasures.get('location').value)" class="btn btn-outline-success btn-sm" type="button" (click)="selectAllForLocation(locationMeasures.get('location').value)">
+                        All
+                    </button>
+                    </div>
+                    <div class="col-6 text-right">
+                        <button style="width: 55px;" *ngIf="!isMeasureTypesForLocationEmpty(locationMeasures.get('location').value)" class="btn btn-outline-danger btn-sm" type="button" (click)="clearAllForLocation(locationMeasures.get('location').value)">
+                        Clear
+                    </button>
+                    </div>
+                </div>
+                <div [formGroupName]="i" class="text-center">
+                    <div formArrayName="measures">
+                        <div>
+                            <div *ngFor="let measure of locationMeasures.get( 'measures').controls; let j=index" class="btn-group btn-group-toggle">
+                                <label [formGroupName]="j" class="btn btn-outline-secondary  btn-sm" ngbButtonLabel>
+                              <input type="checkbox" formControlName="isSelected" ngbButton>{{measure.get('measureTypeName').value}}
+                            </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="text-center" *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors">
+        <div class="alert alert-danger" role="alert" *ngIf="sensorsIdentificationForm.get('locationsMeasures').errors.atLeastOneMeasureSelected">Select at least one measure type at a location.</div>
+    </div>
+</div>

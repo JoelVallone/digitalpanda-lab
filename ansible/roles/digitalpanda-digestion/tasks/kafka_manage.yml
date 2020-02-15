@@ -1,0 +1,6 @@
+---
+- name: "kafka_manager run: {{command_args }}"
+  become: yes
+  shell: "docker run --net=host --rm confluentinc/cp-kafka:{{ confluent_platform_docker_version }} {{ command_args }}"
+  register: sh_res
+- debug: var=sh_res.stdout_lines

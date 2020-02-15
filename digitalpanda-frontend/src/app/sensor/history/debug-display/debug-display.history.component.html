@@ -1,0 +1,37 @@
+<div style="margin-top: 30px">
+    <h4>Request:</h4>
+    <ul>
+        <li>Location: {{sensor?.location}}</li>
+        <li>Measure Type: {{measureTypeDetails?.typeName}}</li>
+        <li>Requested interval:
+            <ul>
+                <li>From (incl.): {{startTimeMillisIncl | date:'yyyy-MM-dd T HH:mm:ss+SSS'}}</li>
+                <li>To (excl.): {{endTimeMillisExcl | date:'yyyy-MM-dd T HH:mm:ss+SSS'}}</li>
+            </ul>
+        </li>
+        <li>Target datapoints: {{dataPointCount}}</li>
+    </ul>
+</div>
+<div style="margin-top: 30px" *ngIf=measureLoaded>
+    <h4>Response:</h4>
+    <div style="margin-top: 15px " *ngFor="let measuresInterval of measuresIntervals; let i=index ">
+        Sub interval {{i}}
+        <table border="1 ">
+            <tr>
+                <th>Begin Incl.</th>
+                <th>End Excl.</th>
+                <th>Ref Time</th>
+                <th>Mean Value</th>
+            </tr>
+            <tr *ngFor="let measures of measuresInterval ">
+                <td>{{measures.startTimestampIncl | date:'yyyy-MM-dd T HH:mm:ss+SSS'}}</td>
+                <td>{{measures.endTimestampExcl | date:'yyyy-MM-dd T HH:mm:ss+SSS'}}</td>
+                <td>{{measures.refTimestamp | date:'yyyy-MM-dd T HH:mm:ss+SSS'}}</td>
+                <td>{{measures.value}}</td>
+            </tr>
+        </table>
+    </div>
+    <div *ngIf="measuresIntervals && measuresIntervals.length === 0">
+        No data found
+    </div>
+</div>

@@ -1,0 +1,47 @@
+---
+# This role sets up a user for the cluster configuration and sets up the ssh accesses
+ 
+- name: "Create {{ cluster_config_user }} user"
+  become: yes
+  user:
+    name: "{{ cluster_config_user }}"
+    comment: "Cluster configuration account"
+    generate_ssh_key: yes
+  
+- name: "Enable pasword-less sudo for user {{ cluster_config_user }}"
+  become: yes
+  lineinfile:
+    dest=/etc/sudoers
+    line="{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL"
+
+- name: "Register ssh autorized_keys into {{ cluster_config_user }}"
+  become: yes
+  authorized_key:
+    user: "{{ cluster_config_user }}"
+    state: present
+    key: '{{ item }}'
+  with_lines: cat '{{ role_path }}/files/authorized_keys'
+
+- name: "Set domain name {{ cluster_config_domain_name }} present"
+  become: yes
+  replace:
+    dest=/etc/hosts
+    regexp='^(127\.0\.0\.1)+.*({{ansible_hostname}}).*$'
+    replace='\1 {{ ansible_hostname }}.{{ cluster_config_domain_name }} {{ansible_hostname}}'
+
+- name: "Set internal DNS server ip"
+  become: yes
+  lineinfile:
+    dest=/etc/resolv.conf
+    insertbefore=BOF
+    line="nameserver {{ dns_server_ip }}"
+    
+- name: "Disable dns server update"
+  become: yes
+  shell: chattr +i /etc/resolv.conf
+    
+- name: "copy custom Docker configuration"
+  become: yes
+  template:
+    src: templates/docker/daemon.json.j2
+    dest: /etc/docker/daemon.json

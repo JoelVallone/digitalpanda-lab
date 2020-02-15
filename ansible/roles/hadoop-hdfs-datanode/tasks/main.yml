@@ -1,0 +1,8 @@
+---
+- name: "Prepare environment for hadoop instance"
+  include_role:
+    name: hadoop-common
+  vars:
+    docker_command: "{{hadoop.container.install_folder}}/sbin/hadoop-daemon.sh start datanode > {{hadoop.container.exposed_folder.log}}/hdfs-datanode-start.log"
+
+

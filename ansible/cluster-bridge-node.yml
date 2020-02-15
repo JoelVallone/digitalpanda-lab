@@ -1,0 +1,6 @@
+---
+## Setup a node as network bridge
+
+- hosts: cluster_bridge
+  roles:
+    - cluster-bridge

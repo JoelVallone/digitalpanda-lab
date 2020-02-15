@@ -1,0 +1,14 @@
+---
+
+- hosts: hadoop_master_node
+  roles:
+    - hadoop-hdfs-namenode
+    - hadoop-yarn-resourcemanager
+
+- hosts: hadoop_worker_nodes
+  roles:
+    - hadoop-yarn-nodemanager
+    - hadoop-hdfs-datanode
+
+
+

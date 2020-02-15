@@ -1,0 +1,65 @@
+localnode ansible_host=127.0.0.1 ansible_user=jva
+fanless1.digitalpanda.org ansible_host=192.168.0.102 node_id=0
+stressed-panda-1.lab.digitalpanda.org ansible_host=192.168.0.241 node_id=1
+stressed-panda-2.lab.digitalpanda.org ansible_host=192.168.0.242 node_id=2
+pi3-1.lab.digitalpanda.org ansible_host=192.168.0.121 node_id=1
+pi3-2.lab.digitalpanda.org ansible_host=192.168.0.122 node_id=2
+pi3-3.lab.digitalpanda.org ansible_host=192.168.0.123 node_id=3
+pi3-4.lab.digitalpanda.org ansible_host=192.168.0.124 node_id=4
+
+[cluster_bridge]
+fanless1.digitalpanda.org ext_interface=eno1 int_interface=enp2s0 node_id=0
+
+[cluster_stressed_worker_nodes]
+stressed-panda-1.lab.digitalpanda.org
+stressed-panda-2.lab.digitalpanda.org
+
+[docker_registry]
+fanless1.digitalpanda.org
+
+[x64_build_node]
+fanless1.digitalpanda.org
+
+[hadoop_master_node]
+fanless1.digitalpanda.org
+
+[hadoop_worker_nodes]
+stressed-panda-1.lab.digitalpanda.org
+stressed-panda-2.lab.digitalpanda.org
+
+[cp_zookeeper_nodes]
+stressed-panda-1.lab.digitalpanda.org node_id=1
+stressed-panda-2.lab.digitalpanda.org node_id=2
+fanless1.digitalpanda.org node_id=3
+
+[cp_kafka_brokers]
+stressed-panda-1.lab.digitalpanda.org
+stressed-panda-2.lab.digitalpanda.org
+
+[cp_schema_registry]
+fanless1.digitalpanda.org
+
+[cp_kafka_connect_nodes]
+stressed-panda-1.lab.digitalpanda.org
+stressed-panda-2.lab.digitalpanda.org
+
+[cassandra_node]
+fanless1.digitalpanda.org
+
+[cluster_client_host]
+fanless1.digitalpanda.org
+
+[arm_build_node]
+pi3-2.lab.digitalpanda.org
+
+[cluster_pi3_worker_nodes]
+pi3-1.lab.digitalpanda.org
+pi3-2.lab.digitalpanda.org
+pi3-3.lab.digitalpanda.org
+pi3-4.lab.digitalpanda.org
+
+[hadoop_worker_nodes_arm]
+pi3-1.lab.digitalpanda.org
+pi3-2.lab.digitalpanda.org
+pi3-3.lab.digitalpanda.org
+pi3-4.lab.digitalpanda.org

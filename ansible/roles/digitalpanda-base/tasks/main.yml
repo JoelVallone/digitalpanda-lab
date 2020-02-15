@@ -1,0 +1,5 @@
+---
+- name: Create digitalpanda docker bridge network
+  become: yes
+  docker_network:
+    name: digitalpanda

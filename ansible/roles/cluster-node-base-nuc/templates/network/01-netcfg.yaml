@@ -1,0 +1,19 @@
+# This file describes the network interfaces available on your system
+# For more information, see netplan(5).
+network:
+      version: 2
+      renderer: networkd
+      ethernets:
+{% if static_ip %}
+            eno1:
+                  addresses: [192.168.1.24{{ node_id }}/24]
+                  gateway4: {{ int_ip_bridge }}
+                  dhcp4: no
+                  nameservers:
+                    addresses: [8.8.8.8, 8.8.4.4]
+                  optional: true
+{% else %}
+            eno1:
+                  dhcp4: yes
+                  dhcp6: yes
+{% endif %}

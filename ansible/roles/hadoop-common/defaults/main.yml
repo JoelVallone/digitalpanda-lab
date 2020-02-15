@@ -1,0 +1,5 @@
+---
+pristine_instance: false
+absent_from_node: false
+docker_instance_name: "{{ hadoop_role }}-{{ node_id }}"
+docker_command: "date"

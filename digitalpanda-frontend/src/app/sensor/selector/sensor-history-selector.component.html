@@ -1,0 +1,19 @@
+<form [formGroup]="sensorForm" (ngSubmit)="onSubmit()">
+
+    <app-sensor-identification class="" [sensorsIdentificationForm]="sensorForm.get('sensorsIdentification')">
+    </app-sensor-identification>
+
+    <app-time-interval-selector [timeIntervalForm]="sensorForm.get('timeInterval')">
+    </app-time-interval-selector>
+
+    <div class="row">
+        <div class="col-12 text-center" style="margin: 10px 0px">
+            <button class="btn btn-success btn-lg" type="submit" [disabled]="!canSubmit()">Submit</button>
+        </div>
+    </div>
+    <!--
+      <p>
+          Form Value: {{ sensorForm.value | json }} <br> Form Status: {{ sensorForm.status | json }}
+      </p>
+    -->
+</form>

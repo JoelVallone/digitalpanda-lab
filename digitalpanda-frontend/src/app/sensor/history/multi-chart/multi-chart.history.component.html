@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-12 text-center">
+        <h5>Historical data</h5>
+    </div>
+</div>
+<div class="row" *ngFor="let measureType of measureTypes" style="margin-bottom: 30px">
+    <div class="col-12 text-center">
+        <i><b>From</b> {{fromMillis | date:'medium'}} <b>To</b> {{toMillis | date:'medium'}}</i>
+        <div style="min-height: 300px; max-height: 600px;">
+            <ngx-charts-line-chart [scheme]="colorScheme" [results]="timeSeriesByType.get(measureType)" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+              [yAxisLabel]="getMeasureTypeFormatted(measureType)" [autoScale]="autoScale" [timeline]="timeline">
+            </ngx-charts-line-chart>
+        </div>
+    </div>
+</div>

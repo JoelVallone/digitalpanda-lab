@@ -1,0 +1,20 @@
+---
+- hosts: cp_zookeeper_nodes
+  roles:
+    - confluent-zookeeper
+
+- hosts: cp_kafka_brokers
+  roles:
+    - confluent-kafka-broker
+
+- hosts: cp_schema_registry
+  roles:
+     - confluent-schema-registry
+
+- hosts: cp_kafka_connect_nodes
+  roles:
+     - confluent-kafka-connect
+
+
+
+

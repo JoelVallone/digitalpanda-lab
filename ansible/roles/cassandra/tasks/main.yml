@@ -1,0 +1,60 @@
+---
+
+- name: "Remove cassandra root directory on host"
+  become: true
+  file:
+    path: "{{docker.host.base_folder}}"
+    state: absent
+  when: clear_state
+
+- name: "Create cassandra directories on host"
+  become: true
+  file:
+    path: "{{item.value}}"
+    state: directory
+    recurse: yes
+    owner: "{{cluster_config_user}}"
+    group: "{{cluster_config_user}}"
+    mode: 0775
+  with_dict: "{{docker.host.exposed_folders}}"
+
+- name: "Add cassandra configuration files on host"
+  become: true
+  template:
+    src: "{{item}}.j2"
+    dest: "{{docker.host.exposed_folders.conf}}/{{item}}"
+  with_items:
+    - cassandra.yaml
+    - logback.xml
+  when: clear_state
+
+- name: "Pull image 'cassandra' and (re)start container with name 'cassandra-node-0'"
+  become: yes
+  docker_container:
+    name: "cassandra-node-0"
+    hostname: "cassandra-node-0"
+    pull: true
+    state: started
+    restart: "{% if clear_state %}yes{% else %}no{% endif %}"
+    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/cassandra:latest"
+    volumes:
+      - "{{docker.host.exposed_folders.log}}:{{docker.container.exposed_folders.log}}"
+      - "{{docker.host.exposed_folders.conf}}:{{docker.container.exposed_folders.conf}}"
+      - "{{docker.host.exposed_folders.data}}:{{docker.container.exposed_folders.data}}"
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+      - "7199:7199"
+      - "9042:9042"
+      - "9160:9160"
+      - "9142:9142"
+    network_mode: bridge
+    networks:
+    - name: digitalpanda
+    env:
+      CONTAINER_AUTO_START: true
+    restart_policy: always
+    tty: yes
+
+- pause:
+    seconds: 5

@@ -1,0 +1,65 @@
+---
+# This role sets up a user for the cluster configuration and sets up the ssh accesses
+ 
+- name: "Create {{ cluster_config_user }} user"
+  become: yes
+  user:
+    name: "{{ cluster_config_user }}"
+    comment: "Cluster configuration account"
+    generate_ssh_key: yes
+  
+- name: "Enable pasword-less sudo for user {{ cluster_config_user }}"
+  become: yes
+  lineinfile:
+    dest=/etc/sudoers
+    line="{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL"
+
+- name: "Register ssh autorized_keys into {{ cluster_config_user }}"
+  become: yes
+  authorized_key:
+    user: "{{ cluster_config_user }}"
+    state: present
+    key: '{{ item }}'
+  with_lines: cat '{{ role_path }}/files/authorized_keys'
+
+- name: Copy static host name resolution file
+  become: yes
+  template:
+    src: ./templates/network/hosts.j2
+    dest: /etc/hosts
+    owner: root
+    mode: "u=rw,g=r,o=r"
+
+- name: Copy ip configuration file
+  become: yes
+  template:
+    src: ./templates/network/eth0.j2
+    dest: /etc/network/interfaces.d/eth0
+    owner: root
+    mode: "u=rw,g=r,o=r"
+  when: static_ip
+
+- name: "Enable dns server update"
+  become: yes
+  shell: chattr -i /etc/resolv.conf
+  when: internal_dns
+
+- name: "Set internal DNS server ip"
+  become: yes
+  template:
+    src: ./templates/network/resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    mode: "u=rw,g=r,o=r"
+  when: internal_dns
+    
+- name: "Disable dns server update"
+  become: yes
+  shell: chattr +i /etc/resolv.conf
+  when: internal_dns
+    
+- name: "copy custom Docker configuration"
+  become: yes
+  template:
+    src: templates/docker/daemon.json.j2
+    dest: /etc/docker/daemon.json

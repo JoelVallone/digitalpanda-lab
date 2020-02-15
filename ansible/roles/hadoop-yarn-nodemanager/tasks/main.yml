@@ -1,0 +1,8 @@
+---
+- name: "Prepare environment for hadoop instance"
+  include_role:
+    name: hadoop-common
+  vars:
+      docker_command: "{{hadoop.container.install_folder}}/sbin/yarn-daemon.sh start nodemanager > {{hadoop.container.exposed_folder.log}}/yarn-nodemanager-start.log"
+
+

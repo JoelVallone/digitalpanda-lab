@@ -1,0 +1,126 @@
+<div class="card" [formGroup]="timeIntervalForm">
+    <h5 class="card-header">Time interval selection</h5>
+    <div class="card-body text-center">
+        <div>
+            <div class="row">
+                <div class="col-6 text-left">
+                    <button style="width: 75px;" class="btn btn-outline-info  btn-sm" (click)="toggleIntervalSelector()" type="button">
+                    {{ displayRelativeTimeSelector ?  'Explicit' : 'Relative' }}
+                  </button>
+                </div>
+                <div class="col-6 text-right">
+                    <button style="width: 75px;" class="btn btn-outline-danger  btn-sm" (click)="setDefaultInterval()" type="button">
+                      Reset
+                  </button>
+                </div>
+            </div>
+            <hr/>
+        </div>
+        <div *ngIf="displayRelativeTimeSelector">
+            <h5 for="fromDate" class="text-left">
+                Relative - since
+            </h5>
+            <form class="card-text text-center">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-primary btn-sm {{ relativeTime == selectedRelativeTime ? 'active' : '' }}" *ngFor="let relativeTime of relativeTimeKeys">
+                    <input name="relativeTimeSelection" type="radio" value="{{ relativeTime }}" (click)="selectRelativeTime(relativeTime)">{{relativeTime}}
+                  </label>
+                </div>
+            </form>
+        </div>
+        <div *ngIf="!displayRelativeTimeSelector">
+            <h5 for="fromDate" class="text-left">
+                Explicit interval
+            </h5>
+            <div class="card-text text-center" style="margin-bottom: 15px">
+                <div style="margin-bottom: 15px">
+                    <button class="btn btn-outline-info btn-sm" (click)="toggleDatePicker()" type="button">
+                  {{ displayDatePicker ?  'Manual date input.' : 'Use calendar' }}
+                </button>
+                </div>
+                <div *ngIf="displayDatePicker">
+                    <i>Pick
+                      <b [style.color]="fromDate ? 'green': 'red'">from</b> and
+                      <b [style.color]="toDate ? 'green': 'red'" >to</b> dates
+                    </i>
+                    <br>
+                    <ngb-datepicker *ngIf="displayDatePicker" #dp (select)="onDateSelection($event)" [displayMonths]="1" [dayTemplate]="t" outsideDays="hidden">
+                        <ng-template #t let-date let-focused="focused">
+                            <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)" [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date" (mouseleave)="hoveredDate = null">
+                          {{ date.day }}
+                        </span>
+                        </ng-template>
+                    </ngb-datepicker>
+                </div>
+            </div>
+            <div formGroupName="from">
+                <h5 for="fromDate" class="card-title">
+                    From
+                </h5>
+                <div class="card-text text-center">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <!--
+                                <div class="input-group">
+                                <input ngbDatepicker #dFrom="ngbDatepicker" id="fromDate" class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" formControlName="date">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" (click)="dFrom.toggle()" type="button">
+                                      <i class="icon-border  far fa-calendar-alt" width=30px; height=30px; ></i>
+                                    </button>
+                                </div>
+                            </div>
+                          -->
+                            <input style="text-align: center" *ngIf="!displayDatePicker" id="fromDate" class="form-control" placeholder="yyyy-mm-dd" name="dpFromDate" formControlName="date">
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <div class="row" *ngIf="timeIntervalForm.get('from').get('date').errors && !displayDatePicker">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6 alert alert-danger" *ngIf="timeIntervalForm.get('from').get('date').errors.rawDateFormat">Expected date format: yyyy-mm-dd</div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="timepicker-box">
+                        <ngb-timepicker formControlName="time" [seconds]="true" [hourStep]="1" [minuteStep]="1" [secondStep]="1"></ngb-timepicker>
+                    </div>
+                    <div class="row" *ngIf="timeIntervalForm.get('from').get('time').errors">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6 alert alert-danger text-center" *ngIf="timeIntervalForm.get('from').get('time').errors.required">Expected time format: hh mm ss</div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div formGroupName="to">
+                <h5 for="toDate" class="card-title">
+                    To
+                </h5>
+                <div class="card-text text-center">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <input style="text-align: center" *ngIf="!displayDatePicker" id="toDate" class="form-control" placeholder="yyyy-mm-dd" name="dpToDate" formControlName="date">
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <div class="row" *ngIf="timeIntervalForm.get('to').get('date').errors && !displayDatePicker">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6 alert alert-danger" *ngIf="timeIntervalForm.get('to').get('date').errors.rawDateFormat">Expected date format: yyyy-mm-dd</div>
+                        <div class="col-md-3"></div>
+                    </div>
+                    <div class="timepicker-box">
+                        <ngb-timepicker formControlName="time" [seconds]="true" [hourStep]="1" [minuteStep]="1" [secondStep]="1"></ngb-timepicker>
+                    </div>
+                    <div class="row" *ngIf="timeIntervalForm.get('to').get('time').errors">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6 alert alert-danger text-center" *ngIf="timeIntervalForm.get('to').get('time').errors.required">Expected time format: hh mm ss</div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-danger text-center" *ngIf="timeIntervalForm.errors">
+                <div *ngIf="timeIntervalForm.errors.timestampPrecedence">The time interval size <b> must be of at least one second</b>.</div>
+                <div *ngIf="timeIntervalForm.errors.intervalOverflow">The time interval size <b> must be bellow one day</b>.</div>
+            </div>
+        </div>
+    </div>

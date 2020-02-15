@@ -1,0 +1,29 @@
+---
+topic_default:
+  prefix: "org.digitalpanda"
+  partitions: 6
+  replication_factor: 2
+
+topics:
+  - name: "org.digitalpanda.measure.raw-1-sec"
+    partitions: "6"
+    replication_factor: "2"
+    avro:
+      value-schema-file: "measure.avsc"
+  - name: "org.digitalpanda.measure.processed-1-min"
+    partitions: "6"
+    replication_factor: "2"
+    avro-schema:
+      value-schema-file: "measure.avsc"
+  - name: "org.digitalpanda.measure.processed-1-hour"
+    partitions: "6"
+    replication_factor: "2"
+    avro:
+      value-schema-file: "measure.avsc"
+  - name: "org.digitalpanda.measure.processed-6-hour"
+    partitions: "6"
+    replication_factor: "2"
+    avro:
+      value-schema-file: "measure.avsc"
+
+avro_schema_folder: "{{ role_path }}/../../../digitalpanda-bigdata/sensor-digestion-flink/script/avro-schemas"

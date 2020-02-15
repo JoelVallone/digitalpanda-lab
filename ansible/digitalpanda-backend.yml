@@ -1,0 +1,14 @@
+---
+
+- hosts:
+    - backends
+  roles:
+    - digitalpanda-base
+
+- hosts: backends
+  roles:
+    - digitalpanda-backend
+
+
+
+

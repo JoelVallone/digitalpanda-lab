@@ -1,0 +1,3 @@
+---
+#dependencies:
+#  - { role: docker-registry, required_containers: ['hadoop', 'hadoop-arm'], when: (not (pristine_instance | bool)) and (not (absent_from_node | bool)) }

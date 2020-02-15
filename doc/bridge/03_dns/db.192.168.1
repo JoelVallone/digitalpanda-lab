@@ -1,0 +1,17 @@
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	fanless1.digitalpanda.org. root.digitalpanda.org. (
+			      5		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	fanless1.
+1       IN      PTR     fanless1.digitalpanda.org.
+101	IN	PTR	pi3-1.lab.digitalpanda.org.
+102	IN	PTR	pi3-2.lab.digitalpanda.org.
+103	IN	PTR	pi3-3.lab.digitalpanda.org.
+104	IN	PTR	pi3-4.lab.digitalpanda.org.

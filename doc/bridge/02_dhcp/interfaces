@@ -1,0 +1,24 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface connected to ext. network
+auto em1
+iface em1 inet static
+  address 192.168.0.102
+  gateway 192.168.0.1
+  netmask 255.255.255.0
+  network 192.168.0.0
+  broadcast 192.168.0.255
+  dns-nameservers 127.0.0.1 8.8.8.8 8.8.4.4
+# The secondary interface connected to cluster newtork
+auto p2p1
+iface p2p1 inet static
+  address 192.168.1.1
+  netmask 255.255.255.0
+  network 192.168.1.0
+  broadcast 192.168.1.255
+  dns-nameservers 127.0.0.1 8.8.8.8 8.8.4.4

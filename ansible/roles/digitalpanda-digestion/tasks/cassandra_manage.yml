@@ -1,0 +1,12 @@
+---
+- name: "kafka_manager run: {{command_args }}"
+  become: yes
+  shell: >-
+    docker run -it --e CQLSH_HOST={{ groups['cassandra_node'][0] }} -net=host --rm --entrypoint=''
+    -w='/opt/cassandra/apache-cassandra-3.11.3/bin'
+    {{ docker_registry.fqdn }}:{{ docker_registry.port }}/cassandra:latest
+    {{ command_args }}"
+  register: sh_res
+
+# sudo docker run -ti  -e CQLSH_HOST=fanless1 --entrypoint='' -w='/opt/cassandra/apache-cassandra-3.11.3/bin' --net=host --rm fanless1.digitalpanda.org:5000/cassandra:latest ./cqlsh
+- debug: var=sh_res.stdout_lines

@@ -1,0 +1,16 @@
+---
+
+docker_image: "to-define-at-runtime"
+
+# Docker pre-image variables
+host_base_folder: "/home/{{ cluster_config_user }}/{{ hadoop_role }}"
+host_data_folders:
+  config: "{{ host_base_folder }}/config"
+  log: "{{ host_base_folder }}/log"
+  data_master: "{{ host_base_folder }}/hdfs/master/data"
+  data_slave: "{{ host_base_folder }}/hdfs/slave/data"
+
+
+cluster_node:
+  host_fqdn: "stressed-panda-{{ node_id  }}.{{ cluster_domain }}"
+  ip: "192.168.1.24{{ node_id }}"

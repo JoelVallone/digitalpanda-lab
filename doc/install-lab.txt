@@ -1,0 +1,151 @@
+============ MASTER NODE ======================== 
+Install python: apt-get install python2.7 python-simplejson
+0) configure network:
+    external and internal interfaces with static addresses
+       >/etc/network/interfaces:
+	    see file in git repo at infrastructure/digitalpanda/fanless/02_dhcp/interfaces
+	set domain name
+	    > /etc/hosts
+	    127.0.1.1	fanless1.digitalpanda.org fanless1
+    configure packet forwarding between subnetworks    
+    (test confguration :)
+        save script infrastructure/digitalpanda/fanless/01_network_bridge/enable_bridge_iptables.sh in /opt 
+        run script on startup:
+            >/etc/rc.local
+            {absolute path to script folder}/enable_bridge_iptables.sh
+    https://unix.stackexchange.com/questions/311752/routing-between-multiple-subnets
+
+0.1) install docker compose
+0.2) start 1)2)3) with docker compose
+
+1) dhcp server (done in "dhcp-server" docker container) :
+    install the dhcp server
+        >sudo apt-get install isc-dhcp-server
+    configure 
+        >/etc/default/isc-dhcp-server:
+	        INTERFACES="p2p1"
+        >/etc/hdcp/dhcpd.conf:
+	        see file in git repo at infrastructure/digitalpanda/fanless/02_dhcp/dhcpd.conf
+	start the service (will autostart at boot time)
+        >sudo service isc-dhcp-server start
+2) dns server (done in "dhcp-server" docker container) : 
+    howtos
+        http://www.thegeekstuff.com/2014/01/install-dns-server/
+        https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-ubuntu-14-04
+    install dns server
+        >sudo apt-get install bind9 bind9utils bind9-doc
+    enable caching server:
+        >/etc/bind/named.conf.options
+        forwarders {
+            8.8.8.8;
+            8.8.4.4;
+        };
+    restart the sever
+        >sudo service bind9 restart
+    check caching (shorter respons time afeter second test)
+        >dig google.com @192.168.1.1
+    configure as primary/master nameserver for "digitalpanda.org"
+        copy files in infrastructure/digitalpanda/fanless/03_dns into /etc/bind
+        
+        
+        
+        
+3)DO NOT USE consider kubeadm
+
+kubernetes (wih kubespray) master (https://kubernetes.io/docs/getting-started-guides/kubespray/)
+ 
+ Initial requirements:
+ https://github.com/kubernetes-incubator/kubespray#requirements
+    Add locale setup in the user ~./bash.rc
+        >export LC_ALL=C
+    Add user to sudo-er without password:
+        > sudo visudo
+        > add "<username> ALL=(ALL) NOPASSWD:ALL" at the bottom of the file
+    Install python pip and openssl dev libraries
+        >sudo apt-get install python-pip python-dev libffi-dev libssl-dev libxml2-dev libxslt1-dev libjpeg8-dev zlib1g-dev
+    Install python python-netaddr (ip manipulation library)
+        >sudo apt-get install python-netaddr
+    Install Jinja 
+        >sudo -H  pip2 install Jinja2
+    Install ansible
+        >http://docs.ansible.com/ansible/intro_installation.html#latest-releases-via-apt-ubuntu 
+    Install kubespray
+        >https://github.com/kubespray/kubespray-cli                 
+    Setup cluster configuraion file with kubespray-cli
+        >kubespray prepare [--noclone] --nodes node1 ansible_ssh_host=fanless1.digitalpanda.org node2 ansible_ssh_host=pi3-1.lab.digitalpanda.org --etcds 2 --masters 1
+        ==> example: https://github.com/kubernetes-incubator/kubespray/blob/master/inventory/inventory.example
+    Fix ansible roles
+        docker ".kubespray/roles/docker/defaults/main.yml": docker_dns_servers_strict: no
+    Deploy the cluster
+        >kubespray deploy
+        
+        pi3-1 fails ==> ??? befor fanless1
+        fanless1 fails ==> TASK [network_plugin/calico : Calico | wait for etcd
+
+
+
+
+============ EXECUTOR NODE ======================== 
+1) Install Hypriot OS with the flash tool https://github.com/hypriot/flash
+   a) Install the flash utility : https://github.com/hypriot/flash
+   b) Flash the sd card device (not parition) of the pi3 
+   >flash --hostname pi3-1  --ssid UPCFA3BE2B --password Wubsdax4sbnE https://github.com/hypriot/image-builder-rpi/releases/download/v1.4.0/hypriotos-rpi-v1.4.0.img.zip
+   > add "--ssid UPCFA3BE2B --password Wubsdax4sbnE" if the wifi is needed
+    (usr:pirate ; pwd:hypriot)
+   d) save authorized_hosts(644) file into pirate /home/pirate/.ssh (700) folder
+   e) add static dhcp allocation in master node for host (etc/dhcpd.conf)
+
+A) create user panda-worker and generate ssh key
+B) resgister ssh autorized keys
+
+C) Add user to sudo-er without password:
+        > sudo visudo
+        > add "<username> ALL=(ALL) NOPASSWD:ALL" at the bottom of the file
+
+D) Configure domain name:
+   >sudo vi /etc/hosts
+   127.0.0.1	pi3-1.lab.digitalpanda.org pi3-1
+   
+?) set gateway dns ip, enable iptables, insecure registry ip in docker config /etc/systemd/system/docker.service.d
+
+?) 
+
+
+
+============ info ======================== 
+ kubespray:
+    >cluster inventory file example :  .kubespray/inventory/inventory.example
+    >ansible configuration file : .kubespray/ansible.cfg
+ ansible:
+    >http://docs.ansible.com/ansible/latest/intro.html
+    >ansible-playbook new-worker-node-pi3-hypriot.yml --inventory=cluster-inventory --tags=uut
+ iptables:
+    >iptables -t nat -L -n -v
+ ssh: 
+    >ssh -p27000 bffrij@digitalpanda.org
+    >ssh -p27002 bffrij@192.168.0.102
+    > ssh -L 50075:192.168.1.102:50074 192.168.0.102 (access to 192.168.1.102:50074 by forwarding trafic from loclahost:50075 to ssh server at 192.168.0.102 which pushes to 192.168.1.102) 
+ dhcp client:
+    >release : dhclient -r
+    >lease: dhclient wlan0
+    >cat /var/lib/dhcp3/dhclient.leases
+    >cat /var/lib/dhcp/dhclient.etho.leases
+ list ip on network:
+    >nmap -sP 192.168.0.0/24
+ list gateways:
+    >netstat -nr
+ disable interface:
+    >iface wlan0 inet manual
+ newtork info
+    >hostname --fqdn
+ syslog:
+    >sudo tail /var/log/syslog
+ dns lookups:
+    >dig google.com @192.168.1.1
+ docker:
+    See cmd.txt in docker folder...
+
+    
+
+
+

@@ -1,0 +1,53 @@
+---
+# This role sets up machine as network bridge based on an internal and external interface
+
+- name: "Create {{ cluster_config_user }} user"
+  become: yes
+  user:
+    name: "{{ cluster_config_user }}"
+    comment: "Cluster configuration account"
+    generate_ssh_key: yes
+
+- name: "Enable pasword-less sudo for user {{ cluster_config_user }}"
+  become: yes
+  lineinfile:
+    dest=/etc/sudoers
+    line="{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL"
+
+- name: "Register ssh autorized_keys into {{ cluster_config_user }}"
+  become: yes
+  authorized_key:
+    user: "{{ cluster_config_user }}"
+    state: present
+    key: '{{ item }}'
+  with_lines: cat '{{ role_path }}/files/authorized_keys'
+
+- name: Copy "interfaces" file for bridging
+  become: yes
+  template:
+    src: ./templates/interfaces.j2
+    dest: /etc/network/interfaces
+    owner: root
+    mode: "u=rw,g=r,o=r"
+
+- name: Copy static host name resolution file
+  become: yes
+  template:
+    src: ./templates/hosts.j2
+    dest: /etc/hosts
+    owner: root
+    mode: "u=rw,g=r,o=r"
+
+- name: Copy iptables script for bridging
+  become: yes
+  template:
+    src: ./templates/enable_bridge_iptables.sh.j2
+    dest: /opt/enable_bridge_iptables.sh
+    mode: "u=rwx,g=rx,o=rx"
+
+- name: Execute iptables bridging script at each startup
+  become: yes
+  lineinfile: dest=/etc/rc.local
+              regexp="exit 0|enable_bridge_iptable"
+              line="/opt/enable_bridge_iptables.sh || true"
+              state=present

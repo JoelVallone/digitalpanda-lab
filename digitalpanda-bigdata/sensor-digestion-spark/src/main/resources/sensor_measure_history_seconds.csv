@@ -1,0 +1,2 @@
+location,time_block_id,measure_type,bucket,timestamp,value
+server-room,2980,PRESSURE,0,2019-07-12 03:35:27.910000+0000,963.91

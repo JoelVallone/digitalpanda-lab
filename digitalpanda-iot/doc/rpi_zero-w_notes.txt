@@ -1,0 +1,40 @@
+With OS image: 2019-07-10-raspbian-buster-lite.zip
+
+default login:
+username=pi
+password=raspberry
+
+-1)
+  a) identify sd card (df -h /dev/{mmcbk0.*|sdd.*} mmcblk0, mmcblk0p1
+  b) un-mount sd card volumes (umount /dev/???)
+  c) copy uncompressed OS image (might take a few minutes) ex: sudo dd bs=4M if=2019-07-10-raspbian-buster-lite.img of=/dev/mmcblk0
+
+
+0) save wifi credentials
+sudo raspi-config
+ ssid="UPCFA3BE2B"
+ psk="???"
+
+1) enable ssh
+sudo raspi-config
+
+2) change hostname
+sudo raspi-config
+
+3) change pi user password
+passwd
+
+4) register dev computer public name
+mkdir .ssh
+cat > ~/.ssh/authorized_keys
+chmod 640 ~/.ssh/authorized_keys
+
+5) install openjdk-8-jdk :
+sudo apt-get update && sudo apt-get install -y openjdk-8-jdk
+
+6) enable i2c
+sudo raspi-config
+
+7) install & test i2c
+ sudo apt-get install -y i2c-tools
+ i2cdetect -y 1 #Should output at least one digit if a device is connected

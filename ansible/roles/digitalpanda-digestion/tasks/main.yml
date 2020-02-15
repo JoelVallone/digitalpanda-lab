@@ -1,0 +1,35 @@
+---
+
+- name: "Create Kafka topics"
+  include: kafka_manage.yml
+  vars:
+    command_args: >-
+      kafka-topics
+        --zookeeper {{ groups['cp_zookeeper_nodes'][0] }}:2181
+        --create --topic {{ item.name }}
+          --partitions {{ item.partitions }}
+          --replication-factor {{ item.replication_factor }}
+          --if-not-exists
+  loop: "{{ topics | flatten(levels=1) }}"
+
+# TODO: Continue here, must not execute if already exist
+- name: "Publish Kafka topics schema"
+  uri:
+    url: "http://{{ groups['cp_schema_registry'][0] }}:18081/subjects/{{ item.name }}-value/versions"
+    headers: "application/vnd.schemaregistry.v1+json"
+    method: POST
+    body: "{{ lookup('file', {{ avro_schema_folder }}/{{ item.avro.value-schema-file }} ) }}"
+  loop: "{{ topics | flatten(levels=1) }}"
+
+- name: "Create Cassandra tables"
+  include: kafka_manage.yml
+  vars:
+    command_args: ./cqlsh -e "lookup('template', 'hosts')"
+- name: "Create Kafka connectors"
+
+- name: "Start Kafka connectors"
+
+- name: "Start stream job"
+
+["/bin/sh","-c", "/bin/bash"]
+

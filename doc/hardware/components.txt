@@ -1,0 +1,22 @@
+
+-= Hardware =-
+
+digitec : Samsung 850 EV, 250GB, mSATA : 111
+digitec	: Kingston HyperX Impact (1x, 8GB, DDR3L-1600 (PC3-12800), SODIMM 204) : 46.5
+other 	: Shuttle DSCU3 : 380 .-
+
+total : 656.5
+
+Intel i3 2 cores, 8 GiB Memory, 250 GiB SSD
+
+-= openstack VMs =-
+
+
+Control
+Network
+Storage : swift object storage
+
+Compute : hosts VMs
+
+
+

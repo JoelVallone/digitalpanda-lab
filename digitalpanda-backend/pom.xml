@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.digitalpanda</groupId>
+        <artifactId>digitalpanda-lab</artifactId>
+        <version>0.1.0</version>
+    </parent>
+
+    <artifactId>digitalpanda-backend</artifactId>
+    <packaging>pom</packaging>
+
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.version>3.5.1</maven.compiler.version>
+        <maven.exec.version>1.5.0</maven.exec.version>
+        <org.codehaus.mojo.version>1.2.1</org.codehaus.mojo.version>
+        <spring.boot.version>2.0.2.RELEASE</spring.boot.version>
+        <mockito.version>1.9.5</mockito.version>
+        <datastax.version>3.2.0</datastax.version>
+        <spring.data.cassandra.version>2.0.9.RELEASE</spring.data.cassandra.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jackson-2-version>2.9.4</jackson-2-version>
+        <org.cassandraunit.version>3.5.0.1</org.cassandraunit.version>
+    </properties>
+
+    <modules>
+        <module>digitalpanda-backend-api</module>
+        <module>digitalpanda-backend-application</module>
+    </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!--
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.1.2</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

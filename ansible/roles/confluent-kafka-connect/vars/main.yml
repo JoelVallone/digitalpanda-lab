@@ -1,0 +1,19 @@
+---
+docker_image: "confluentinc/cp-kafka-connect:{{confluent_platform_docker_version}}"
+
+# Docker pre-image variables
+docker_instance_name: "cp-kafka-connect-{{ node_id }}"
+host_base_folder: "/home/{{ cluster_config_user }}/cp-kafka-connect"
+host_data_folders:
+  jar_folder: "{{ host_base_folder }}/jars"
+  file_sink_folder: "{{ host_base_folder }}/file-sink"
+
+connect_jars_archive:
+  - url:  "http://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.37.tar.gz"
+    file_in_archive: "mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar"
+    file_in_host: "mysql-connector-java-5.1.37-bin.jar"
+    strip_component: 1
+  - url:  "https://github.com/lensesio/stream-reactor/releases/download/1.2.3/kafka-connect-cassandra-1.2.3-2.1.0-all.tar.gz"
+    file_in_archive: "kafka-connect-cassandra-1.2.3-2.1.0-all.jar"
+    file_in_host: "kafka-connect-cassandra-1.2.3-2.1.0-all.jar"
+    strip_component: 0

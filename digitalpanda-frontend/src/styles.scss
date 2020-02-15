@@ -1,0 +1,11 @@
+@import 'variables';
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+/* You can add global styles to this file, and also import other style files */
+
+.page-box {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+}

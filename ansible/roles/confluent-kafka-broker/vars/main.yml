@@ -1,0 +1,8 @@
+---
+docker_image: "confluentinc/cp-kafka:{{ confluent_platform_docker_version }}"
+
+# Docker pre-image variables
+docker_instance_name: "cp-kafka-broker-{{  node_id }}"
+host_base_folder: "/home/{{ cluster_config_user }}/cp-kafka-broker"
+host_data_folders:
+  data_folder: "{{ host_base_folder }}/data"

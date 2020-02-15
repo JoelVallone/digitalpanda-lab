@@ -1,0 +1,16 @@
+---
+- name: "Stop YARN node manager(s)"
+  become: yes
+  ignore_errors: yes
+  shell: docker exec hadoop-yarn-nodemanager-{{ node_id }} bash -l -c '{{hadoop.container.install_folder}}/sbin/yarn-daemon.sh stop nodemanager'
+  tags:
+    - shutdown
+
+- name: shutdown host
+  command: /sbin/shutdown -h now
+  become: yes
+  ignore_errors: yes
+  async: 2
+  poll: 0
+  tags:
+    - shutdown

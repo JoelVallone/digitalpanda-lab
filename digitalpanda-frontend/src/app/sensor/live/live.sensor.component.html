@@ -1,0 +1,21 @@
+<div class="page-box container-fluid">
+    <app-page-title title="Live monitoring">
+    </app-page-title>
+    <div class="row" style="margin-bottom: 15px;">
+        <div class="col-12 text-center">
+            <div style="max-width: 400px; margin: auto;">
+                <hr/>
+                <app-sensor-location-selector *ngIf="availableMeasureLocations.size !== 0" [possibleLocations]="availableMeasureLocations" (selectedLocations)="onLocationSelection($event)"></app-sensor-location-selector>
+                <hr/>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 30px;">
+        <div class="col-12 text-center">
+            <div style="max-width: 400px; margin: auto;" *ngFor="let measureKeysForLocation of measureKeysByLocation$ | async | keyvalue">
+                <app-location-values-latest *ngIf="selectedMeasureLocations.has(measureKeysForLocation.key)" [location]="measureKeysForLocation.key" [sensorKeys]="measureKeysForLocation.value">
+                </app-location-values-latest>
+            </div>
+        </div>
+    </div>
+</div>

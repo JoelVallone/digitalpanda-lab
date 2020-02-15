@@ -1,0 +1,45 @@
+---
+
+test_data:
+  data_folder: "{{cassandra.base_folder}}/test_data"
+  time_block_period_seconds: 524288
+  bucket: 0
+  measures:
+  - location: 'panda-home'
+    timestamp: 1545695999000
+    type: 'TEMPERATURE'
+    value: 20.0
+  - location: 'panda-home'
+    timestamp: 1545696000000
+    type: 'TEMPERATURE'
+    value: 21.0
+  - location: 'panda-home'
+    timestamp: 1545696000999
+    type: 'TEMPERATURE'
+    value: 20.0
+  - location: 'panda-home'
+    timestamp: 1545696002342
+    type: 'TEMPERATURE'
+    value: 21.0
+  - location: 'panda-home'
+    timestamp: 1545696003000
+    type: 'TEMPERATURE'
+    value: 21.0
+  - location: 'panda-home'
+    timestamp: 1545696004100
+    type: 'TEMPERATURE'
+    value: 20.0
+  - location: 'panda-home'
+    timestamp: 1545696600000
+    type: 'TEMPERATURE'
+    value: 24.0
+
+  - location: 'panda-outdoor'
+    timestamp: 1545695999000
+    type: 'TEMPERATURE'
+    value: 1.0
+
+  - location: 'panda-home'
+    timestamp: 1545695999000
+    type: 'HUMIDITY'
+    value: 49.0

@@ -1,0 +1,4 @@
+instance-name,docker-image,server-mode,binding-ip,binding-port,ssh-ip,ssh-port
+digitalpanda-dynDnsClient,dyndnsclient:latest,0,0,0,192.168.0.102,27002
+digitalpanda-backend-0,backend-java:latest,1,192.168.0.102,8080,192.168.0.102,27002
+digitalpanda-frontend-0,frontend-angular2:latest,1,192.168.0.102,8000,192.168.0.102,27002

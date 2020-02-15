@@ -1,0 +1,36 @@
+---
+- name: "Prepare environment for docker instance"
+  include_role:
+    name: docker-pre-image
+
+- name: "Pull image {{ docker_image }} and (re)start container with name 'cp-kafka-broker-*'"
+  become: yes
+  docker_container:
+    name: "{{ docker_instance_name }}"
+    hostname: "{{ docker_instance_name }}"
+    state: started
+    pull: true
+    restart: yes
+    image: "{{ docker_image }}"
+    volumes:
+      - "{{ host_data_folders.data_folder }}:/var/lib/kafka/data"
+    ports:
+      - "9092:9092"
+    network_mode: host
+    cpu_quota:  "200000"
+    cpu_period: "100000"
+    memory: "5G"
+    env:
+      KAFKA_LOG4J_LOGGERS: "kafka.controller=WARN,state.change.logger=WARN"
+      KAFKA_LOG4J_ROOT_LOGLEVEL: "WARN"
+      KAFKA_TOOLS_LOG4J_LOGLEVEL: "ERROR"
+      KAFKA_BROKER_ID: "1{{  node_id  }}"
+      KAFKA_HEAP_OPTS: "-Xmx3G -Xms3G"
+      KAFKA_ZOOKEEPER_CONNECT: "{{ groups['cp_zookeeper_nodes'] | join(':2181,')}}:2181"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://{{ inventory_hostname }}:9092"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "2"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+    restart_policy: always
+    tty: yes
+  when: not (absent_from_node | bool)

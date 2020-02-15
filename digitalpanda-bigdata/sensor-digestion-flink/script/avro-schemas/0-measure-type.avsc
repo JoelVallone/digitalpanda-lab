@@ -1,0 +1,10 @@
+{
+  "namespace": "org.digitalpanda.avro",
+  "type": "enum",
+  "name": "MeasureType",
+  "symbols": [
+    "TEMPERATURE",
+    "HUMIDITY",
+    "PRESSURE"
+  ]
+}

@@ -1,0 +1,9 @@
+---
+docker_image: "confluentinc/cp-zookeeper:{{ confluent_platform_docker_version }}"
+
+# Docker pre-image variables
+docker_instance_name: "cp-zookeeper-{{ node_id }}"
+host_base_folder: "/home/{{ cluster_config_user }}/cp-zookeeper"
+host_data_folders:
+  log_folder: "{{ host_base_folder }}/log"
+  data_folder: "{{ host_base_folder }}/data"

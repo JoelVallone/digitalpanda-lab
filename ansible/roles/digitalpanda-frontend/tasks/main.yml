@@ -1,0 +1,16 @@
+---
+- name: "Pull image 'digitalpanda-frontend' and (re)start container with name 'digitalpanda-frontend'"
+  become: yes
+  docker_container:
+    name: "digitalpanda-frontend"
+    state: started
+    pull: true
+    restart: yes
+    image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/digitalpanda-frontend:{{ digitalpanda_frontend_version }}"
+    ports:
+      - "8001:8000"
+    network_mode: bridge
+    networks:
+    - name: digitalpanda
+    restart_policy: always
+    tty: yes

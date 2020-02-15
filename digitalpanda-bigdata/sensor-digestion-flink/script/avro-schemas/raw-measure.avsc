@@ -1,0 +1,14 @@
+{
+   "namespace": "org.digitalpanda.avro",
+   "type": "record",
+   "name": "RawMeasure",
+   "fields": [
+      {"name": "location", "type": "string"},
+      { "name": "measureType", "type": "MeasureType"},
+      {"name": "timestamp", "type": {
+        "type" : "long",
+        "logicalType" : "timestamp-millis"
+      }},
+      {"name": "value", "type": "double"}
+   ]
+}

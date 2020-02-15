@@ -1,0 +1,75 @@
+---
+# This role sets up a user for the cluster configuration and sets up the ssh accesses
+-
+- name: "Update repositories cache and install base packages"
+  become: yes
+  apt:
+    name:
+     - docker.io=18.09.7-0ubuntu1~18.04.4
+     - python-dockerpty
+    update_cache: yes
+
+- name: "Unmask, enable & start docker service "
+  become: yes
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+    masked: no
+
+- name: "Create {{ cluster_config_user }} user"
+  become: yes
+  user:
+    name: "{{ cluster_config_user }}"
+    comment: "Cluster configuration account"
+    generate_ssh_key: yes
+  
+- name: "Enable pasword-less sudo for user {{ cluster_config_user }}"
+  become: yes
+  lineinfile:
+    dest=/etc/sudoers
+    line="{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL"
+
+- name: "Register ssh autorized_keys into {{ cluster_config_user }}"
+  become: yes
+  authorized_key:
+    user: "{{ cluster_config_user }}"
+    state: present
+    key: '{{ item }}'
+  with_lines: cat '{{ role_path }}/files/authorized_keys'
+
+- name: "Register ssh autorized_keys into {{ ansible_user }}"
+  become: yes
+  authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: '{{ item }}'
+  with_lines: cat '{{ role_path }}/files/authorized_keys'
+
+- name: "Copy static host name resolution file & define node FQDN"
+  become: yes
+  template:
+    src: ./templates/network/hosts
+    dest: /etc/hosts
+    owner: root
+    mode: "u=rw,g=r,o=r"
+
+
+- name: "Copy wired network ip configuration file"
+  become: yes
+  template:
+    src: ./templates/network/01-netcfg.yaml
+    dest: /etc/netplan/01-netcfg.yaml
+    owner: root
+    mode: "u=rw,g=r,o=r"
+  when: static_ip
+
+- name: "Apply wired network ip configuration"
+  become: yes
+  shell: netplan --debug apply
+
+- name: "copy custom Docker configuration"
+  become: yes
+  template:
+    src: templates/docker/daemon.json
+    dest: /etc/docker/daemon.json

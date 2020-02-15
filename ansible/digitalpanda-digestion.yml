@@ -1,0 +1,9 @@
+---
+- hosts:
+   - cluster_client_host
+  roles:
+    - digitalpanda-digestion
+
+
+
+

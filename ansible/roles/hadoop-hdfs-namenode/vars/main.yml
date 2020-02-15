@@ -1,0 +1,3 @@
+---
+hadoop_role: "hadoop-hdfs-namenode"
+docker_instance_name: "{{ hadoop_role }}"

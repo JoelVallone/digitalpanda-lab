@@ -1,0 +1,12 @@
+# Localhost
+127.0.0.1 localhost localhost.localdomain
+127.0.1.1 pi3-{{ node_id  }}.{{ cluster_domain }} pi3-{{ node_id  }}
+::1 localhost6 localhost6.localdomain
+ff02::1         ip6-allnodes
+ff02::2         ip6-allrouters
+
+# Cluster setup
+{{ int_ip_bridge }} {{ gateway_host }}.{{ gateway_domain }} {{ gateway_host }}
+{% for node_id in range(1, cluster_size + 1) %}
+192.168.1.10{{ node_id }} pi3-{{ node_id  }}.{{ cluster_domain }} pi3-{{ node_id  }}
+{% endfor %}

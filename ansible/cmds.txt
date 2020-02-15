@@ -1,0 +1,11 @@
+ansible-playbook digitalpanda-stack.yml -vv --inventory-file=digitalpanda-inventory-local --extra-vars "build_code=false clear_state=true inject_test_data=true" --tags "wip"
+ansible-playbook some-playbook.yml --inventory-file=cluster-inventory
+
+--syntax-check
+--ask-become-pass
+- meta: end_play
+
+Setup big data cluster network
+> ansible-playbook -vv -i cluster-inventory {cluster-bridge-node, cluster-worker-node-nuc-ubuntu}.yml -e ansible_user=jva -e ansible_password=$PWD --ask-become-pass
+pristine_instance boolean
+absent_from_node boolean

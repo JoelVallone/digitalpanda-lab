@@ -1,0 +1,49 @@
+version: "2"
+
+services:
+  frontend:
+    container_name: frontend
+    restart: always
+    build: ../images/frontend-angular
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_DEV=development
+    depends_on:
+      - backend
+    command: /opt/entrypoint.sh
+    networks:
+      - front-tier
+      - back-tier
+
+  backend:
+    container_name: backend
+    restart: always
+    build: ../images/backend-java
+    ports:
+      - "8080:8080"
+    command: /opt/entrypoint.sh
+    networks:
+      - back-tier
+
+  database:
+    container_name: cassandra-single-node
+    restart: always
+    environment:
+      CASSANDRA_AUTO_START: 'true'
+    build: ../images/cassandra
+    network_mode: host
+#    ports:
+#      - "7000:7000"
+#      - "7001:7001"
+#      - "7199:7199"
+#      - "9042:9042"
+#      - "9160:9160"
+#      - "9142:9142"
+    command: /opt/entrypoint.sh
+
+networks:
+  back-tier:
+    driver: bridge
+  front-tier:
+    driver: bridge

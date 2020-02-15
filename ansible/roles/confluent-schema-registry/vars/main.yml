@@ -1,0 +1,5 @@
+---
+docker_image: "confluentinc/cp-schema-registry:{{ confluent_platform_docker_version }}"
+
+# Docker pre-image variables
+docker_instance_name: "cp-schema-registry"

@@ -1,0 +1,21 @@
+version: "2"
+
+services:
+  dhcp-server:
+    container_name: dhcp-server
+    restart: always
+    build: ../images/dhcp-server
+    network_mode: "host"
+  dns-server:
+    container_name: dns-server
+    restart: always
+    build: ../images/dns-server
+    ports:
+      - "53:53"
+      - "53:53/udp"
+    depends_on:
+      - dhcp-server
+  dyndnsclient:
+   container_name: dyndnsclient
+   build: ../images/dyndnsclient
+   restart: always

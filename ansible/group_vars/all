@@ -1,0 +1,71 @@
+---
+cluster_config_user: panda-config
+ansible_user: "{{cluster_config_user}}"
+cluster_config_domain_name: lab.digitalpanda.org
+
+infrastructure_repo:
+  target_path: "/home/{{ansible_user}}/digitalpanda/digitalpanda-infrastructure"
+  clone_url: "https://github.com/JoelVallone/digitalpanda-infrastructure.git"
+
+backend_repo:
+  target_path: "/home/{{ansible_user}}/digitalpanda/digitalpanda-backend"
+  clone_url: "https://github.com/JoelVallone/digitalpanda-backend.git"
+
+frontend_repo:
+  target_path: "/home/{{ansible_user}}/digitalpanda/digitalpanda-frontend-"
+  clone_url: "https://github.com/JoelVallone/digitalpanda-frontend-.git"
+
+home_gateway: 192.168.0.1
+
+dns_server_ip : 192.168.1.1
+external_dns_server_ip : 8.8.8.8
+int_ip_bridge : 192.168.1.1
+cluster_master: fanless1
+cluster_domain : lab.digitalpanda.org
+cluster_size : 4
+nuc_cluster_size: 2
+
+gateway_domain: digitalpanda.org
+gateway_host: fanless1
+docker_registry : 
+  ip: 192.168.0.102
+  port: 5000
+  fqdn: "{{ gateway_host }}.{{ gateway_domain }}"
+docker_images : "{{ infrastructure_repo.target_path  }}/docker/images"
+
+build_code: false
+
+cassandra:
+    version: "3.11.3"
+    base_folder: "/home/{{cluster_config_user}}/cassandra"
+
+confluent_platform_docker_version: 5.3.1
+
+apache_hadoop:
+    version: "2.8.3"
+
+hadoop :
+  container:
+    base_folder: "/opt/hadoop"
+    install_folder: "/opt/hadoop/hadoop-{{ apache_hadoop.version }}"
+    exposed_folder:
+      base: "/opt/hadoop/ext"
+      config: "/opt/hadoop/ext/config"
+      log: "/opt/hadoop/ext/log"
+      data_master: "/opt/hadoop/ext/hdfs/master/data"
+      data_slave: "/opt/hadoop/ext/hdfs/slave/data"
+
+  hdfs:
+    namenode:
+      host_fqdn: "{{ groups['hadoop_master_node'][0] }}"
+
+  yarn:
+    ressourcemanager:
+      host_fqdn: "{{ groups['hadoop_master_node'][0] }}"
+    nodemanager:
+      memory_MB: 4096
+      vCPU: 4
+inject_test_data: false
+
+digitalpanda_backend_version: 1.0.0
+digitalpanda_frontend_version: 1.1.0
