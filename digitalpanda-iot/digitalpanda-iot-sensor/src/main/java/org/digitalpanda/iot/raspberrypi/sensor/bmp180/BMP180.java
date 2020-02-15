@@ -3,7 +3,7 @@ package org.digitalpanda.iot.raspberrypi.sensor.bmp180;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
-import org.digitalpanda.backend.data.SensorMeasureType;
+import org.digitalpanda.common.data.backend.SensorMeasureType;
 import org.digitalpanda.iot.raspberrypi.sensor.Sensor;
 import org.digitalpanda.iot.raspberrypi.sensor.SensorData;
 import org.digitalpanda.iot.raspberrypi.sensor.SensorModel;

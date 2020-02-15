@@ -1,7 +1,7 @@
 package org.digitalpanda.iot.raspberrypi;
 
 
-import org.digitalpanda.backend.data.SensorMeasures;
+import org.digitalpanda.common.data.backend.SensorMeasures;
 import org.digitalpanda.iot.raspberrypi.communication.MeasureTransmitter;
 import org.digitalpanda.iot.raspberrypi.communication.TransmitterFactory;
 import org.digitalpanda.iot.raspberrypi.sensor.Sensor;

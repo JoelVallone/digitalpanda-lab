@@ -2,7 +2,7 @@
 set -e
 
 SCRIPTS_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-JAR_OUTPUT_FOLDER="${SCRIPTS_FOLDER}/../../digitalpanda-infrastructure/docker/images/backend-java"
+JAR_OUTPUT_FOLDER="${SCRIPTS_FOLDER}/../../docker/images/backend-java"
 
 echo "=> Build backend"
 cd ${SCRIPTS_FOLDER}/../
@@ -10,7 +10,7 @@ mvn clean install
 
 echo "=> Copy backend binary to docker image external folder"
 rm -f "${JAR_OUTPUT_FOLDER}/"*backend*.jar
-cp "${SCRIPTS_FOLDER}/../digitalpanda-backend-application/target/"*backend*.jar "${JAR_OUTPUT_FOLDER}/"
+cp "${SCRIPTS_FOLDER}/../digitalpanda-backend/target/"*backend*.jar "${JAR_OUTPUT_FOLDER}/"
 
 echo "=>Build and push image to registry"
 VERSION="1.0.0"

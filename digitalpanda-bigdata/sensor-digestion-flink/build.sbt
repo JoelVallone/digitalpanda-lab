@@ -10,7 +10,7 @@ version := "0.1-SNAPSHOT"
 
 organization := "org.digitalpanda.wordcount"
 
-ThisBuild / scalaVersion := "2.11.12" //Use 2.11.0 (Java 8) to be compatible with Hadoop 2.8.3; 2.11.12 => (Java 11)
+ThisBuild / scalaVersion := "2.11.12" //Use 2.11.0 (Java 8) to be compatible with Hadoop 2.8.3; 2.11.12 => (Java 11), force java 11
 
 val flinkVersion = "1.9.1"
 val avroVersion = "1.9.1"
@@ -33,7 +33,7 @@ val flinkDependencies = Seq(
   "org.apache.avro" % "avro" % avroVersion,
   "org.apache.beam" % "beam-sdks-java-core" % beamVersion,
 
-  "org.digitalpanda" % "backend.api" % digitalpandaBackendApiVersion
+  "org.digitalpanda" % "digitalpanda-common" % digitalpandaBackendApiVersion
 )
 
 lazy val root = (project in file(".")).

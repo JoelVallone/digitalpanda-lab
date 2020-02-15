@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{ZoneId, ZonedDateTime}
 
 import org.digitalpanda.avro.{Measure, MeasureType}
-import org.digitalpanda.backend.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
+import org.digitalpanda.common.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
 
 object TestHelper {
 

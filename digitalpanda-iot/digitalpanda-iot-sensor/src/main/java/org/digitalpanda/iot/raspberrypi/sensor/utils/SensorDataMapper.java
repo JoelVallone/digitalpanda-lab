@@ -1,9 +1,9 @@
 package org.digitalpanda.iot.raspberrypi.sensor.utils;
 
-import org.digitalpanda.backend.data.SensorMeasure;
-import org.digitalpanda.backend.data.SensorMeasureType;
-import org.digitalpanda.backend.data.SensorMeasureMetaData;
-import org.digitalpanda.backend.data.SensorMeasures;
+import org.digitalpanda.common.data.backend.SensorMeasure;
+import org.digitalpanda.common.data.backend.SensorMeasureMetaData;
+import org.digitalpanda.common.data.backend.SensorMeasureType;
+import org.digitalpanda.common.data.backend.SensorMeasures;
 import org.digitalpanda.iot.raspberrypi.sensor.SensorData;
 
 import java.util.ArrayList;

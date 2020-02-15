@@ -27,7 +27,7 @@
     <dependencies>
         <dependency>
             <groupId>org.digitalpanda</groupId>
-            <artifactId>backend.api</artifactId>
+            <artifactId>digitalpanda-common</artifactId>
             <version>0.1.0</version>
         </dependency>
         <dependency>

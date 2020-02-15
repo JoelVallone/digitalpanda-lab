@@ -5,14 +5,14 @@ import com.datastax.driver.core.Cluster
 import com.datastax.spark.connector.cql.CassandraConnector
 import com.datastax.spark.connector.embedded.{EmbeddedCassandra, SparkTemplate, YamlTransformations}
 import org.apache.spark.sql.SparkSession
-import org.digitalpanda.backend.data.SensorMeasureType
 import org.scalatest.{BeforeAndAfterAll, FunSuite}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.digitalpanda.backend.data.SensorMeasureType._
-import org.digitalpanda.backend.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
-import org.digitalpanda.backend.data.history.HistoricalDataStorageSizing._
+import org.digitalpanda.common.data.backend.SensorMeasureType._
+import org.digitalpanda.common.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
+import org.digitalpanda.common.data.history.HistoricalDataStorageSizing._
 import org.digitalpanda.bigdata.sensor.SensorDigestion.parseDate
+import org.digitalpanda.common.data.backend.SensorMeasureType
 
 import scala.io.Source
 

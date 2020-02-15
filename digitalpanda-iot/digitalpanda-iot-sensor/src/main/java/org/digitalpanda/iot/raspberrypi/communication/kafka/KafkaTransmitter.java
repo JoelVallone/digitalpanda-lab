@@ -4,8 +4,8 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.digitalpanda.avro.MeasureType;
 import org.digitalpanda.avro.RawMeasure;
-import org.digitalpanda.backend.data.SensorMeasureMetaData;
-import org.digitalpanda.backend.data.SensorMeasures;
+import org.digitalpanda.common.data.backend.SensorMeasureMetaData;
+import org.digitalpanda.common.data.backend.SensorMeasures;
 import org.digitalpanda.iot.raspberrypi.communication.MeasureTransmitter;
 
 import java.time.Instant;

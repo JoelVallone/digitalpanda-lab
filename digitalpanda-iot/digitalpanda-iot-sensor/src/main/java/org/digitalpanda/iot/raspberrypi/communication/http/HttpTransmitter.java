@@ -2,7 +2,7 @@ package org.digitalpanda.iot.raspberrypi.communication.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.digitalpanda.backend.data.SensorMeasures;
+import org.digitalpanda.common.data.backend.SensorMeasures;
 import org.digitalpanda.iot.raspberrypi.communication.MeasureTransmitter;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;

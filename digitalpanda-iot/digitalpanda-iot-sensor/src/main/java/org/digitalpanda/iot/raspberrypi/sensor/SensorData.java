@@ -1,7 +1,7 @@
 package org.digitalpanda.iot.raspberrypi.sensor;
 
-import org.digitalpanda.backend.data.SensorMeasure;
-import org.digitalpanda.backend.data.SensorMeasureType;
+import org.digitalpanda.common.data.backend.SensorMeasure;
+import org.digitalpanda.common.data.backend.SensorMeasureType;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

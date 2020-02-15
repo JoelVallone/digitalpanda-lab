@@ -8,7 +8,7 @@ import org.apache.flink.streaming.util.FiniteTestSource
 import org.apache.flink.test.util.MiniClusterWithClientResource
 import org.digitalpanda.avro.MeasureType.{PRESSURE, TEMPERATURE}
 import org.digitalpanda.avro.{Measure, RawMeasure}
-import org.digitalpanda.backend.data.history.HistoricalDataStorageSizing
+import org.digitalpanda.common.data.history.HistoricalDataStorageSizing
 import org.digitalpanda.flink.test.TestHelper.measure
 import org.scalatest.BeforeAndAfter
 import org.scalatest.flatspec.AnyFlatSpec

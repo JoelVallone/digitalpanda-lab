@@ -5,11 +5,11 @@ import com.datastax.spark.connector.rdd.ReadConf
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
 import org.apache.spark.sql.types.DataTypes
-import org.digitalpanda.backend.data.SensorMeasureType
-import org.digitalpanda.backend.data.SensorMeasureType.TEMPERATURE
-import org.digitalpanda.backend.data.history.{AggregateType, HistoricalDataStorageHelper, HistoricalDataStorageSizing}
-import org.digitalpanda.backend.data.history.HistoricalDataStorageHelper.{cqlTableOf, getHistoricalMeasureBlockId}
-import org.digitalpanda.backend.data.history.HistoricalDataStorageSizing.SECOND_PRECISION_RAW
+import org.digitalpanda.common.data.backend.SensorMeasureType
+import org.digitalpanda.common.data.backend.SensorMeasureType.TEMPERATURE
+import org.digitalpanda.common.data.history.{AggregateType, HistoricalDataStorageHelper, HistoricalDataStorageSizing}
+import org.digitalpanda.common.data.history.HistoricalDataStorageHelper.{cqlTableOf, getHistoricalMeasureBlockId}
+import org.digitalpanda.common.data.history.HistoricalDataStorageSizing.SECOND_PRECISION_RAW
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 

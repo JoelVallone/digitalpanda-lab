@@ -1,6 +1,6 @@
 package org.digitalpanda.iot.raspberrypi.communication;
 
-import org.digitalpanda.backend.data.SensorMeasures;
+import org.digitalpanda.common.data.backend.SensorMeasures;
 
 import java.util.List;
 

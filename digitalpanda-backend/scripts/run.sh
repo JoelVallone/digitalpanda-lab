@@ -11,5 +11,5 @@ if [ $# -gt 0 ] && [ $1 = "-c" ]; then
     sleep 20
 fi
 
-java -jar "${SCRIPT_FOLDER}/../digitalpanda-backend-application/target/"*backend*.jar &> ${SCRIPT_FOLDER}/../backend.log &
+java -jar "${SCRIPT_FOLDER}/../digitalpanda-backend/target/"*backend*.jar &> ${SCRIPT_FOLDER}/../backend.log &
 echo "Started backend with PID=$! logs available at: ${SCRIPT_FOLDER}/../backend.log"

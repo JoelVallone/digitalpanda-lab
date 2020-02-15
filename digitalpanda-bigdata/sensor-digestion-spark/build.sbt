@@ -21,7 +21,7 @@ libraryDependencies ++= Seq(
 
   // Java
   //"com.datastax.cassandra" % "cassandra-driver-mapping" % cassandraClientVersion, <= Do not use as it causes class clash
-  "org.digitalpanda" % "backend.api" % "0.1.0"
+  "org.digitalpanda" % "digitalpanda-common" % "0.1.0"
 )
 /* TODO: Resolve dependency version issue with tests
 

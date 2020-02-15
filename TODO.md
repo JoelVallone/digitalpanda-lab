@@ -1,6 +1,10 @@
 
 # New
 
+- define common package for all digitalpanda project (manage exchange objects & shared logic : backend, avro, etc..)
+    - fix mvn clean test in digitalpanda-backend
+    - update digitalpanda-common dependencies in sensor-digestion-* projects
+    
 - rewrite pi iot client to write raw measure to kafka topic
     - define common package for all digitalpanda project (manage exchange objects & shared logic : backend, avro, etc..)
     - test
