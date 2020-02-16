@@ -6,8 +6,8 @@ import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.streaming.util.FiniteTestSource
 import org.apache.flink.test.util.MiniClusterWithClientResource
-import org.digitalpanda.avro.MeasureType.{PRESSURE, TEMPERATURE}
-import org.digitalpanda.avro.{Measure, RawMeasure}
+import org.digitalpanda.common.data.avro.{Measure, RawMeasure}
+import org.digitalpanda.common.data.avro.MeasureType._
 import org.digitalpanda.common.data.history.HistoricalDataStorageSizing
 import org.digitalpanda.flink.test.TestHelper.measure
 import org.scalatest.BeforeAndAfter

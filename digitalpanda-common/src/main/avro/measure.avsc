@@ -1,11 +1,23 @@
 {
-   "namespace": "org.digitalpanda.avro",
+   "namespace": "org.digitalpanda.common.data.avro",
    "type": "record",
    "name": "Measure",
    "fields": [
       {"name": "location", "type": "string"},
       {"name": "timeBlockId", "type": "long"},
-      {"name": "measureType","type": "MeasureType"},
+      {
+         "name": "measureType",
+         "type": {
+            "namespace": "org.digitalpanda.common.data.avro",
+            "type": "enum",
+            "name": "MeasureType",
+            "symbols": [
+               "TEMPERATURE",
+               "HUMIDITY",
+               "PRESSURE"
+            ]
+         }
+      },
       {"name": "bucket", "type": ["int", "null"], "default": 0 },
       {"name": "timestamp", "type": {
         "type" : "long",

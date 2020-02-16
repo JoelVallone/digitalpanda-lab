@@ -1,4 +1,4 @@
-package org.digitalpanda.avro.util
+package org.digitalpanda.flink.common
 
 import java.io.{ByteArrayOutputStream, IOException}
 

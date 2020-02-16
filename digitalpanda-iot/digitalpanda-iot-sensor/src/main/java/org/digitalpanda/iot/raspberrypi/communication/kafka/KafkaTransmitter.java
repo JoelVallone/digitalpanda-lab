@@ -2,8 +2,8 @@ package org.digitalpanda.iot.raspberrypi.communication.kafka;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.digitalpanda.avro.MeasureType;
-import org.digitalpanda.avro.RawMeasure;
+import org.digitalpanda.common.data.avro.MeasureType;
+import org.digitalpanda.common.data.avro.RawMeasure;
 import org.digitalpanda.common.data.backend.SensorMeasureMetaData;
 import org.digitalpanda.common.data.backend.SensorMeasures;
 import org.digitalpanda.iot.raspberrypi.communication.MeasureTransmitter;

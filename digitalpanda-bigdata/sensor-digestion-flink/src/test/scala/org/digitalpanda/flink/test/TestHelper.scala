@@ -3,7 +3,7 @@ package org.digitalpanda.flink.test
 import java.time.format.DateTimeFormatter
 import java.time.{ZoneId, ZonedDateTime}
 
-import org.digitalpanda.avro.{Measure, MeasureType}
+import org.digitalpanda.common.data.avro.{Measure, MeasureType}
 import org.digitalpanda.common.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
 
 object TestHelper {

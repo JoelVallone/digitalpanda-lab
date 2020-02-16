@@ -3,17 +3,19 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package org.digitalpanda.avro;
+package org.digitalpanda.common.data.avro;
 
-import org.apache.avro.message.BinaryMessageDecoder;
-import org.apache.avro.message.BinaryMessageEncoder;
-import org.apache.avro.message.SchemaStore;
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
+import org.apache.avro.message.BinaryMessageEncoder;
+import org.apache.avro.message.BinaryMessageDecoder;
+import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
 public class RawMeasure extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -2324796453417734277L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RawMeasure\",\"namespace\":\"org.digitalpanda.avro\",\"fields\":[{\"name\":\"location\",\"type\":\"string\"},{\"name\":\"measureType\",\"type\":{\"type\":\"enum\",\"name\":\"MeasureType\",\"symbols\":[\"TEMPERATURE\",\"HUMIDITY\",\"PRESSURE\"]}},{\"name\":\"timestamp\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"value\",\"type\":\"double\"}]}");
+  private static final long serialVersionUID = 1415622567780303147L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"RawMeasure\",\"namespace\":\"org.digitalpanda.common.data.avro\",\"fields\":[{\"name\":\"location\",\"type\":\"string\"},{\"name\":\"measureType\",\"type\":{\"type\":\"enum\",\"name\":\"MeasureType\",\"symbols\":[\"TEMPERATURE\",\"HUMIDITY\",\"PRESSURE\"]}},{\"name\":\"timestamp\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"value\",\"type\":\"double\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -72,10 +74,10 @@ static {
     return DECODER.decode(b);
   }
 
-   private CharSequence location;
-   private org.digitalpanda.avro.MeasureType measureType;
-   private java.time.Instant timestamp;
-   private double value;
+  @Deprecated public java.lang.CharSequence location;
+  @Deprecated public org.digitalpanda.common.data.avro.MeasureType measureType;
+  @Deprecated public java.time.Instant timestamp;
+  @Deprecated public double value;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -91,7 +93,7 @@ static {
    * @param timestamp The new value for timestamp
    * @param value The new value for value
    */
-  public RawMeasure(CharSequence location, org.digitalpanda.avro.MeasureType measureType, java.time.Instant timestamp, Double value) {
+  public RawMeasure(java.lang.CharSequence location, org.digitalpanda.common.data.avro.MeasureType measureType, java.time.Instant timestamp, java.lang.Double value) {
     this.location = location;
     this.measureType = measureType;
     this.timestamp = timestamp.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
@@ -101,7 +103,7 @@ static {
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
-  public Object get(int field$) {
+  public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return location;
     case 1: return measureType;
@@ -127,12 +129,12 @@ static {
 
   // Used by DatumReader.  Applications should not call.
   @SuppressWarnings(value="unchecked")
-  public void put(int field$, Object value$) {
+  public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-    case 0: location = (CharSequence)value$; break;
-    case 1: measureType = (org.digitalpanda.avro.MeasureType)value$; break;
+    case 0: location = (java.lang.CharSequence)value$; break;
+    case 1: measureType = (org.digitalpanda.common.data.avro.MeasureType)value$; break;
     case 2: timestamp = (java.time.Instant)value$; break;
-    case 3: value = (Double)value$; break;
+    case 3: value = (java.lang.Double)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -141,7 +143,7 @@ static {
    * Gets the value of the 'location' field.
    * @return The value of the 'location' field.
    */
-  public CharSequence getLocation() {
+  public java.lang.CharSequence getLocation() {
     return location;
   }
 
@@ -150,7 +152,7 @@ static {
    * Sets the value of the 'location' field.
    * @param value the value to set.
    */
-  public void setLocation(CharSequence value) {
+  public void setLocation(java.lang.CharSequence value) {
     this.location = value;
   }
 
@@ -158,7 +160,7 @@ static {
    * Gets the value of the 'measureType' field.
    * @return The value of the 'measureType' field.
    */
-  public org.digitalpanda.avro.MeasureType getMeasureType() {
+  public org.digitalpanda.common.data.avro.MeasureType getMeasureType() {
     return measureType;
   }
 
@@ -167,7 +169,7 @@ static {
    * Sets the value of the 'measureType' field.
    * @param value the value to set.
    */
-  public void setMeasureType(org.digitalpanda.avro.MeasureType value) {
+  public void setMeasureType(org.digitalpanda.common.data.avro.MeasureType value) {
     this.measureType = value;
   }
 
@@ -209,8 +211,8 @@ static {
    * Creates a new RawMeasure RecordBuilder.
    * @return A new RawMeasure RecordBuilder
    */
-  public static org.digitalpanda.avro.RawMeasure.Builder newBuilder() {
-    return new org.digitalpanda.avro.RawMeasure.Builder();
+  public static org.digitalpanda.common.data.avro.RawMeasure.Builder newBuilder() {
+    return new org.digitalpanda.common.data.avro.RawMeasure.Builder();
   }
 
   /**
@@ -218,11 +220,11 @@ static {
    * @param other The existing builder to copy.
    * @return A new RawMeasure RecordBuilder
    */
-  public static org.digitalpanda.avro.RawMeasure.Builder newBuilder(org.digitalpanda.avro.RawMeasure.Builder other) {
+  public static org.digitalpanda.common.data.avro.RawMeasure.Builder newBuilder(org.digitalpanda.common.data.avro.RawMeasure.Builder other) {
     if (other == null) {
-      return new org.digitalpanda.avro.RawMeasure.Builder();
+      return new org.digitalpanda.common.data.avro.RawMeasure.Builder();
     } else {
-      return new org.digitalpanda.avro.RawMeasure.Builder(other);
+      return new org.digitalpanda.common.data.avro.RawMeasure.Builder(other);
     }
   }
 
@@ -231,22 +233,23 @@ static {
    * @param other The existing instance to copy.
    * @return A new RawMeasure RecordBuilder
    */
-  public static org.digitalpanda.avro.RawMeasure.Builder newBuilder(org.digitalpanda.avro.RawMeasure other) {
+  public static org.digitalpanda.common.data.avro.RawMeasure.Builder newBuilder(org.digitalpanda.common.data.avro.RawMeasure other) {
     if (other == null) {
-      return new org.digitalpanda.avro.RawMeasure.Builder();
+      return new org.digitalpanda.common.data.avro.RawMeasure.Builder();
     } else {
-      return new org.digitalpanda.avro.RawMeasure.Builder(other);
+      return new org.digitalpanda.common.data.avro.RawMeasure.Builder(other);
     }
   }
 
   /**
    * RecordBuilder for RawMeasure instances.
    */
+  @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<RawMeasure>
     implements org.apache.avro.data.RecordBuilder<RawMeasure> {
 
-    private CharSequence location;
-    private org.digitalpanda.avro.MeasureType measureType;
+    private java.lang.CharSequence location;
+    private org.digitalpanda.common.data.avro.MeasureType measureType;
     private java.time.Instant timestamp;
     private double value;
 
@@ -259,7 +262,7 @@ static {
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(org.digitalpanda.avro.RawMeasure.Builder other) {
+    private Builder(org.digitalpanda.common.data.avro.RawMeasure.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.location)) {
         this.location = data().deepCopy(fields()[0].schema(), other.location);
@@ -283,7 +286,7 @@ static {
      * Creates a Builder by copying an existing RawMeasure instance
      * @param other The existing instance to copy.
      */
-    private Builder(org.digitalpanda.avro.RawMeasure other) {
+    private Builder(org.digitalpanda.common.data.avro.RawMeasure other) {
       super(SCHEMA$);
       if (isValidValue(fields()[0], other.location)) {
         this.location = data().deepCopy(fields()[0].schema(), other.location);
@@ -307,7 +310,7 @@ static {
       * Gets the value of the 'location' field.
       * @return The value.
       */
-    public CharSequence getLocation() {
+    public java.lang.CharSequence getLocation() {
       return location;
     }
 
@@ -317,7 +320,7 @@ static {
       * @param value The value of 'location'.
       * @return This builder.
       */
-    public org.digitalpanda.avro.RawMeasure.Builder setLocation(CharSequence value) {
+    public org.digitalpanda.common.data.avro.RawMeasure.Builder setLocation(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.location = value;
       fieldSetFlags()[0] = true;
@@ -337,7 +340,7 @@ static {
       * Clears the value of the 'location' field.
       * @return This builder.
       */
-    public org.digitalpanda.avro.RawMeasure.Builder clearLocation() {
+    public org.digitalpanda.common.data.avro.RawMeasure.Builder clearLocation() {
       location = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -347,7 +350,7 @@ static {
       * Gets the value of the 'measureType' field.
       * @return The value.
       */
-    public org.digitalpanda.avro.MeasureType getMeasureType() {
+    public org.digitalpanda.common.data.avro.MeasureType getMeasureType() {
       return measureType;
     }
 
@@ -357,7 +360,7 @@ static {
       * @param value The value of 'measureType'.
       * @return This builder.
       */
-    public org.digitalpanda.avro.RawMeasure.Builder setMeasureType(org.digitalpanda.avro.MeasureType value) {
+    public org.digitalpanda.common.data.avro.RawMeasure.Builder setMeasureType(org.digitalpanda.common.data.avro.MeasureType value) {
       validate(fields()[1], value);
       this.measureType = value;
       fieldSetFlags()[1] = true;
@@ -377,7 +380,7 @@ static {
       * Clears the value of the 'measureType' field.
       * @return This builder.
       */
-    public org.digitalpanda.avro.RawMeasure.Builder clearMeasureType() {
+    public org.digitalpanda.common.data.avro.RawMeasure.Builder clearMeasureType() {
       measureType = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -397,7 +400,7 @@ static {
       * @param value The value of 'timestamp'.
       * @return This builder.
       */
-    public org.digitalpanda.avro.RawMeasure.Builder setTimestamp(java.time.Instant value) {
+    public org.digitalpanda.common.data.avro.RawMeasure.Builder setTimestamp(java.time.Instant value) {
       validate(fields()[2], value);
       this.timestamp = value.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
       fieldSetFlags()[2] = true;
@@ -417,7 +420,7 @@ static {
       * Clears the value of the 'timestamp' field.
       * @return This builder.
       */
-    public org.digitalpanda.avro.RawMeasure.Builder clearTimestamp() {
+    public org.digitalpanda.common.data.avro.RawMeasure.Builder clearTimestamp() {
       fieldSetFlags()[2] = false;
       return this;
     }
@@ -436,7 +439,7 @@ static {
       * @param value The value of 'value'.
       * @return This builder.
       */
-    public org.digitalpanda.avro.RawMeasure.Builder setValue(double value) {
+    public org.digitalpanda.common.data.avro.RawMeasure.Builder setValue(double value) {
       validate(fields()[3], value);
       this.value = value;
       fieldSetFlags()[3] = true;
@@ -456,7 +459,7 @@ static {
       * Clears the value of the 'value' field.
       * @return This builder.
       */
-    public org.digitalpanda.avro.RawMeasure.Builder clearValue() {
+    public org.digitalpanda.common.data.avro.RawMeasure.Builder clearValue() {
       fieldSetFlags()[3] = false;
       return this;
     }
@@ -466,14 +469,14 @@ static {
     public RawMeasure build() {
       try {
         RawMeasure record = new RawMeasure();
-        record.location = fieldSetFlags()[0] ? this.location : (CharSequence) defaultValue(fields()[0]);
-        record.measureType = fieldSetFlags()[1] ? this.measureType : (org.digitalpanda.avro.MeasureType) defaultValue(fields()[1]);
+        record.location = fieldSetFlags()[0] ? this.location : (java.lang.CharSequence) defaultValue(fields()[0]);
+        record.measureType = fieldSetFlags()[1] ? this.measureType : (org.digitalpanda.common.data.avro.MeasureType) defaultValue(fields()[1]);
         record.timestamp = fieldSetFlags()[2] ? this.timestamp : (java.time.Instant) defaultValue(fields()[2]);
-        record.value = fieldSetFlags()[3] ? this.value : (Double) defaultValue(fields()[3]);
+        record.value = fieldSetFlags()[3] ? this.value : (java.lang.Double) defaultValue(fields()[3]);
         return record;
       } catch (org.apache.avro.AvroMissingFieldException e) {
         throw e;
-      } catch (Exception e) {
+      } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
     }

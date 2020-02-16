@@ -12,6 +12,7 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <org.apache.avro.version>1.9.2</org.apache.avro.version>
     </properties>
 
     <modules>
@@ -19,36 +20,4 @@
         <module>digitalpanda-iot</module>
         <module>digitalpanda-common</module>
     </modules>
-
-    <!--
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven.compiler.version}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>2.1.2</version>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>jar-no-fork</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-    </build>
-    -->
 </project>

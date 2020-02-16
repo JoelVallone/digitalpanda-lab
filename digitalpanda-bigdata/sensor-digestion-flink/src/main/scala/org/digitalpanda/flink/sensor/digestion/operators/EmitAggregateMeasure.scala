@@ -6,7 +6,7 @@ import org.apache.flink.api.java.tuple.Tuple
 import org.apache.flink.streaming.api.scala.function.ProcessWindowFunction
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow
 import org.apache.flink.util.Collector
-import org.digitalpanda.avro.Measure
+import org.digitalpanda.common.data.avro.Measure
 import org.digitalpanda.common.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
 case class EmitAggregateMeasure() extends ProcessWindowFunction[Double, (String, Measure), Tuple, TimeWindow] {
 

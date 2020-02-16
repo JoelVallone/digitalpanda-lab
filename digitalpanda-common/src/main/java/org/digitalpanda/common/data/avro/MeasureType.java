@@ -3,11 +3,11 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package org.digitalpanda.avro;
+package org.digitalpanda.common.data.avro;
 @org.apache.avro.specific.AvroGenerated
 public enum MeasureType implements org.apache.avro.generic.GenericEnumSymbol<MeasureType> {
   TEMPERATURE, HUMIDITY, PRESSURE  ;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"MeasureType\",\"namespace\":\"org.digitalpanda.avro\",\"symbols\":[\"TEMPERATURE\",\"HUMIDITY\",\"PRESSURE\"]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"MeasureType\",\"namespace\":\"org.digitalpanda.common.data.avro\",\"symbols\":[\"TEMPERATURE\",\"HUMIDITY\",\"PRESSURE\"]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
 }

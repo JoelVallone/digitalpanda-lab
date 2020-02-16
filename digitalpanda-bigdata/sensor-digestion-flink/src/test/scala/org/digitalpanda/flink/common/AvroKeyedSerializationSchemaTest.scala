@@ -1,8 +1,8 @@
-package org.digitalpanda.avro.util
+package org.digitalpanda.flink.common
 
 import org.apache.flink.formats.avro.AvroDeserializationSchema
-import org.digitalpanda.avro.Measure
-import org.digitalpanda.avro.MeasureType.TEMPERATURE
+import org.digitalpanda.common.data.avro.Measure
+import org.digitalpanda.common.data.avro.MeasureType.TEMPERATURE
 import org.digitalpanda.common.data.history.HistoricalDataStorageSizing
 import org.digitalpanda.flink.test.TestHelper.measure
 import org.scalatest.flatspec.AnyFlatSpec

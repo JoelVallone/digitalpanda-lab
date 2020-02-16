@@ -9,10 +9,9 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer, FlinkKafkaProducer}
-import org.digitalpanda.avro.util.AvroKeyedSerializationSchema
-import org.digitalpanda.avro.{Measure, RawMeasure}
+import org.digitalpanda.common.data.avro.{Measure, RawMeasure}
 import org.digitalpanda.common.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
-import org.digitalpanda.flink.common.JobConf
+import org.digitalpanda.flink.common.{AvroKeyedSerializationSchema, JobConf}
 import org.digitalpanda.flink.sensor.digestion.operators.{AverageAggregate, EmitAggregateMeasure, MeasureTimestampExtractor}
 import org.slf4j.{Logger, LoggerFactory}
 
