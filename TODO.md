@@ -10,9 +10,8 @@
     - test cassandra sink from avro topic
 
 ## sensor-digestion-flink
- - fix scala & java versions according to flink (1.11 ?) & hadoop platform needs
  - setup jar submit mechanism:
-    - create hadoop-flink-client docker image
+    - create "panda-toolbox" hadoop-flink-client docker image
         - add latest digestion jar into docker image and publish to registry
     - submit job from latest docker image !
  - optional: find or implement ConfluentRegistryAvroSerializationSchema

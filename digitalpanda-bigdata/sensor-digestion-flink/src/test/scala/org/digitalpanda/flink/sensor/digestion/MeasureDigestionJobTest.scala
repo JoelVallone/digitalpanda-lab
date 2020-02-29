@@ -37,7 +37,8 @@ class MeasureDigestionJobTest extends AnyFlatSpec with Matchers with BeforeAndAf
 
     "rawMetricPreProcessor sub-topology" should "map to cassandra-sinkable Measure" in {
         // Given
-        val env = StreamExecutionEnvironment.getExecutionEnvironment.enableCheckpointing
+        val env = StreamExecutionEnvironment.getExecutionEnvironment
+        env.enableCheckpointing(100L)
         env.setParallelism(2)
 
         val expectedSeq = Seq(
@@ -73,7 +74,8 @@ class MeasureDigestionJobTest extends AnyFlatSpec with Matchers with BeforeAndAf
 
     "windowAverage sub-topology" should "compute 60 seconds averages by <Location, MeasureType>" in {
         // Given
-        val env = StreamExecutionEnvironment.getExecutionEnvironment.enableCheckpointing
+        val env = StreamExecutionEnvironment.getExecutionEnvironment
+        env.enableCheckpointing(100L)
         env.setParallelism(2)
 
         val rawMeasures = Seq(
@@ -108,6 +110,14 @@ class MeasureDigestionJobTest extends AnyFlatSpec with Matchers with BeforeAndAf
           ("server-room-PRESSURE",    measureMin("server-room",  PRESSURE,   "2019-06-30T22:10:30Z",789.0)),
           ("server-room-TEMPERATURE", measureMin("server-room",  TEMPERATURE,"2019-06-30T22:12:30Z",42.0))
         )
+
+      /*
+      Set(null,
+        (server-room-TEMPERATURE,{"location": "server-room", "timeBlockId": 49, "measureType": "TEMPERATURE", "bucket": 0, "timestamp": 2019-06-30T22:12:30Z, "value": 42.0}),
+        (server-room-TEMPERATURE,{"location": "server-room", "timeBlockId": 49, "measureType": "TEMPERATURE", "bucket": 0, "timestamp": 2019-06-30T22:09:30Z, "value": 26.0}),
+        (server-room-PRESSURE,{"location": "server-room", "timeBlockId": 49, "measureType": "PRESSURE", "bucket": 0, "timestamp": 2019-06-30T22:10:30Z, "value": 789.0}),
+        (server-room-TEMPERATURE,{"location": "server-room", "timeBlockId": 49, "measureType": "TEMPERATURE", "bucket": 0, "timestamp": 2019-06-30T22:10:30Z, "value": 32.625}))
+*/
     }
 }
 
