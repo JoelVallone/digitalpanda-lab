@@ -3,17 +3,9 @@ cluster_config_user: panda-config
 ansible_user: "{{cluster_config_user}}"
 cluster_config_domain_name: lab.digitalpanda.org
 
-infrastructure_repo:
-  target_path: "/home/{{ansible_user}}/digitalpanda/digitalpanda-infrastructure"
-  clone_url: "https://github.com/JoelVallone/digitalpanda-infrastructure.git"
-
-backend_repo:
-  target_path: "/home/{{ansible_user}}/digitalpanda/digitalpanda-backend"
-  clone_url: "https://github.com/JoelVallone/digitalpanda-backend.git"
-
-frontend_repo:
-  target_path: "/home/{{ansible_user}}/digitalpanda/digitalpanda-frontend-"
-  clone_url: "https://github.com/JoelVallone/digitalpanda-frontend-.git"
+lab_repo:
+  target_path: "/home/{{ansible_user}}/digitalpanda/digitalpanda-lab"
+  clone_url: "https://github.com/JoelVallone/digitalpanda-lab.git"
 
 home_gateway: 192.168.0.1
 
@@ -31,7 +23,7 @@ docker_registry :
   ip: 192.168.0.102
   port: 5000
   fqdn: "{{ gateway_host }}.{{ gateway_domain }}"
-docker_images : "{{ infrastructure_repo.target_path  }}/docker/images"
+docker_images : "{{ lab_repo.target_path  }}/docker/images"
 
 build_code: false
 
@@ -41,13 +33,37 @@ cassandra:
 
 confluent_platform_docker_version: 5.3.1
 
-apache_hadoop:
-    version: "2.8.3"
+toolbox:
+    docker_tag: "0.0.1"
 
-hadoop :
+    host:
+        folders:
+            base: "/home/{{ cluster_config_user }}/panda-toolbox"
+            config: "/home/{{ cluster_config_user }}/panda-toolbox/config"
+            state: "/home/{{ cluster_config_user }}/panda-toolbox/state"
+
+    container:
+        base_folder: "/opt/panda-toolbox
+        exposed_folder:
+            base: "/opt/panda-toolbox/ext"
+            config: "/opt/panda-toolbox/ext/config"
+            state: "/opt/panda-toolbox/ext/state"
+
+flink:
+    version: "1.9.1"
+    job_manager:
+        memory: 2048m
+    task_manager:
+        node_count: 2
+        slots: 3        # num cores per node
+        memory: 3072m   # memory per node
+
+hadoop:
+  version: "2.8.3"
+
   container:
     base_folder: "/opt/hadoop"
-    install_folder: "/opt/hadoop/hadoop-{{ apache_hadoop.version }}"
+    install_folder: "/opt/hadoop/hadoop-2.8.3"
     exposed_folder:
       base: "/opt/hadoop/ext"
       config: "/opt/hadoop/ext/config"
@@ -65,6 +81,7 @@ hadoop :
     nodemanager:
       memory_MB: 4096
       vCPU: 4
+
 inject_test_data: false
 
 digitalpanda_backend_version: 1.0.0

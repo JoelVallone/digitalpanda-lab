@@ -1,18 +1,21 @@
 ---
+############################################
+######### Kafka topics & schemas ###########
 
 - name: "Create Kafka topics"
-  include: kafka_manage.yml
+  include: toolbox_exec.yml
   vars:
-    command_args: >-
+    bash_one_liner: >-
       kafka-topics
         --zookeeper {{ groups['cp_zookeeper_nodes'][0] }}:2181
-        --create --topic {{ item.name }}
+        --create
+          --if-not-exists
+          --topic {{ item.name }}
           --partitions {{ item.partitions }}
           --replication-factor {{ item.replication_factor }}
-          --if-not-exists
   loop: "{{ topics | flatten(levels=1) }}"
 
-# TODO: Continue here, must not execute if already exist
+# TODO: Continue here, all tasks must be idempotent
 - name: "Publish Kafka topics schema"
   uri:
     url: "http://{{ groups['cp_schema_registry'][0] }}:18081/subjects/{{ item.name }}-value/versions"
@@ -21,15 +24,51 @@
     body: "{{ lookup('file', {{ avro_schema_folder }}/{{ item.avro.value-schema-file }} ) }}"
   loop: "{{ topics | flatten(levels=1) }}"
 
+
+############################################
+########## Flink session & job #############
+# https://ci.apache.org/projects/flink/flink-docs-stable/ops/deployment/yarn_setup.html
+# TODO: check what happens when run twice...may need to stop session first ?
+#     => echo "stop" | ./bin/yarn-session.sh -id "flink-session-daemon"
+- name: "Start Flink detached session"
+  include: toolbox_exec.yml
+  vars:
+    bash_one_liner: >-
+      ${FLINK_FOLDER}/bin/yarn-session.sh
+        -nm "flink-session-daemon"
+        -jm {{ job_manager.memory }}
+        -n  {{ task_manager.node_count }}
+        -s  {{ task_manager.slots }}
+        -tm {{ task_manager.memory }}
+        -st -d
+
+- name: "Copy Flink job artifact to panda-toolbox"
+  become: yes
+  copy:
+    src: "{{ role_path }}/../../digitalpanda-bigdata/sensor-digestion-flink/target/scala-2.11/sensor-digestion-flink-assembly-0.1-SNAPSHOT.jar"
+    dest: "{{ toolbox.host.folders.state }}/sensor-digestion-flink-assembly-0.1-SNAPSHOT.jar"
+    owner: "{{ cluster_config_user }}"
+    group: "{{ cluster_config_user }}"
+    mode: "u=rx,g=rx,o=rx"
+
+# TODO: Stop job if already started
+
+- name: "Upload & start Flink job"
+  include: toolbox_exec.yml
+  vars:
+    bash_one_liner: >-
+      ${FLINK_FOLDER}/bin/flink
+        run ${TOOLBOX_STATE}/sensor-digestion-flink-assembly-0.1-SNAPSHOT.jar
+
+
+############################################
+########## Kafka connect DB sinks ##########
+
 - name: "Create Cassandra tables"
-  include: kafka_manage.yml
+  include: cassandra_manage.yml # use toolbox instead....
   vars:
     command_args: ./cqlsh -e "lookup('template', 'hosts')"
+
 - name: "Create Kafka connectors"
 
 - name: "Start Kafka connectors"
-
-- name: "Start stream job"
-
-["/bin/sh","-c", "/bin/bash"]
-

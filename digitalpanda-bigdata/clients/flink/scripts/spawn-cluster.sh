@@ -14,7 +14,8 @@ SCALA_VERSION=2.11
 
 function docker_run_hadoop {
   DOCKER_RUN_CMD="$1"
-  sudo docker run --net=host --rm  fanless1.digitalpanda.org:5000/hadoop:2.8.3 "/opt/hadoop/hadoop-2.8.3/bin/${DOCKER_RUN_CMD}" || true
+  sudo docker run --net=host --rm  fanless1.digitalpanda.org:5000/hadoop:2.8.3 \
+      "/opt/hadoop/hadoop-2.8.3/bin/${DOCKER_RUN_CMD}" || true
 }
 
 FLINK_ARCHIVE=flink-${FLINK_VERSION}-bin-scala_${SCALA_VERSION}.tgz

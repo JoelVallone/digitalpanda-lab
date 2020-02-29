@@ -1,0 +1,32 @@
+---
+- name: "Prepare environment for docker instance"
+  include_role:
+    name: docker-pre-image
+
+- name: "Add hadoop global configuration files on host"
+  template:
+    src: "{{ role_path }}/../hadoop-common/templates/{{ item }}.j2"
+    dest: "{{ host_data_folders.config }}/hadoop/{{ item }}"
+  with_items:
+    - core-site.xml
+    - hdfs-site.xml
+    - yarn-site.xml
+  when: not (absent_from_node | bool)
+
+- name: "Pull image {{ docker_image }} and (re)start container {{ docker_instance_name }}"
+  become: yes
+  docker_container:
+    name: "{{ docker_instance_name }}"
+    state: started
+    pull: true
+    command: "tail -f /dev/null"
+    restart: yes
+    image: "{{ docker_image }}"
+    volumes:
+      - "{{ host_base_folder }}:{{ toolbox.container.exposed_folder.base }}"
+    env:
+      CQLSH_HOST: "{{ groups['cassandra_node'][0] }}"
+    network_mode: host
+    restart_policy: always
+    tty: yes
+  when: (not (absent_from_node | bool))

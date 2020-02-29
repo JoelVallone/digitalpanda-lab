@@ -26,4 +26,4 @@ topics:
     avro:
       value-schema-file: "measure.avsc"
 
-avro_schema_folder: "{{ role_path }}/../../../digitalpanda-bigdata/sensor-digestion-flink/script/avro-schemas"
+avro_schema_folder: "{{ role_path }}/../../digitalpanda-common/src/main/avro"

@@ -1,8 +1,8 @@
 ---
-- name: "Pull infrastructure code from {{ infrastructure_repo.clone_url }}"
+- name: "Pull lab code from {{ lab_repo.clone_url }}"
   git:
-    repo: "{{ infrastructure_repo.clone_url }}"
-    dest: "{{ infrastructure_repo.target_path }}"
+    repo: "{{ lab_repo.clone_url }}"
+    dest: "{{ lab_repo.target_path }}"
 
 - include: "cassandra/build-and-push.yml"
   when: '"cassandra" in required_containers'

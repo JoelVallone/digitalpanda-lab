@@ -1,7 +1,7 @@
 
 # New
 ## digialpanda-iot-sensor
-- rewrite pi iot client to write raw measure to kafka topic: test
+- rewrite pi iot client to write raw measure to kafka topic ==> TEST & FIX
 
 ## kafka-connect
 - setup cassandra connectors
@@ -10,11 +10,15 @@
     - test cassandra sink from avro topic
 
 ## sensor-digestion-flink
+ - create topics & publish schemas to registry  ==> TEST & FIX
  - setup jar submit mechanism:
     - create "panda-toolbox" hadoop-flink-client docker image
-        - add latest digestion jar into docker image and publish to registry
-    - submit job from latest docker image !
+        - deploy panda-toolbox (+ config) with ansible ==> TEST & FIX
+        - copy latest digestion jar into docker image and publish to registry ==> TEST & FIX
+    - submit job from latest docker image !  ==> TEST & FIX
  - optional: find or implement ConfluentRegistryAvroSerializationSchema
+
+- start jupyter-lab at seo-toolbox startup
 
 ## Misc.
 - Optional: fix network routing

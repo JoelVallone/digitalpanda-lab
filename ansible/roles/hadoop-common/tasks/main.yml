@@ -1,6 +1,6 @@
 ---
 - set_fact:
-    docker_image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/{% if ansible_architecture == 'x86_64' %}hadoop{% else %}hadoop-arm{% endif %}:{{ apache_hadoop.version }}"
+    docker_image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/{% if ansible_architecture == 'x86_64' %}hadoop{% else %}hadoop-arm{% endif %}:{{ hadoop.version.version }}"
 
 - name: "Prepare environment for docker instance"
   include_role:
