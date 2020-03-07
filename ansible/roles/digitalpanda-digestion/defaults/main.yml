@@ -1,0 +1,5 @@
+pristine_system: true
+absent_from_system: false
+
+ignore_err: false
+debug_mode: true

@@ -5,5 +5,5 @@ docker_instance_name: panda-toolbox
 # Docker pre-image variables
 host_base_folder: "{{ toolbox.host.folders.base }}"
 host_data_folders:
-  config: "{{ toolbox.host.folders.config }}"
+  config_hadoop: "{{ toolbox.host.folders.config }}/hadoop"
   state: "{{ toolbox.host.folders.state }}"

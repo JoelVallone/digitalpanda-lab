@@ -6,7 +6,7 @@
 - name: "Add hadoop global configuration files on host"
   template:
     src: "{{ role_path }}/../hadoop-common/templates/{{ item }}.j2"
-    dest: "{{ host_data_folders.config }}/hadoop/{{ item }}"
+    dest: "{{ host_data_folders.config_hadoop }}/{{ item }}"
   with_items:
     - core-site.xml
     - hdfs-site.xml

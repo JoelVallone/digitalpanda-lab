@@ -34,7 +34,7 @@ cassandra:
 confluent_platform_docker_version: 5.3.1
 
 toolbox:
-    docker_tag: "0.0.1"
+    docker_tag: "latest"
 
     host:
         folders:
@@ -43,7 +43,7 @@ toolbox:
             state: "/home/{{ cluster_config_user }}/panda-toolbox/state"
 
     container:
-        base_folder: "/opt/panda-toolbox
+        base_folder: "/opt/panda-toolbox"
         exposed_folder:
             base: "/opt/panda-toolbox/ext"
             config: "/opt/panda-toolbox/ext/config"

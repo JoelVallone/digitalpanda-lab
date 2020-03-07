@@ -1,6 +1,9 @@
 ---
 - name: "kafka_manager run: {{ bash_one_liner }}"
   become: yes
-  shell: docker exec panda-toolbox /bin/bash -c "{{ bash_commands }}"
+  ignore_errors: "{{ toolbox_ignore_err }}"
+  shell: docker exec panda-toolbox /bin/bash -c "{{ bash_one_liner }}"
   register: sh_res
+
 - debug: var=sh_res.stdout_lines
+  when: "{{ toolbox_debug }}"

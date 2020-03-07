@@ -5,24 +5,54 @@ topic_default:
   replication_factor: 2
 
 topics:
+
   - name: "org.digitalpanda.measure.raw-1-sec"
     partitions: "6"
     replication_factor: "2"
+    config:
+      cleanup.policy: delete
+      retention.ms: 3153600000000
+      segment.bytes: 33554432
     avro:
+      value-schema-file: "raw-measure.avsc"
+
+  - name: "org.digitalpanda.measure.processed-1-sec"
+    partitions: "6"
+    replication_factor: "2"
+    config:
+      cleanup.policy: delete
+      retention.ms: 15552000
+      segment.bytes: 33554432
+    avro-schema:
       value-schema-file: "measure.avsc"
+
   - name: "org.digitalpanda.measure.processed-1-min"
     partitions: "6"
     replication_factor: "2"
+    config:
+      cleanup.policy: delete
+      retention.ms: 15552000
+      segment.bytes: 33554432
     avro-schema:
       value-schema-file: "measure.avsc"
+
   - name: "org.digitalpanda.measure.processed-1-hour"
     partitions: "6"
     replication_factor: "2"
+    config:
+      cleanup.policy: delete
+      retention.ms: 15552000
+      segment.bytes: 33554432
     avro:
       value-schema-file: "measure.avsc"
+
   - name: "org.digitalpanda.measure.processed-6-hour"
     partitions: "6"
     replication_factor: "2"
+    config:
+      cleanup.policy: delete
+      retention.ms: 15552000
+      segment.bytes: 33554432
     avro:
       value-schema-file: "measure.avsc"
 
