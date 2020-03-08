@@ -18,7 +18,7 @@
 - name: "Create Kafka topics"
   include: toolbox_exec.yml
   vars:
-    toolbox_ignore_err: true
+    toolbox_ignore_err: false
     toolbox_debug: "{{ debug_mode }}"
     bash_one_liner: >-
       export JAVA_HOME=/usr/lib/jvm/zulu-8-amd64;
@@ -40,17 +40,27 @@
   loop: "{{ topics | flatten(levels=1) }}"
   when: not absent_from_system
 
+- name: "Delete Kafka topics schema"
+  uri:
+    url: "http://{{ groups['cp_schema_registry'][0] }}:18081/subjects/{{ item.name }}-value"
+    method: DELETE
+  loop: "{{ topics | flatten(levels=1) }}"
+  ignore_errors: true
+  when: pristine_system or absent_from_system
+
+- name: "Publish Kafka topics schema"
+  uri:
+    url: "http://{{ groups['cp_schema_registry'][0] }}:18081/subjects/{{ item.name }}-value/versions"
+    headers:
+      Content-Type: "application/vnd.schemaregistry.v1+json"
+    method: POST
+    body_format: json
+    body: >-
+      {"schema": "{{ lookup("file",  avro_schema_folder + "/" + item.avro.value_schema_file) |  regex_replace('\n| |\t', '') | regex_replace('"', '\"') }}"}
+  loop: "{{ topics | flatten(levels=1) }}"
+  when: not absent_from_system
+
 - meta: end_play
-#
-#
-## TODO: Continue here, all tasks must be idempotent
-#- name: "Publish Kafka topics schema"
-#  uri:
-#    url: "http://{{ groups['cp_schema_registry'][0] }}:18081/subjects/{{ item.name }}-value/versions"
-#    headers: "application/vnd.schemaregistry.v1+json"
-#    method: POST
-#    body: "{{ lookup('file', {{ avro_schema_folder }}/{{ item.avro.value-schema-file }} ) }}"
-#  loop: "{{ topics | flatten(levels=1) }}"
 #
 #
 #############################################

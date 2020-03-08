@@ -14,7 +14,7 @@ topics:
       retention.ms: 3153600000000
       segment.bytes: 33554432
     avro:
-      value-schema-file: "raw-measure.avsc"
+      value_schema_file: "raw-measure.avsc"
 
   - name: "org.digitalpanda.measure.processed-1-sec"
     partitions: "6"
@@ -23,8 +23,8 @@ topics:
       cleanup.policy: delete
       retention.ms: 15552000
       segment.bytes: 33554432
-    avro-schema:
-      value-schema-file: "measure.avsc"
+    avro:
+      value_schema_file: "measure.avsc"
 
   - name: "org.digitalpanda.measure.processed-1-min"
     partitions: "6"
@@ -33,8 +33,8 @@ topics:
       cleanup.policy: delete
       retention.ms: 15552000
       segment.bytes: 33554432
-    avro-schema:
-      value-schema-file: "measure.avsc"
+    avro:
+      value_schema_file: "measure.avsc"
 
   - name: "org.digitalpanda.measure.processed-1-hour"
     partitions: "6"
@@ -44,7 +44,7 @@ topics:
       retention.ms: 15552000
       segment.bytes: 33554432
     avro:
-      value-schema-file: "measure.avsc"
+      value_schema_file: "measure.avsc"
 
   - name: "org.digitalpanda.measure.processed-6-hour"
     partitions: "6"
@@ -54,6 +54,6 @@ topics:
       retention.ms: 15552000
       segment.bytes: 33554432
     avro:
-      value-schema-file: "measure.avsc"
+      value_schema_file: "measure.avsc"
 
-avro_schema_folder: "{{ role_path }}/../../digitalpanda-common/src/main/avro"
+avro_schema_folder: "{{ role_path }}/../../../digitalpanda-common/src/main/avro"
