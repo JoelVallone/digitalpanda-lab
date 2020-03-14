@@ -1,5 +1,7 @@
 pristine_system: true
 absent_from_system: false
 
+build_digestion_project: false
+
 ignore_err: false
 debug_mode: true

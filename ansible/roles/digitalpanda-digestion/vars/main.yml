@@ -5,7 +5,6 @@ topic_default:
   replication_factor: 2
 
 topics:
-
   - name: "org.digitalpanda.measure.raw-1-sec"
     partitions: "6"
     replication_factor: "2"
@@ -57,3 +56,7 @@ topics:
       value_schema_file: "measure.avsc"
 
 avro_schema_folder: "{{ role_path }}/../../../digitalpanda-common/src/main/avro"
+
+
+flink_session_yarn_application_name: "flink-session-daemon"
+sensor_digestion_flink_path: "{{ role_path }}/../../../digitalpanda-bigdata/sensor-digestion-flink"

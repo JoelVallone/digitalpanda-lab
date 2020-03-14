@@ -2,10 +2,7 @@
 # New
 
 ## sensor-digestion-flink
- - publish schemas to registry  ==> TEST & FIX
  - setup jar submit mechanism:
-    - create "panda-toolbox" hadoop-flink-client docker image
-        - copy latest digestion jar into docker image and publish to registry ==> TEST & FIX
     - submit job from latest docker image !  ==> TEST & FIX
  - optional: find or implement ConfluentRegistryAvroSerializationSchema
 

@@ -45,4 +45,12 @@ ENV FLINK_LIB_FOLDER="${TOOLBOX_BASE}/${FLINK_FOLDER_NAME}/lib"
 RUN cd ${FLINK_LIB_FOLDER} && \
     wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/${HADOOP_VERSION}-7.0/${HADOOP_FLINK_BUNDLE_JAR}
 
+# Hadoop-client
+ENV HADOOP_ARCHIVE=hadoop-${HADOOP_VERSION}.tar.gz
+ENV HADOOP_FOLDER_NAME=hadoop-${HADOOP_VERSION}
+RUN wget http://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/${HADOOP_ARCHIVE} && \
+    tar -zxf ${HADOOP_ARCHIVE} && \
+    rm ${HADOOP_ARCHIVE};
+ENV PATH="${TOOLBOX_BASE}/${HADOOP_FOLDER_NAME}/bin:${TOOLBOX_BASE}/${HADOOP_FOLDER_NAME}/sbin:${PATH}"
+
 CMD ["date"]
