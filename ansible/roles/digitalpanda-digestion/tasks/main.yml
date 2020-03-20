@@ -13,7 +13,7 @@
       --delete
       --topic {{ item.name }}
   loop: "{{ topics | flatten(levels=1) }}"
-  when: pristine_system or absent_from_system
+  when:  pristine_system or absent_from_system
 
 - name: "Create Kafka topics"
   include: toolbox_exec.yml
@@ -38,7 +38,7 @@
       --config {{ config.key }}={{ config.value }}
       {% endfor %}
   loop: "{{ topics | flatten(levels=1) }}"
-  when: not absent_from_system
+  when: kafka_topics_setup and (not absent_from_system)
 
 - name: "Delete Kafka topics schema"
   uri:
@@ -58,7 +58,7 @@
     body: >-
       {"schema": "{{ lookup("file",  avro_schema_folder + "/" + item.avro.value_schema_file) |  regex_replace('\n| |\t', '') | regex_replace('"', '\"') }}"}
   loop: "{{ topics | flatten(levels=1) }}"
-  when: not absent_from_system
+  when:  kafka_topics_setup and (not absent_from_system)
 
 
 #############################################
@@ -73,7 +73,7 @@
     toolbox_ignore_err: true
     toolbox_debug: true
     bash_one_liner: >-
-      YARN_APPLICATION_FLINK_SESSION=$(yarn application -list | grep flink-session-daemon);
+      YARN_APPLICATION_FLINK_SESSION=$(yarn application -list | grep {{ flink_session_yarn_application_name }});
       [[ -z "${YARN_APPLICATION_FLINK_SESSION}" ]] &&
       yarn-session.sh
       -nm "{{ flink_session_yarn_application_name }}"
@@ -83,9 +83,10 @@
       -tm {{ flink.task_manager.memory }}
       -st -d
       || true;
+      YARN_APPLICATION_FLINK_SESSION=$(yarn application -list | grep {{ flink_session_yarn_application_name }});
       source /tmp/.yarn-properties-root;
       echo -e "\n\n\n";
-      echo -e "Last Flink detached session application id: ${applicationID}";
+      echo -e "Last Flink detached session YARN application id: ${applicationID}";
       echo -e "Flink admin UI: $(echo ${YARN_APPLICATION_FLINK_SESSION} | cut -d " " -f10)";
 
 - name: "Build Flink job as artifact"
@@ -105,19 +106,19 @@
     mode: "u=rx,g=rx"
   when: build_digestion_project
 
-- meta: end_play
-
 ## TODO: Stop job if already started
-#- name: "Flink job running"
-#  include: toolbox_exec.yml
-#  vars:
-#    toolbox_ignore_err: true
-#    toolbox_debug: "{{ debug_mode }}"
-#    bash_one_liner: >-
-#      flink run ${TOOLBOX_STATE}/sensor-digestion-flink-assembly-0.1-SNAPSHOT.jar
-#  when: false
+##    See : https://ci.apache.org/projects/flink/flink-docs-stable/ops/cli.html#job-management-examples
+- name: "Flink job running"
+  include: toolbox_exec.yml
+  vars:
+    toolbox_ignore_err: true
+    toolbox_debug: "{{ debug_mode }}"
+    bash_one_liner: >-
+      cd ${TOOLBOX_STATE};
+      flink run sensor-digestion-flink-assembly.jar;
+  when: true
 
-
+- meta: end_play
 
 #############################################
 ########### Kafka connect DB sinks ##########

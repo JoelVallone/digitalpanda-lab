@@ -33,7 +33,7 @@ lazy val root = (project in file(".")).
     libraryDependencies ++= flinkDependencies ++ additionalDependencies
   )
 
-assembly / mainClass := Some("org.digitalpanda.flink.sensor.digestion.DigestionJob")
+assembly / mainClass := Some("org.digitalpanda.flink.sensor.digestion.MeasureDigestionJob")
 
 // make run command include the provided dependencies
 Compile / run  := Defaults.runTask(Compile / fullClasspath,
