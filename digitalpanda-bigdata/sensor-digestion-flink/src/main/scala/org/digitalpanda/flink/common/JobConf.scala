@@ -36,8 +36,11 @@ case class JobConf(confResourceOpt: Option[String]) {
     prop
   }
 
+  def checkpointPeriodMillis() : Long =
+    generateConfig("flink.stream.checkpoint.period-millis").toLong
+
   def hdfsCheckpointPath() : String =
-    generateConfig("base.hdfs.namenode.base-url") + generateConfig(CheckpointFolderKey)
+    s"${generateConfig("base.hdfs.namenode.base-url")}/${generateConfig(CheckpointFolderKey)}"
 
 
   def forEach(arrayKey: String)(action: Config => Unit) : Unit =

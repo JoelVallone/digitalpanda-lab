@@ -14,7 +14,6 @@ ThisBuild / scalaVersion := "2.11.0" //Use 2.11.0 (Java 8) to be compatible with
 
 val flinkVersion = "1.9.1"
 val avroVersion = "1.9.1"
-val beamVersion = "2.19.0"
 val scalatestVersion = "3.2.0-M1"
 val digitalpandaCommonVersion = "0.1.0"
 
@@ -53,8 +52,6 @@ assembly / assemblyOption  := (assembly / assemblyOption).value.copy(includeScal
 // Custom content
 val additionalDependencies = Seq(
   "org.scalatest" %% "scalatest" % scalatestVersion % "test",
-
-  "org.apache.beam" % "beam-sdks-java-core" % beamVersion,
 
   "org.apache.flink" % "flink-avro" % flinkVersion,
   "org.apache.flink" % "flink-avro-confluent-registry" % flinkVersion,

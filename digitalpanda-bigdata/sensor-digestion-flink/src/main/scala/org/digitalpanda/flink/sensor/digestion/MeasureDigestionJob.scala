@@ -1,6 +1,7 @@
 package org.digitalpanda.flink.sensor.digestion
 
 import org.apache.avro.specific.SpecificRecord
+import org.apache.flink.api.common.ExecutionConfig
 import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema
 import org.apache.flink.runtime.state.filesystem.FsStateBackend
 import org.apache.flink.streaming.api.functions.sink.SinkFunction
@@ -9,6 +10,7 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer, FlinkKafkaProducer}
+import org.apache.flink.streaming.util.serialization.TypeInformationKeyValueSerializationSchema
 import org.digitalpanda.common.data.avro.{Measure, RawMeasure}
 import org.digitalpanda.common.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
 import org.digitalpanda.flink.common.{AvroKeyedSerializationSchema, JobConf}
@@ -34,17 +36,23 @@ object MeasureDigestionJob {
 
     // Set-up the execution environment
     val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
-      .enableCheckpointing(config.getLong("checkpoint.period-milli"), CheckpointingMode.EXACTLY_ONCE)
+      .enableCheckpointing(checkpointPeriodMillis(), CheckpointingMode.EXACTLY_ONCE)
       .setStateBackend(new FsStateBackend(hdfsCheckpointPath(), true))
 
     // Build processing topology
+    //  => Pre-processing of raw metric
+    val rawProcessorConfig =  config.getConfig("flink.stream.raw-metric-pre-processor")
+    rawMetricPreProcessor(env,
+      kafkaValueConsumer(rawProcessorConfig.getString("topic.input"), classOf[RawMeasure]),
+      kafkaKeyedProducer(rawProcessorConfig.getString("topic.output"), classOf[Measure])
+    )
+    //  => Window averages
     jobConf.forEach("flink.stream.average-digests"){
       windowConf =>
         windowAverage(env,
           Time.seconds(windowConf.getLong("window-size-sec")),
           kafkaValueConsumer(windowConf.getString("topic.input"), classOf[Measure]),
           kafkaKeyedProducer(windowConf.getString("topic.output"), classOf[Measure]))}
-
     env.execute(jobName)
   }
 
@@ -111,7 +119,7 @@ object MeasureDigestionJob {
     new FlinkKafkaConsumer(
       topic,
       ConfluentRegistryAvroDeserializationSchema.forSpecific(
-        tClass, jobConf.config.getString("kafka.schema.registry.url")),
+        tClass, jobConf.config.getString("base.kafka.schema.registry.url")),
       jobConf.kafkaConsumerConfig()
     )
 
