@@ -47,12 +47,14 @@ object MeasureDigestionJob {
       kafkaKeyedProducer(rawProcessorConfig.getString("topic.output"), classOf[Measure])
     )
     //  => Window averages
+    /* TODO: Enable once pre-processing works
     jobConf.forEach("flink.stream.average-digests"){
       windowConf =>
         windowAverage(env,
           Time.seconds(windowConf.getLong("window-size-sec")),
           kafkaValueConsumer(windowConf.getString("topic.input"), classOf[Measure]),
           kafkaKeyedProducer(windowConf.getString("topic.output"), classOf[Measure]))}
+    */
     env.execute(jobName)
   }
 

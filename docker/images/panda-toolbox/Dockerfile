@@ -26,8 +26,17 @@ RUN wget https://archive.apache.org/dist/cassandra/${CASSANDRA_VERSION}/${CASSAN
 RUN ln -s ${TOOLBOX_BASE}/${CASSANDRA_FOLDER_NAME}/bin/cqlsh /usr/bin/cql
 ENV PATH="${TOOLBOX_BASE}/${CASSANDRA_FOLDER_NAME}/bin:${PATH}"
 
+# Hadoop-client
+ENV HADOOP_VERSION=2.8.3
+ENV HADOOP_ARCHIVE=hadoop-${HADOOP_VERSION}.tar.gz
+ENV HADOOP_FOLDER_NAME=hadoop-${HADOOP_VERSION}
+RUN wget http://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/${HADOOP_ARCHIVE} && \
+    tar -zxf ${HADOOP_ARCHIVE} && \
+    rm ${HADOOP_ARCHIVE};
+ENV PATH="${TOOLBOX_BASE}/${HADOOP_FOLDER_NAME}/bin:${TOOLBOX_BASE}/${HADOOP_FOLDER_NAME}/sbin:${PATH}"
+
 # Flink-client
-ENV FLINK_VERSION=1.9.1
+ENV FLINK_VERSION=1.9.2
 ENV SCALA_VERSION=2.11
 ENV FLINK_ARCHIVE=flink-${FLINK_VERSION}-bin-scala_${SCALA_VERSION}.tgz
 ENV FLINK_FOLDER_NAME=flink-${FLINK_VERSION}
@@ -39,18 +48,9 @@ ENV PATH="${TOOLBOX_BASE}/${FLINK_FOLDER_NAME}/bin:${PATH}"
 # Flink-client - Haddoop library
 ENV YARN_CONF_DIR="${TOOLBOX_CONFIG}/hadoop"
 ENV HADOOP_CONF_DIR="${TOOLBOX_CONFIG}/hadoop"
-ENV HADOOP_VERSION=2.8.3
 ENV HADOOP_FLINK_BUNDLE_JAR=flink-shaded-hadoop-2-uber-${HADOOP_VERSION}-7.0.jar
 ENV FLINK_LIB_FOLDER="${TOOLBOX_BASE}/${FLINK_FOLDER_NAME}/lib"
 RUN cd ${FLINK_LIB_FOLDER} && \
     wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/${HADOOP_VERSION}-7.0/${HADOOP_FLINK_BUNDLE_JAR}
-
-# Hadoop-client
-ENV HADOOP_ARCHIVE=hadoop-${HADOOP_VERSION}.tar.gz
-ENV HADOOP_FOLDER_NAME=hadoop-${HADOOP_VERSION}
-RUN wget http://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/${HADOOP_ARCHIVE} && \
-    tar -zxf ${HADOOP_ARCHIVE} && \
-    rm ${HADOOP_ARCHIVE};
-ENV PATH="${TOOLBOX_BASE}/${HADOOP_FOLDER_NAME}/bin:${TOOLBOX_BASE}/${HADOOP_FOLDER_NAME}/sbin:${PATH}"
 
 CMD ["date"]

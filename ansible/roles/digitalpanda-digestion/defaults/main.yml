@@ -1,7 +1,8 @@
 pristine_system: true
 absent_from_system: false
 
-build_digestion_project: false
+kafka_topics_setup: true
+build_digestion_project: true
 
 ignore_err: false
 debug_mode: true

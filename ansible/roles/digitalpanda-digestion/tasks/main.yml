@@ -106,8 +106,6 @@
     mode: "u=rx,g=rx"
   when: build_digestion_project
 
-## TODO: Stop job if already started
-##    See : https://ci.apache.org/projects/flink/flink-docs-stable/ops/cli.html#job-management-examples
 - name: "Flink job running"
   include: toolbox_exec.yml
   vars:
@@ -115,8 +113,10 @@
     toolbox_debug: "{{ debug_mode }}"
     bash_one_liner: >-
       cd ${TOOLBOX_STATE};
-      flink run sensor-digestion-flink-assembly.jar;
-  when: true
+      FLINK_JOB_ID=$(flink list -r | grep "digestion-job (RUNNING)" | cut -d " " -f4);
+      [[ ! -z "${FLINK_JOB_ID}" ]] && echo "==> Cancel previous flink digestion-job: ${FLINK_JOB_ID}" && flink cancel ${FLINK_JOB_ID};
+      echo -e "\n==> Start flink digestion-job";
+      flink run -d sensor-digestion-flink-assembly.jar;
 
 - meta: end_play
 
