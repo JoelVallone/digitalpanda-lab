@@ -13,6 +13,7 @@ import org.digitalpanda.iot.raspberrypi.sensor.utils.SensorFactory;
 import java.io.IOException;
 import java.util.List;
 
+import static java.util.stream.Collectors.joining;
 import static org.digitalpanda.iot.raspberrypi.Configuration.ConfigurationKey.SENSOR_LOCATION;
 import static org.digitalpanda.iot.raspberrypi.Configuration.ConfigurationKey.SENSOR_MODEL;
 
@@ -49,6 +50,9 @@ public class Application {
         this.transmitters = TransmitterFactory.loadMeasureTransmitters(conf);
         if(transmitters.size() == 0){
             System.err.println("No transmitters available");
+        } else {
+            System.out.println("Transmitter instance(s): \n" +
+                    transmitters.stream().map(t -> " - " + t.getClass().getCanonicalName() + "\n").collect(joining()));
         }
 
         SensorModel sensorModel = SensorModel.valueOf(conf.getString(SENSOR_MODEL));

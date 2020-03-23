@@ -20,11 +20,11 @@ export CONFIGURATION_FILE="/home/pi/sense/configuration.properties"
 case "$1" in
   start)
     echo "Starting iot"
-    java -jar /home/pi/sense/iot*.jar &> /home/pi/sensor.log &
+    java -jar /home/pi/sense/digitalpanda-iot-sensor*.jar &> /home/pi/sensor.log &
     ;;
   stop)
     echo "Stopping iot"
-    pkill -f ".*iot.*.jar";
+    pkill -f ".*digitalpanda-iot-sensor.*.jar";
     ;;
   restart)
     $0 stop
@@ -32,7 +32,7 @@ case "$1" in
     $0 start
     ;;
   status)
-    pgrep -f ".*iot.*.jar" &> /dev/null;
+    pgrep -f ".*digitalpanda-iot-sensor.*.jar" &> /dev/null;
     exit $?
     ;;
   *)

@@ -53,3 +53,8 @@ sudo raspi-config
  sudo apt-get install -y i2c-tools wiringPi
  i2cdetect -y 1 #Should output at least one digit if a device is connected
 
+8) Append to /etc/hosts the proper network setup. Example:
+192.168.0.241 stressed-panda-1.lab.digitalpanda.org stressed-panda-1
+192.168.0.242 stressed-panda-2.lab.digitalpanda.org stressed-panda-2
+192.168.0.102 fanless1 fanless1.digitalpanda.org
+

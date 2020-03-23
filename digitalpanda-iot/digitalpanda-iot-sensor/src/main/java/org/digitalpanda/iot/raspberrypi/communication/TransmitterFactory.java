@@ -26,7 +26,8 @@ public class TransmitterFactory {
                     new KafkaTransmitter(
                             conf.getString(KAFKA_PRODUCER_TOPIC),
                             conf.getString(KAFKA_PRODUCER_ID),
-                            conf.getString(KAFKA_PRODUCER_SERVERS)
+                            conf.getString(KAFKA_SERVERS),
+                            conf.getString(KAFKA_REGISTRY_URL)
                     ));
         }
         return transmitters;

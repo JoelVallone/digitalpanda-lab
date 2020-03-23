@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MeasureTransmitter {
 
-    public void sendMeasures(List<SensorMeasures> sensorData);
+    void sendMeasures(List<SensorMeasures> sensorData);
 }

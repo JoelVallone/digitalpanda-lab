@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public class Configuration {
 
@@ -45,7 +46,7 @@ public class Configuration {
                         .stream()
                         .map(p -> p.getKey() + "=" + p.getValue())
                         .sorted()
-                        .collect(Collectors.toList()));
+                        .collect(toList()));
     }
 
     private Configuration(){
@@ -63,9 +64,9 @@ public class Configuration {
                     Arrays.stream(ConfigurationKey.values())
                         .filter( key -> key.isMandatory() &&
                                         !properties.containsKey(key.getName()))
-                        .map(configurationKey -> configurationKey.getName())
+                        .map(ConfigurationKey::getName)
                         .sorted()
-                        .collect(Collectors.toList());
+                        .collect(toList());
             if(missingConfigKeys.size() != 0){
                 System.err.println("ERROR: Missing mandatory configuration entries : " +
                                 String.join(" \n-> ", missingConfigKeys));
@@ -87,8 +88,9 @@ public class Configuration {
     }
 
     public enum ConfigurationKey {
+        KAFKA_SERVERS(true, "kafka.bootstrap.servers"),
+        KAFKA_REGISTRY_URL(true, "kafka.schema-registry.url"),
         KAFKA_PRODUCER_ENABLED (true, "kafka-producer.enabled"),
-        KAFKA_PRODUCER_SERVERS(true, "kafka-producer.bootstrap.servers"),
         KAFKA_PRODUCER_ID(true, "kafka-producer.client.id"),
         KAFKA_PRODUCER_TOPIC(true, "kafka-producer.topic"),
 

@@ -1,7 +1,6 @@
 package org.digitalpanda.iot.raspberrypi.communication.kafka;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.*;
 import org.digitalpanda.common.data.avro.MeasureType;
 import org.digitalpanda.common.data.avro.RawMeasure;
 import org.digitalpanda.common.data.backend.SensorMeasureMetaData;
@@ -13,18 +12,27 @@ import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
 
+import static io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig.AUTO_REGISTER_SCHEMAS;
+import static io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.*;
+
 public class KafkaTransmitter implements MeasureTransmitter {
 
     private final KafkaProducer<String, RawMeasure> kafkaProducer;
     private String targetTopic;
 
-    public KafkaTransmitter(String targetTopic, String clientId, String bootstrapServers){
+    public KafkaTransmitter(String targetTopic, String clientId, String bootstrapServers, String schemaRegistryUrl){
 
-        Properties config = new Properties();
-        config.put("client.id",clientId);
-        config.put("bootstrap.servers", bootstrapServers);
-        config.put("acks", "all");
-        this.kafkaProducer = new KafkaProducer<>(config);
+        Properties props = new Properties();
+        props.put(CLIENT_ID_CONFIG,                 clientId);
+        props.put(BOOTSTRAP_SERVERS_CONFIG,         bootstrapServers);
+        props.put(ACKS_CONFIG,                      "all");
+        props.put(SCHEMA_REGISTRY_URL_CONFIG,       schemaRegistryUrl);
+        props.put(AUTO_REGISTER_SCHEMAS,            false);
+        props.put(VALUE_SERIALIZER_CLASS_CONFIG,    io.confluent.kafka.serializers.KafkaAvroSerializer.class);
+        props.put(KEY_SERIALIZER_CLASS_CONFIG,      org.apache.kafka.common.serialization.StringSerializer.class);
+
+        this.kafkaProducer = new KafkaProducer<>(props);
         this.targetTopic = targetTopic;
     }
 
@@ -36,7 +44,17 @@ public class KafkaTransmitter implements MeasureTransmitter {
                         targetTopic,
                         rawMeasure.getLocation() + "-" + rawMeasure.getMeasureType(),
                         rawMeasure))
-                .forEach(kafkaProducer::send);
+                .forEach(this::sendRecord);
+    }
+
+    private void sendRecord(ProducerRecord<String, RawMeasure> record) {
+        kafkaProducer.send(
+                record,
+                (RecordMetadata metadata, Exception e) -> {
+                    if ( e != null) {
+                        System.err.println("Send failed for record: " + record);
+                        e.printStackTrace();
+                    }});
     }
 
     private Stream<RawMeasure> toRawMeasures(SensorMeasures sensorMeasures) {

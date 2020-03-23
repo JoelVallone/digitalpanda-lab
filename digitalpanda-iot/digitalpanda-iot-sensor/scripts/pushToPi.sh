@@ -92,9 +92,9 @@ for i in ${DEPLOY_TARGETS[@]}; do
     IP=${PI_IP[$((${i} - 1))]};  HOSTNAME=${PI_HOSTNAME[$((${i} - 1))]}
     notify "DEPLOYING CODE ON : $HOSTNAME,$IP"
     ssh pi@${IP} "[ -e ./iot.sh ] && sudo ./iot.sh stop || true" < /dev/null
-    ssh pi@${IP} '[ -e ./sense ] && rm -f ./sense/*' || true < /dev/null
+    ssh pi@${IP} '[ -e ./sense ] && rm -f ./sense/* || true' < /dev/null
     ssh pi@${IP} 'mkdir -p ~/sense' < /dev/null
-    scp ${IOT_FOLDER}/target/iot-java-0.1.0.jar pi@${IP}:./sense
+    scp ${IOT_FOLDER}/target/digitalpanda-iot-sensor-0.1.0.jar pi@${IP}:./sense
     scp ${IOT_FOLDER}/../config/${HOSTNAME}.properties pi@${IP}:./sense/configuration.properties
     scp ${IOT_FOLDER}/scripts/iot.sh pi@${IP}:.
     ssh pi@${IP} "sudo ln -fs ~/iot.sh /etc/init.d/iot && sudo update-rc.d iot defaults" < /dev/null
