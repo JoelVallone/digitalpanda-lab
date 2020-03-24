@@ -15,7 +15,7 @@
     recurse: yes
   with_items: "{{ host_data_folders.jar_folder }}"
 
-# TODO: Consider state cleanup on kafka topics + how to activate clustered mode
+# TODO: Consider state cleanup on kafka topics
 - name: "Pull image {{ docker_image }} and (re)start container with name {{ docker_instance_name }}"
   become: yes
   docker_container:
@@ -31,13 +31,13 @@
     ports:
       - "8083:8083"
     network_mode: host
-    cpu_quota:   "50000"
+    cpu_quota:  "100000"
     cpu_period: "100000"
     memory: "2G"
     env:
       KAFKA_HEAP_OPTS: "-Xmx1G -Xms1G"
       CONNECT_BOOTSTRAP_SERVERS: "{{ groups['cp_kafka_brokers'] | join(':9092,')}}:9092"
-      CONNECT_REST_ADVERTISED_HOST_NAME: "connect"
+      CONNECT_REST_ADVERTISED_HOST_NAME: "{{ inventory_hostname }}"
       CONNECT_REST_PORT: "8083"
       CONNECT_REST_HOST_NAME: "0.0.0.0"
       CONNECT_GROUP_ID: "panda-connect-group"

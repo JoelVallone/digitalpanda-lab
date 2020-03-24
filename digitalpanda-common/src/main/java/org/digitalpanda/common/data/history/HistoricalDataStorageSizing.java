@@ -26,7 +26,7 @@ public enum HistoricalDataStorageSizing {
     SECOND_PRECISION_RAW(1L, AggregateType.VALUE), //Raw data provided by sensor network
     MINUTE_PRECISION_AVG(60L, AggregateType.AVERAGE),
     HOUR_PRECISION_AVG(3600L, AggregateType.AVERAGE),
-    DAY_PRECISION_AVG(24*3600L, AggregateType.AVERAGE);
+    DAY_PRECISION_AVG(6*3600L, AggregateType.AVERAGE);
 
     public static final long MAX_TABLE_PARTITION_SIZE_BYTES = 50 * (1L << 20);
     public static final long MEASURE_HISTORY_ROW_SIZE_BYTES = 100L;

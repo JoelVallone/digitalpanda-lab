@@ -1,21 +1,20 @@
-
 # New
 
+## Jupyter-Lab on steroids
+- launch jupyter-lab at digitalpanda-toolbox startup (limit memory usage of container)
+- Setup pispark within jupyter-lab
+
+# Up to date backend
+- Deploy backend with up to date code
+
 ## sensor-digestion-flink
- - setup jar submit mechanism:
-    - submit job from latest docker image !  ==> TEST & FIX
- - optional: find or implement ConfluentRegistryAvroSerializationSchema
+ - Find or implement ConfluentRegistryAvroSerializationSchema
+    - Wait flink 1.11 OR use third party lib
 
-## kafka-connect
-- setup cassandra connectors
-    - setup cassandra tables
-    - setup kafka connectors
-    - test cassandra sink from avro topic
+# Process all historical data
+- create HistoricalDataPushJob (read from cassandra, write to kafka) with either Flink OR with Jupyter Lab & PiSpark
+- Verify tha results are processed and sinked into the cassandra tables
 
-## digialpanda-iot-sensor
-- rewrite pi iot client to write raw measure to kafka topic ==> TEST & FIX
-
-- start jupyter-lab at seo-toolbox startup
 
 ## Misc.
 - Optional: fix network routing

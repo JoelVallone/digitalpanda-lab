@@ -1,0 +1,34 @@
+{
+  "type": "record",
+  "name": "RawMeasure",
+  "namespace": "org.digitalpanda.common.data.avro",
+  "fields": [
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "measureType",
+      "type": {
+        "type": "enum",
+        "name": "MeasureType",
+        "symbols": [
+          "TEMPERATURE",
+          "HUMIDITY",
+          "PRESSURE"
+        ]
+      }
+    },
+    {
+      "name": "timestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    },
+    {
+      "name": "value",
+      "type": "double"
+    }
+  ]
+}

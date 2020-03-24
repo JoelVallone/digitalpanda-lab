@@ -57,6 +57,40 @@ topics:
 
 avro_schema_folder: "{{ role_path }}/../../../digitalpanda-common/src/main/avro"
 
-
 flink_session_yarn_application_name: "flink-session-daemon"
+flink_job_name: "digestion-job"
 sensor_digestion_flink_path: "{{ role_path }}/../../../digitalpanda-bigdata/sensor-digestion-flink"
+
+cassandra_time_series_tables:
+  - aggregate_seconds: 1
+    TWCS_compaction_window_size_days: 7
+    ttl_seconds: 15552000     # 180 days
+
+  - aggregate_seconds: 60
+    TWCS_compaction_window_size_days: 30
+    ttl_seconds: 630720000    # 20 years
+
+  - aggregate_seconds: 3600
+    TWCS_compaction_window_size_days: 30
+    ttl_seconds: 630720000   # 20 years
+
+  - aggregate_seconds: 21600
+    TWCS_compaction_window_size_days: 30
+    ttl_seconds: 630720000   # 20 years
+
+kafka_connect_cassandra_sinks:
+  - name: "cas-snk-measure-1-sec"
+    topic: "org.digitalpanda.measure.processed-1-sec"
+    table: "sensor_measure_history_seconds_1"
+
+  - name: "cas-snk-measure-1-min"
+    topic: "org.digitalpanda.measure.processed-1-min"
+    table: "sensor_measure_history_seconds_60"
+
+  - name: "cas-snk-measure-1-hour"
+    topic: "org.digitalpanda.measure.processed-1-hour"
+    table: "sensor_measure_history_seconds_3600"
+
+  - name: "cas-snk-measure-6-hour"
+    topic: "org.digitalpanda.measure.processed-6-hour"
+    table: "sensor_measure_history_seconds_21600"

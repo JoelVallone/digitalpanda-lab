@@ -35,13 +35,11 @@ confluent_platform_docker_version: 5.3.1
 
 toolbox:
     docker_tag: "latest"
-
     host:
         folders:
             base: "/home/{{ cluster_config_user }}/panda-toolbox"
             config: "/home/{{ cluster_config_user }}/panda-toolbox/config"
             state: "/home/{{ cluster_config_user }}/panda-toolbox/state"
-
     container:
         base_folder: "/opt/panda-toolbox"
         exposed_folder:

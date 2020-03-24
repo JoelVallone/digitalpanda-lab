@@ -60,11 +60,13 @@
   loop: "{{ topics | flatten(levels=1) }}"
   when:  kafka_topics_setup and (not absent_from_system)
 
-
 #############################################
 ########### Flink session & job #############
-## https://ci.apache.org/projects/flink/flink-docs-stable/ops/deployment/yarn_setup.html
+
+## TODO: clear Flink state in HDFS when: pristine_system or absent_from_system
+
 ## TODO: check how to auto restart when yarn recovers (nodes online)
+## Source: https://ci.apache.org/projects/flink/flink-docs-stable/ops/deployment/yarn_setup.html
 ## STOP FLINK's YARN SESSION:
 ## > echo "stop" | ./bin/yarn-session.sh -id "$(yarn application -list | grep flink-session-daemon | awk '{ print $1}')"
 - name: "Flink detached session running"
@@ -88,13 +90,14 @@
       echo -e "\n\n\n";
       echo -e "Last Flink detached session YARN application id: ${applicationID}";
       echo -e "Flink admin UI: $(echo ${YARN_APPLICATION_FLINK_SESSION} | cut -d " " -f10)";
+  when: flink_deploy_digestion_project
 
 - name: "Build Flink job as artifact"
   delegate_to: 127.0.0.1
   shell: >-
     cd "{{ sensor_digestion_flink_path }}" &&
     sbt "set test in assembly := {}" clean assembly
-  when: build_digestion_project
+  when: flink_build_digestion_project
 
 - name: "Copy Flink job artifact to panda-toolbox"
   become: yes
@@ -104,7 +107,7 @@
     owner: "{{ cluster_config_user }}"
     group: "{{ cluster_config_user }}"
     mode: "u=rx,g=rx"
-  when: build_digestion_project
+  when: flink_build_digestion_project
 
 - name: "Flink job running"
   include: toolbox_exec.yml
@@ -113,21 +116,45 @@
     toolbox_debug: "{{ debug_mode }}"
     bash_one_liner: >-
       cd ${TOOLBOX_STATE};
-      FLINK_JOB_ID=$(flink list -r | grep "digestion-job (RUNNING)" | cut -d " " -f4);
-      [[ ! -z "${FLINK_JOB_ID}" ]] && echo "==> Cancel previous flink digestion-job: ${FLINK_JOB_ID}" && flink cancel ${FLINK_JOB_ID};
-      echo -e "\n==> Start flink digestion-job";
+      FLINK_JOB_ID=$(flink list -r | grep "{{ flink_job_name }} (RUNNING)" | cut -d " " -f4);
+      [[ ! -z "${FLINK_JOB_ID}" ]] && echo "==> Cancel previous flink job {{ flink_job_name }}: ${FLINK_JOB_ID}" && flink cancel ${FLINK_JOB_ID};
+      echo -e "\n==> Start flink job {{ flink_job_name }}";
       flink run -d sensor-digestion-flink-assembly.jar;
-
-- meta: end_play
+  when: flink_deploy_digestion_project
 
 #############################################
 ########### Kafka connect DB sinks ##########
-#
-#- name: "Cassandra tables defined"
-#  include: cassandra_manage.yml # use toolbox instead....
-#  vars:
-#    command_args: ./cqlsh -e "lookup('template', 'hosts')"
-#
-#- name: "Kafka connectors configured"
-#
-#- name: "Kafka connectors running"
+
+- name: "Copy Cassandra tables definition into toolbox"
+  become: true
+  template:
+    src: "digestion_tables.cql.j2"
+    dest: "{{ toolbox.host.folders.config }}/digestion_tables.cql"
+    owner: "{{ cluster_config_user }}"
+    group: "{{ cluster_config_user }}"
+    mode: "u=rx,g=rx"
+
+- name: "Cassandra tables definition up to date"
+  include: toolbox_exec.yml
+  vars:
+    toolbox_ignore_err: false
+    toolbox_debug: "{{ debug_mode }}"
+    bash_one_liner: >-
+      cqlsh -f {{ toolbox.container.exposed_folder.config }}/digestion_tables.cql
+
+# Kafka Connect REST Interface: https://docs.confluent.io/current/connect/references/restapi.html
+# Cassandra sink connector: https://docs.lenses.io/connectors/sink/cassandra.html
+# To avoid slow re-balancing, consider: PAUSE all connectors, updates, RESUME all connectors
+- name: "Kafka connectors config up to date"
+  uri:
+    url: "http://{{ groups['cp_kafka_connect_nodes'][0] }}:8083/connectors/{{ cassandra_sink.name }}/config/"
+    headers:
+      Accept: "application/json"
+      Content-Type: "application/json"
+    method: PUT
+    body_format: json
+    status_code: [200, 201]
+    body: "{{ lookup('template', 'cassandra_connect_timeseries_sink.json.j2') }}"
+  loop: "{{ kafka_connect_cassandra_sinks | flatten(levels=1) }}"
+  loop_control:
+    loop_var: cassandra_sink

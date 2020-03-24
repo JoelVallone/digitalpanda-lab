@@ -1,0 +1,13 @@
+{
+    "name": "{{ cassandra_sink.name }}",
+    "connector.class": "com.datamountaineer.streamreactor.connect.cassandra.sink.CassandraSinkConnector",
+    "tasks.max": "1",
+    "topics": "{{ cassandra_sink.topic }}",
+    "connect.cassandra.kcql": "INSERT INTO {{ cassandra_sink.table }} SELECT location, timeBlockId AS time_block_id, measureType AS measure_type, bucket, timestamp, value FROM {{ cassandra_sink.topic }}",
+    "connect.cassandra.port": "9042",
+    "connect.cassandra.key.space": "iot",
+    "connect.cassandra.contact.points": "{{ groups['cassandra_node'][0] }}",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://{{ groups['cp_schema_registry'][0] }}:18081"
+}

@@ -54,3 +54,20 @@ echo -e "\n"
 echo ""
 echo ""
 echo "CONFLUENT PLATFORM CHECKS - $(date) - END"
+
+# Run in cp-schema-registry image
+## OK with no key
+#kafka-avro-console-producer \
+#  --broker-list stressed-panda-1.lab.digitalpanda.org:9092,stressed-panda-2.lab.digitalpanda.org:9092 \
+#  --topic org.digitalpanda.measure.raw-1-sec \
+#  --property value.schema='{"type":"record","name":"RawMeasure","namespace":"org.digitalpanda.common.data.avro","fields":[{"name":"location","type":"string"},{"name":"measureType","type":{"type":"enum","name":"MeasureType","symbols":["TEMPERATURE","HUMIDITY","PRESSURE"]}},{"name":"timestamp","type":{"type":"long","logicalType":"timestamp-millis"}},{"name":"value","type":"double"}]}' \
+#  --property schema.registry.url=http://localhost:18081
+#
+### OK
+#kafka-avro-console-consumer \
+#  --bootstrap-server  stressed-panda-1.lab.digitalpanda.org:9092 \
+#  --topic org.digitalpanda.measure.raw-1-sec \
+#  --property schema.registry.url=http://localhost:18081 \
+#  --property print.key=true \
+#  --key-deserializer=org.apache.kafka.common.serialization.StringDeserializer \
+#  --from-beginning
