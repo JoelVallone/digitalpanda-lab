@@ -53,4 +53,46 @@ ENV FLINK_LIB_FOLDER="${TOOLBOX_BASE}/${FLINK_FOLDER_NAME}/lib"
 RUN cd ${FLINK_LIB_FOLDER} && \
     wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-shaded-hadoop-2-uber/${HADOOP_VERSION}-7.0/${HADOOP_FLINK_BUNDLE_JAR}
 
-CMD ["date"]
+# Python 3 environment
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip python3-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --upgrade pip && \
+    pip3 install virtualenv pathlib2;
+
+# Jupyter-lab environment setup with special user
+ENV USER_ID 1002
+ENV USER_NAME panda-worker
+RUN useradd -m --uid ${USER_ID} ${USER_NAME}
+
+ENV JUPYTERLAB_BIN_FOLDER=${TOOLBOX_BASE}/juypter-lab
+ENV JUPYTERLAB_STATE_FOLDER=${TOOLBOX_STATE}/juypter-lab
+ENV JUPYTERLAB_CONFIG_FOLDER=${TOOLBOX_CONFIG}
+
+RUN mkdir -p ${JUPYTERLAB_BIN_FOLDER}    && chown ${USER_ID} ${JUPYTERLAB_BIN_FOLDER} && \
+    mkdir -p ${JUPYTERLAB_STATE_FOLDER}  && chown ${USER_ID} ${JUPYTERLAB_STATE_FOLDER} && \
+    mkdir -p ${JUPYTERLAB_CONFIG_FOLDER} && chown ${USER_ID} ${JUPYTERLAB_CONFIG_FOLDER}
+
+USER ${USER_ID}
+
+# Jupyter-lab
+RUN cd ${JUPYTERLAB_BIN_FOLDER} && \
+    virtualenv jupyter-lab-env && \
+    . ./jupyter-lab-env/bin/activate && \
+    pip install jupyterlab
+
+RUN mkdir -p ${JUPYTERLAB_STATE_FOLDER}  && \
+    mkdir -p ${JUPYTERLAB_CONFIG_FOLDER} && \
+    . ${JUPYTERLAB_BIN_FOLDER}/jupyter-lab-env/bin/activate && \
+    jupyter notebook --generate-config && \
+    mv /home/${USER_NAME}/.jupyter/jupyter_notebook_config.py ${JUPYTERLAB_CONFIG_FOLDER}/jupyter_notebook_config.py
+
+CMD . ${JUPYTERLAB_BIN_FOLDER}/jupyter-lab-env/bin/activate; \
+    jupyter lab \
+        --ip 0.0.0.0 \
+        --port 8888 \
+        --NotebookApp.notebook_dir="${JUPYTERLAB_STATE_FOLDER}" \
+        --NotebookApp.token='' \
+        --NotebookApp.password='' \
+        --config=${TOOLBOX_CONFIG}/jupyter_notebook_config.py

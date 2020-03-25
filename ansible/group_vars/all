@@ -1,5 +1,8 @@
 ---
 cluster_config_user: panda-config
+cluster_config_user_id: 1001
+cluster_runtime_user: panda-worker
+cluster_runtime_user_id: 1002
 ansible_user: "{{cluster_config_user}}"
 cluster_config_domain_name: lab.digitalpanda.org
 

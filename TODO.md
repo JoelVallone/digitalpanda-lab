@@ -1,11 +1,9 @@
 # New
-
 ## Jupyter-Lab on steroids
-- launch jupyter-lab at digitalpanda-toolbox startup (limit memory usage of container)
-- Setup pispark within jupyter-lab
+- Setup PiSpark within jupyter-lab
 
 # Up to date backend
-- Deploy backend with up to date code
+- Deploy backend with up to date code (verify cassandra table access code)
 
 ## sensor-digestion-flink
  - Find or implement ConfluentRegistryAvroSerializationSchema
@@ -13,7 +11,7 @@
 
 # Process all historical data
 - create HistoricalDataPushJob (read from cassandra, write to kafka) with either Flink OR with Jupyter Lab & PiSpark
-- Verify tha results are processed and sinked into the cassandra tables
+- Verify that results are processed and sinked into the cassandra tables
 
 
 ## Misc.

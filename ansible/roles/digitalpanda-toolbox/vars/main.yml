@@ -1,9 +1,10 @@
 ---
 docker_image: "{{ docker_registry.fqdn }}:{{ docker_registry.port }}/panda-toolbox:{{ toolbox.docker_tag }}"
 docker_instance_name: panda-toolbox
+docker_runtime_user: "{{ cluster_runtime_user }}"
 
 # Docker pre-image variables
 host_base_folder: "{{ toolbox.host.folders.base }}"
 host_data_folders:
   config_hadoop: "{{ toolbox.host.folders.config }}/hadoop"
-  state: "{{ toolbox.host.folders.state }}"
+  state: "{{ toolbox.host.folders.state }}/jupyter-lab"

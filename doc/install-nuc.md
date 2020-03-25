@@ -13,7 +13,7 @@
 - Setup static mac address to node wifi ip in the router
 
 #2) base packages
- - sudo apt install python
+ - sudo apt install python3
 
 #3) Ansible playbook for maintenance user and network setup
 ansible-playbook -i cluster-inventory new-worker-node-nuc-ubuntu.yml -e ansible_password=${NUC_JVA_SUDO_PWD} --ask-become-pass

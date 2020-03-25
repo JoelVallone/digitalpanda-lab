@@ -13,13 +13,25 @@
     - yarn-site.xml
   when: not (absent_from_node | bool)
 
+- name: "Add misc. configuration files on host"
+  template:
+    src: "{{ item }}"
+    dest: "{{ toolbox.host.folders.config }}/{{ item }}"
+  with_items:
+    - jupyter_notebook_config.py
+  when: not (absent_from_node | bool)
+
 - name: "Pull image {{ docker_image }} and (re)start container {{ docker_instance_name }}"
   become: yes
   docker_container:
     name: "{{ docker_instance_name }}"
     state: started
     pull: true
-    command: "tail -f /dev/null"
+    command: >-
+      bash -c
+      "source ${JUPYTERLAB_BIN_FOLDER}/jupyter-lab-env/bin/activate;
+      jupyter lab
+      --config=${TOOLBOX_CONFIG}/jupyter_notebook_config.py;"
     restart: yes
     image: "{{ docker_image }}"
     volumes:

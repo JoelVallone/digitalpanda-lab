@@ -31,8 +31,8 @@
     path: "{{ item.value }}"
     state: directory
     recurse: yes
-    owner: "{{ cluster_config_user }}"
-    group: "{{ cluster_config_user }}"
+    owner: "{{ docker_runtime_user }}"
+    group: "{{ docker_runtime_user }}"
     mode: 0775
   with_dict: "{{ host_data_folders }}"
   when:

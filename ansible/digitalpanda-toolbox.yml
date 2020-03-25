@@ -1,6 +1,9 @@
 ---
 - hosts:
    - cluster_client_host
+  vars_prompt:
+    - name: toolbox_init_token
+      prompt: "Define the toolbox init-token: "
   roles:
     - digitalpanda-toolbox
 

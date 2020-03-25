@@ -17,11 +17,22 @@
     state: started
     masked: no
 
-- name: "Create {{ cluster_config_user }} user"
+- name: "Create configuration user: {{ cluster_config_user }}"
   become: yes
   user:
     name: "{{ cluster_config_user }}"
+    uid: "{{ cluster_config_user_id }}"
+    create_home: True
     comment: "Cluster configuration account"
+    generate_ssh_key: yes
+
+- name: "Create runtime user: {{ cluster_runtime_user }}"
+  become: yes
+  user:
+    name: "{{ cluster_runtime_user }}"
+    uid: "{{ cluster_runtime_user_id }}"
+    create_home: True
+    comment: "Cluster runtime account"
     generate_ssh_key: yes
   
 - name: "Enable pasword-less sudo for user {{ cluster_config_user }}"
@@ -53,7 +64,6 @@
     dest: /etc/hosts
     owner: root
     mode: "u=rw,g=r,o=r"
-
 
 - name: "Copy wired network ip configuration file"
   become: yes
