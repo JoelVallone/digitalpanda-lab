@@ -4,9 +4,12 @@
     name: docker-pre-image
 
 - name: "Add hadoop global configuration files on host"
+  become: yes
   template:
     src: "{{ role_path }}/../hadoop-common/templates/{{ item }}.j2"
     dest: "{{ host_data_folders.config_hadoop }}/{{ item }}"
+    owner: "{{ docker_runtime_user }}"
+    group: "{{ docker_runtime_user }}"
   with_items:
     - core-site.xml
     - hdfs-site.xml
@@ -14,9 +17,12 @@
   when: not (absent_from_node | bool)
 
 - name: "Add misc. configuration files on host"
+  become: yes
   template:
     src: "{{ item }}"
     dest: "{{ toolbox.host.folders.config }}/{{ item }}"
+    owner: "{{ docker_runtime_user }}"
+    group: "{{ docker_runtime_user }}"
   with_items:
     - jupyter_notebook_config.py
   when: not (absent_from_node | bool)

@@ -100,7 +100,10 @@ RUN wget https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/${SPARK_AR
 ENV SPARK_HOME=${TOOLBOX_BASE}/${SPARK_FOLDER_NAME}
 ENV PATH="${PATH}:${SPARK_HOME}/bin"
 
-# Pyspark integration in Jupyter-lab
+# Pyspark integration in Jupyter-lab => requires worker nodes to use same python and library versions
+ENV PYTHONPATH=${SPARK_HOME}/python
+ENV PYSPARK_DRIVER_PYTHON=python3
+ENV PYSPARK_PYTHON=/usr/bin/python3.4
 RUN . ${JUPYTERLAB_BIN_FOLDER}/jupyter-lab-env/bin/activate && \
     pip install findspark
 

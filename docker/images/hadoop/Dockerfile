@@ -33,5 +33,17 @@ COPY entrypoint.sh /opt/entrypoint.sh
 RUN chmod gu+x /opt/entrypoint.sh
 COPY default-config ${HADOOP_CONF_DIR}
 
+# Pyspark on worker nodes : python & libraries must be the same version as the driver
+#ENV SPARK_VERSION=2.4.5
+#ENV PYTHON_VERSION=3.4
+#RUN  apt-get update && \
+#     apt-get install -y software-properties-common && \
+#     add-apt-repository -y ppa:deadsnakes/ppa && \
+#     apt-get update -y && \
+#     apt-get install -y python${PYTHON_VERSION} python-pip && \
+#     rm -rf /var/lib/apt/lists/*
+#
+#RUN  pip install pyspark==${SPARK_VERSION}
+
 ENTRYPOINT ["/opt/entrypoint.sh"]
 CMD ["date"]
