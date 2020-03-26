@@ -88,6 +88,23 @@ RUN mkdir -p ${JUPYTERLAB_STATE_FOLDER}  && \
     jupyter notebook --generate-config && \
     mv /home/${USER_NAME}/.jupyter/jupyter_notebook_config.py ${JUPYTERLAB_CONFIG_FOLDER}/jupyter_notebook_config.py
 
+USER 0
+
+# Spark-client
+ENV SPARK_VERSION=2.4.5
+ENV SPARK_ARCHIVE=spark-${SPARK_VERSION}-bin-hadoop2.7.tgz
+ENV SPARK_FOLDER_NAME=spark-${SPARK_VERSION}-bin-hadoop2.7
+RUN wget https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/${SPARK_ARCHIVE} && \
+    tar -zxf ${SPARK_ARCHIVE}  && \
+    rm ${SPARK_ARCHIVE}
+ENV SPARK_HOME=${TOOLBOX_BASE}/${SPARK_FOLDER_NAME}
+ENV PATH="${PATH}:${SPARK_HOME}/bin"
+
+# Pyspark integration in Jupyter-lab
+RUN . ${JUPYTERLAB_BIN_FOLDER}/jupyter-lab-env/bin/activate && \
+    pip install findspark
+
+USER ${USER_ID}
 CMD . ${JUPYTERLAB_BIN_FOLDER}/jupyter-lab-env/bin/activate; \
     jupyter lab \
         --ip 0.0.0.0 \

@@ -13,10 +13,10 @@ capacity scheduler & queues:
 </property>
 <property>
     <name>yarn.scheduler.capacity.root.maximum-allocation-mb</name>
-    <value>8192</value>
+    <value>{{ hadoop.yarn.ressourcemanager.total_memory_MB }}</value>
 </property>
 <property>
     <name>yarn.scheduler.capacity.root.maximum-allocation-vcores</name>
-    <value>4</value>
+    <value>{{ hadoop.yarn.ressourcemanager.total_vCPU }}</value>
 </property>
 </configuration>

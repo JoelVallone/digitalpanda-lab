@@ -27,6 +27,7 @@
     name: "{{ docker_instance_name }}"
     state: started
     pull: true
+    memory: 2G
     command: >-
       bash -c
       "source ${JUPYTERLAB_BIN_FOLDER}/jupyter-lab-env/bin/activate;

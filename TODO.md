@@ -1,6 +1,7 @@
 # New
 ## Jupyter-Lab on steroids
 - Setup PiSpark within jupyter-lab
+    - https://www.sicara.ai/blog/2017-05-02-get-started-pyspark-jupyter-notebook-3-minutes
 
 # Up to date backend
 - Deploy backend with up to date code (verify cassandra table access code)

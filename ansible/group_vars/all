@@ -79,6 +79,8 @@ hadoop:
   yarn:
     ressourcemanager:
       host_fqdn: "{{ groups['hadoop_master_node'][0] }}"
+      total_memory_MB: 8192
+      total_vCPU: 8
     nodemanager:
       memory_MB: 4096
       vCPU: 4
