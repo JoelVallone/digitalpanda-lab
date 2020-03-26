@@ -7,8 +7,8 @@
 
 - hosts: hadoop_worker_nodes
   roles:
-    - hadoop-yarn-nodemanager
     - hadoop-hdfs-datanode
+    - hadoop-yarn-nodemanager
 
 
 

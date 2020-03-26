@@ -1,8 +1,9 @@
-pristine_system: true
+pristine_system: false
 absent_from_system: false
 
 kafka_topics_setup: true
-build_digestion_project: true
+flink_build_digestion_project: true
+flink_deploy_digestion_project: true
 
 ignore_err: false
 debug_mode: true
