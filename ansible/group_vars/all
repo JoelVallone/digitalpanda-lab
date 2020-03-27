@@ -77,12 +77,12 @@ hadoop:
       host_fqdn: "{{ groups['hadoop_master_node'][0] }}"
 
   yarn:
-    ressourcemanager:
+    ressourcemanager: # The cluster has 2 node-managers
       host_fqdn: "{{ groups['hadoop_master_node'][0] }}"
-      total_memory_MB: 8192
+      total_memory_MB: 12288
       total_vCPU: 8
     nodemanager:
-      memory_MB: 4096
+      memory_MB: 6144
       vCPU: 4
 
 inject_test_data: false

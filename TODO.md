@@ -1,14 +1,8 @@
 # New
-## Jupyter-Lab on steroids
-- Setup PiSpark within jupyter-lab
-    - https://www.sicara.ai/blog/2017-05-02-get-started-pyspark-jupyter-notebook-3-minutes
-
-# Up to date backend
-- Deploy backend with up to date code (verify cassandra table access code)
-
 ## sensor-digestion-flink
  - Find or implement ConfluentRegistryAvroSerializationSchema
     - Wait flink 1.11 OR use third party lib
+ - deploy hadoop with new resource allocation settings
 
 # Process all historical data
 - create HistoricalDataPushJob (read from cassandra, write to kafka) with either Flink OR with Jupyter Lab & PiSpark
