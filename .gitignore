@@ -8,7 +8,7 @@
 *.*#
 .idea/
 scripts/startContainers.sh
-docker/images/backend-java/backend.application-0.1.0.jar
+docker/images/backend-java/digitalpanda-backend-0.1.0.jar
 docker/images/frontend-angular/digitalpanda-frontend/
 doc/cluster-notes/cp-docker-images/
 doc/cluster-notes/cp-more-examples/

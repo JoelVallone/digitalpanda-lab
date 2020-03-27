@@ -101,7 +101,8 @@ public class SensorMeasureHistoryService {
                         + "\n> Total execution time: " + (sampleResized - start) + " Millis"
                         + "\n -> db load time: " + (dbLoaded - start) + " Millis"
                         + "\n --> row count: " + timeSortedBaseSample.getSecond().size()
-                        + "\n -> sample resizing: " + (sampleResized - dbLoaded) + " Millis"
+                        + "\n --> sample period: " + timeSortedBaseSample.getFirst().getAggregateIntervalSeconds() + " Sec"
+                        + "\n -> sample resizing duration: " + (sampleResized - dbLoaded) + " Millis"
                         + "\n --> Covered sample interval: " + (endTimeMillisExcl - startTimeMillisIncl) + " Millis"
         );
 
