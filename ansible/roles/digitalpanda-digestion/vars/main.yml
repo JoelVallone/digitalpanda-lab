@@ -78,6 +78,7 @@ cassandra_time_series_tables:
     TWCS_compaction_window_size_days: 30
     ttl_seconds: 630720000   # 20 years
 
+#TODO: Setup cas-snk-measure-latest once sensor data sent directly to KafKa
 kafka_connect_cassandra_sinks:
   - name: "cas-snk-measure-1-sec"
     topic: "org.digitalpanda.measure.processed-1-sec"

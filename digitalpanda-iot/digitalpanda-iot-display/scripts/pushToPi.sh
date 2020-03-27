@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#set -x
+set -x
 
 ################################################################################
 # DESCRIPTION: Build, deploy and run the iot code on a list of nodes
@@ -20,7 +20,7 @@ export JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64";
 ################################################################################
 function clean_exit() {
     notify "STOPPING CODE ON ${1}"
-    ssh pi@${1} "[ -f iot-scala.sh ] && ./iot-scala.sh stop" < /dev/null || true
+    ssh pi@${1} "[ -f digitalpanda-iot-display.sh ] && ./digitalpanda-iot-display.sh stop" < /dev/null || true
     cd - &> "/dev/null" || true;
     exit 0;
 }
@@ -91,21 +91,21 @@ for i in ${DEPLOY_TARGETS[@]}; do
     ! isNodeId $i && continue
     IP=${PI_IP[$((${i} - 1))]};  HOSTNAME=${PI_HOSTNAME[$((${i} - 1))]}
     notify "DEPLOYING CODE ON : $HOSTNAME,$IP"
-    ssh pi@${IP} "[ -e ./iot-scala.sh ] && sudo ./iot-scala.sh stop || true" < /dev/null
-    ssh pi@${IP} '[ -e ./iot-scala ] && rm -f ./iot-scala/*' || true < /dev/null
-    ssh pi@${IP} 'mkdir -p ~/iot-scala' < /dev/null
-    scp ${IOT_FOLDER}/target/scala-2.12/iot-scala-assembly-1.0.jar pi@${IP}:./iot-scala
-    scp ${IOT_FOLDER}/../config/${HOSTNAME}.properties pi@${IP}:./iot-scala/configuration.properties
-    scp ${IOT_FOLDER}/scripts/iot-scala.sh pi@${IP}:.
-    ssh pi@${IP} "sudo ln -fs ~/iot-scala.sh /etc/init.d/iot-scala && sudo update-rc.d iot-scala defaults" < /dev/null
-    ssh pi@${IP} "chmod 755 ./iot-scala.sh;sudo systemctl daemon-reload" < /dev/null
-    ssh pi@${IP} "chmod 755 ./iot-scala.sh";
+    ssh pi@${IP} "[ -e ./digitalpanda-iot-display.sh ] && sudo ./digitalpanda-iot-display.sh stop || true" < /dev/null
+    ssh pi@${IP} '[ -e ./digitalpanda-iot-display ] && rm -f ./digitalpanda-iot-display/*' || true < /dev/null
+    ssh pi@${IP} 'mkdir -p ~/digitalpanda-iot-display' < /dev/null
+    scp ${IOT_FOLDER}/target/scala-2.12/digitalpanda-iot-display-assembly-1.0.jar pi@${IP}:./digitalpanda-iot-display
+    scp ${IOT_FOLDER}/../config/${HOSTNAME}.properties pi@${IP}:./digitalpanda-iot-display/configuration.properties
+    scp ${IOT_FOLDER}/scripts/digitalpanda-iot-display.sh pi@${IP}:.
+    ssh pi@${IP} "sudo ln -fs ~/digitalpanda-iot-display.sh /etc/init.d/digitalpanda-iot-display && sudo update-rc.d digitalpanda-iot-display defaults" < /dev/null
+    ssh pi@${IP} "chmod 755 ./digitalpanda-iot-display.sh;sudo systemctl daemon-reload" < /dev/null
+    ssh pi@${IP} "chmod 755 ./digitalpanda-iot-display.sh";
 done
 
 if [ ${RUN_TARGET} != "none" ] && isNodeId ${RUN_TARGET}; then
     IP=${PI_IP[$((${RUN_TARGET}-1))]}
     trap "clean_exit ${IP}" INT
     notify "STARTING CODE ON : ${IP}"
-    ssh pi@${IP} "sudo service iot-scala start" < "/dev/null"
+    ssh pi@${IP} "sudo service digitalpanda-iot-display start" < "/dev/null"
 fi
 cd - &> "/dev/null";
