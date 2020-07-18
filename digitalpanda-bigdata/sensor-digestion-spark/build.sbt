@@ -15,8 +15,8 @@ val cassandraClientVersion = "3.7.2"
 
 libraryDependencies ++= Seq(
   // Scala
-  "org.apache.spark" %% "spark-core" % sparkVersion,
-  "org.apache.spark" %% "spark-sql" % sparkVersion,
+  "org.apache.spark" %% "spark-core" % sparkVersion % Provided,
+  "org.apache.spark" %% "spark-sql" % sparkVersion % Provided,
   "com.datastax.spark" %% "spark-cassandra-connector" % connectorVersion,
 
   // Java

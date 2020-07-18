@@ -7,8 +7,7 @@ import org.apache.avro.io.EncoderFactory
 import org.apache.avro.specific.{SpecificData, SpecificDatumWriter, SpecificRecord}
 import org.apache.flink.streaming.util.serialization.KeyedSerializationSchema
 
-// TODO: Replace with ConfluentRegistryAvroSerializationSchema class https://issues.apache.org/jira/browse/FLINK-9679 with Flink 1.11
-//@SerialVersionUID(1L)
+// Not compatible with confluent-based kafka avro schema registry consumers : missing magic byte
 class AvroKeyedSerializationSchema[V<: SpecificRecord](tClass: Class[V]) extends KeyedSerializationSchema[(String, V)] {
 
   @transient lazy private val datumWriter = new SpecificDatumWriter[V](SpecificData.get.getSchema(tClass));

@@ -1,7 +1,6 @@
 package org.digitalpanda.flink.sensor.digestion
 
 import org.apache.avro.specific.SpecificRecord
-import org.apache.flink.api.common.ExecutionConfig
 import org.apache.flink.formats.avro.registry.confluent.ConfluentRegistryAvroDeserializationSchema
 import org.apache.flink.runtime.state.filesystem.FsStateBackend
 import org.apache.flink.streaming.api.functions.sink.SinkFunction
@@ -10,11 +9,10 @@ import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindo
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer, FlinkKafkaProducer}
-import org.apache.flink.streaming.util.serialization.TypeInformationKeyValueSerializationSchema
 import org.digitalpanda.common.data.avro.{Measure, RawMeasure}
 import org.digitalpanda.common.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
-import org.digitalpanda.flink.common.{AvroKeyedSerializationSchema, JobConf}
-import org.digitalpanda.flink.sensor.digestion.operators.{AverageAggregate, EmitAggregateMeasure, MeasureTimestampExtractor}
+import org.digitalpanda.flink.common.{ConfluentRegistryAvroKeyedSerializationSchema, JobConf}
+import org.digitalpanda.flink.sensor.digestion.operators.{AverageMeasureAggregate, EmitAggregateMeasure, MeasureTimestampExtractor}
 import org.slf4j.{Logger, LoggerFactory}
 
 //https://stackoverflow.com/questions/37920023/could-not-find-implicit-value-for-evidence-parameter-of-type-org-apache-flink-ap
@@ -47,14 +45,14 @@ object MeasureDigestionJob {
       kafkaKeyedProducer(rawProcessorConfig.getString("topic.output"), classOf[Measure])
     )
     //  => Window averages
-    /* TODO: Enable once pre-processing works
+
+    /* TODO: Enable once pre-processing works */
     jobConf.forEach("flink.stream.average-digests"){
       windowConf =>
         windowAverage(env,
           Time.seconds(windowConf.getLong("window-size-sec")),
           kafkaValueConsumer(windowConf.getString("topic.input"), classOf[Measure]),
           kafkaKeyedProducer(windowConf.getString("topic.output"), classOf[Measure]))}
-    */
     env.execute(jobName)
   }
 
@@ -105,9 +103,9 @@ object MeasureDigestionJob {
     val avgMeasureStream = highResolutionMeasureStream
       // https://ci.apache.org/projects/flink/flink-docs-release-1.9/dev/stream/operators/windows.html#window-functions
       .assignTimestampsAndWatermarks(MeasureTimestampExtractor())
-      .keyBy("location", "measureType")
+      .keyBy(v => s"${v.getLocation}-${v.getMeasureType}")
       .window(TumblingEventTimeWindows.of(windowSize))
-      .aggregate(AverageAggregate[Measure](_.getValue), EmitAggregateMeasure())
+      .aggregate(AverageMeasureAggregate(), EmitAggregateMeasure())
 
     // -> Sink
     avgMeasureStream
@@ -117,7 +115,6 @@ object MeasureDigestionJob {
 
   def kafkaValueConsumer[V <: SpecificRecord](topic: String, tClass: Class[V]) : FlinkKafkaConsumer[V]  =
   //https://ci.apache.org/projects/flink/flink-docs-release-1.9/dev/connectors/kafka.html
-  //Note: The KafkaDeserializationSchemaWrapper used in FlinkKafkaConsumer only reads the value bytes
     new FlinkKafkaConsumer(
       topic,
       ConfluentRegistryAvroDeserializationSchema.forSpecific(
@@ -125,11 +122,13 @@ object MeasureDigestionJob {
       jobConf.kafkaConsumerConfig()
     )
 
-  def kafkaKeyedProducer[V <: SpecificRecord](topic: String, tClass: Class[V]): FlinkKafkaProducer[Pair[String, V]] =
+  def kafkaKeyedProducer[V <: SpecificRecord](topic: String, tClass: Class[V]): FlinkKafkaProducer[(String, V)] =
     new FlinkKafkaProducer(
       topic,
-      new AvroKeyedSerializationSchema(tClass),
-      kafkaProducerConfig()
+      new ConfluentRegistryAvroKeyedSerializationSchema(
+        tClass, s"$topic-value", jobConf.config.getString("base.kafka.schema.registry.url")),
+      jobConf.kafkaProducerConfig(),
+      FlinkKafkaProducer.Semantic.AT_LEAST_ONCE
     )
 
 }

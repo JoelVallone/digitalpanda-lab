@@ -8,19 +8,17 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow
 import org.apache.flink.util.Collector
 import org.digitalpanda.common.data.avro.Measure
 import org.digitalpanda.common.data.history.{HistoricalDataStorageHelper, HistoricalDataStorageSizing}
-case class EmitAggregateMeasure() extends ProcessWindowFunction[Double, (String, Measure), Tuple, TimeWindow] {
+case class EmitAggregateMeasure() extends ProcessWindowFunction[Measure, (String, Measure), String, TimeWindow] {
 
-  def process(key: Tuple, context: Context, aggregate: Iterable[Double], out: Collector[(String, Measure)]): Unit = {
+  def process(key: String, context: Context, aggregate: Iterable[Measure], out: Collector[(String, Measure)]): Unit = {
     val sampleTimestamp = middleWindowTimestamp(context);
+    val aggregateMeasure = aggregate.iterator.next()
     out.collect((
-      asString(key),
+      key,
       Measure
-        .newBuilder()
-        .setLocation(key.getField(0))
+        .newBuilder(aggregateMeasure)
         .setTimeBlockId(timeBlockIdFrom(context, sampleTimestamp))
-        .setMeasureType(key.getField(1))
         .setTimestamp(sampleTimestamp)
-        .setValue(aggregate.iterator.next())
         .build()
     ))
   }
