@@ -22,7 +22,7 @@
     "@angular/router": "~8.2.14",
     "@ng-bootstrap/ng-bootstrap": "~4.0.2",
     "@swimlane/ngx-charts": "12.1.0",
-    "bootstrap": "~4.2.1",
+    "bootstrap": "~4.3.1",
     "core-js": "~2.5.4",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.7",
