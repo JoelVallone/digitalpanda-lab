@@ -5,12 +5,16 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Development environment setup
 ```
 sudo apt-get update
-sudo apt-get install build-essential checkinstall libssl-dev npm
+sudo apt-get install nodejs-dev node-gyp libssl1.0-dev
+sudo apt-get install npm
+#old: sudo apt-get install build-essential checkinstall libssl-dev npm
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.1/install.sh | bash
 nvm install 10.13.0
 nvm use 10.13.0
 nvm alias default
 ```
+
+To run angular-cli commands with npm use `npm run <ng "command">`
 
 ## Development server
 

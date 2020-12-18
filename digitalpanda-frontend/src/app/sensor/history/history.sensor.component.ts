@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component} from '@angular/core';
 import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, merge } from 'rxjs';
 import { mergeMap, flatMap, bufferCount } from 'rxjs/operators';

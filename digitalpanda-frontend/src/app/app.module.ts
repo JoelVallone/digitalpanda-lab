@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 
 import {RouterModule} from '@angular/router';
 import {GreetingService} from './home/greeting.service';
-import {HttpModule} from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import {LocationStrategy, HashLocationStrategy} from '@angular/common';
 
 import {HomeComponent} from './home/home.component';
@@ -20,7 +20,7 @@ import {UiModule} from './ui/ui.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
-  imports     : [BrowserModule, FormsModule, HttpModule, AppRoutingModule, NgbModule, SensorModule, UiModule],
+  imports     : [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule, NgbModule, SensorModule, UiModule],
   providers   : [GreetingService, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap   : [AppComponent]
 })
