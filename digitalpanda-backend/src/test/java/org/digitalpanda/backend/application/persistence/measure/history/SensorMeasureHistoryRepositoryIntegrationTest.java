@@ -89,6 +89,6 @@ public class SensorMeasureHistoryRepositoryIntegrationTest extends CassandraWith
 
     @After
     public void dropTable() {
-        adminTemplate.dropTable(CqlIdentifier.of(SensorMeasureLatestDao.SENSOR_MEASURE_LATEST_TABLE_NAME));
+        //adminTemplate.dropTable(CqlIdentifier.of(SensorMeasureLatestDao.SENSOR_MEASURE_LATEST_TABLE_NAME));
     }
 }
