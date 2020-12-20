@@ -14,7 +14,7 @@ nvm use 10.13.0
 nvm alias default
 ```
 
-To run angular-cli commands with npm use `npm run <ng "command">`
+To run angular-cli commands with npm use `npm run <ng "command" -- --param1=value1>`
 
 ## Development server
 
@@ -27,6 +27,9 @@ Run `ng generate component component-name` to generate a new component. You can 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+To serve the resulting build, run `http-server -a 0.0.0.0 -p 8000 $(pwd)/dist/digitalpanda`
+Precondition: nodeJS http-server is installed : `npm install http-server -g`
 
 ## Running unit tests
 

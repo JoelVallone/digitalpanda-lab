@@ -12,9 +12,9 @@
             </div>
         </div>
     </div>
-    <div class="row" style="margin-top: 80px;">
+    <div *ngIf="enableWebsocket" class="row" style="margin-top: 80px;">
         <div class="col-12 thumbnail text-center">
-            Server socket-based response: {{serverEcho}}
+            Server socket-based echo response: <br> <i>{{serverEcho}}</i>
         </div>
     </div>
 </div>

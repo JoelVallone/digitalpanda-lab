@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import { SensorMeasureMetaData, SensorMeasureLatestDto, SensorMeasuresHistoryDto } from './sensor.classes';
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SensorService {
