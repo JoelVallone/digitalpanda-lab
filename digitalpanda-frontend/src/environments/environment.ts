@@ -6,9 +6,10 @@ import { Environment } from "./environment.type";
 
 export const environment: Environment = {
   production: false,
-  // APIEndpoint: 'http://digitalpanda.org:8081',
-  APIEndpoint: 'http://192.168.0.102:8081',
-  // APIEndpoint: 'http://127.0.0.1:8081',
+  // httpApiEndpoint: 'http://digitalpanda.org:8081',
+  httpApiEndpoint: 'http://127.0.0.1:8081',
+  wsApiEndpoint: 'ws://127.0.0.1:8081',
+  // httpApiEndpoint: 'http://127.0.0.1:8081',
   enableWebsocket: true
 };
 

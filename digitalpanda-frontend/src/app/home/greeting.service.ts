@@ -15,7 +15,7 @@ export class GreetingService {
 
   private makeRequest(name: string): Observable<Greeting> {
     const params = new HttpParams().set('name', name);
-    const url = environment.APIEndpoint + `/ui/greeting`;
+    const url = environment.httpApiEndpoint + `/ui/greeting`;
     return this.http.get<Greeting>(url, {params});
   }
 }

@@ -1,5 +1,6 @@
 export interface Environment {
     production: boolean,
-    APIEndpoint : string,
+    httpApiEndpoint : string,
+    wsApiEndpoint : string,
     enableWebsocket: boolean
 }

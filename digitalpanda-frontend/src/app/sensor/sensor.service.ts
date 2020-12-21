@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SensorService {
-  public static baseUrl: string  =  environment.APIEndpoint + `/ui/sensor`;
+  public static baseUrl: string  =  environment.httpApiEndpoint + `/ui/sensor`;
 
   constructor(private http: HttpClient) {}
 

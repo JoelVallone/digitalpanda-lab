@@ -1,0 +1,9 @@
+---
+- hosts:
+    - cassandra_nodes
+  roles:
+    - digitalpanda-base
+
+- hosts: cassandra_nodes
+  roles:
+    - cassandra

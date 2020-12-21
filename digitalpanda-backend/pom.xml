@@ -17,9 +17,10 @@
         <maven.exec.version>1.5.0</maven.exec.version>
         <org.codehaus.mojo.version>1.2.1</org.codehaus.mojo.version>
         <spring.boot.version>2.3.7.RELEASE</spring.boot.version>
+        <springframework.version>5.2.2.RELEASE</springframework.version>
+        <spring.data.cassandra.version>2.2.12.RELEASE</spring.data.cassandra.version>
         <mockito.version>1.9.5</mockito.version>
         <datastax.version>3.2.0</datastax.version>
-        <spring.data.cassandra.version>2.2.12.RELEASE</spring.data.cassandra.version>
         <jackson-2-version>2.11.3</jackson-2-version>
         <org.cassandraunit.version>3.5.0.1</org.cassandraunit.version>
     </properties>
@@ -64,6 +65,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
         <dependency>
@@ -132,16 +138,4 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <id>spring-releases</id>
-            <url>https://repo.spring.io/libs-release</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-releases</id>
-            <url>https://repo.spring.io/libs-release</url>
-        </pluginRepository>
-    </pluginRepositories>
 </project>

@@ -31,9 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.debug('HomeComponent.ngOnDestroy - begin')
     this.echoServiceSubscription && this.echoServiceSubscription.unsubscribe();
-    console.debug('HomeComponent.ngOnDestroy - end')
   }
 
   ngOnInit(): void  {
@@ -64,6 +62,6 @@ export class HomeComponent implements OnInit, OnDestroy {
        console.debug('HomeComponent.echoServiceSubscription: Connection to socket-server closed')
      });
 
-   this.echoSocketService.sendMessage("Hello stream @ " + formatDate(new Date(), 'yyyy/MM/dd HH:mm:ss', 'en'));
+   this.echoSocketService.sendMessage("Hello backend, it is " + formatDate(new Date(), 'yyyy/MM/dd HH:mm:ss', 'en'));
   }
 }
