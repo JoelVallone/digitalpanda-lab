@@ -4,5 +4,9 @@ export const environment : Environment = {
   production: true,
   httpApiEndpoint: 'http://digitalpanda.org:8081',
   wsApiEndpoint: 'ws://digitalpanda.org:8081',
-  enableWebsocket: false
+  wsStompHandshakeEndpoint: "/ws-hanshake",
+  wsStompOutPrefix: "/ui-input",
+  wsStompInPrefix: "/backend-output",
+  enableWebsocket: false,
+  debugLogs: false
 };

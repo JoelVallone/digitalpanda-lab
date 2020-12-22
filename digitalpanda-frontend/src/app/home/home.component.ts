@@ -3,9 +3,12 @@ import { GreetingService } from './greeting.service';
 import { Subscription} from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Greeting } from './greeting.classes';
-import { EchoSocketService } from './echo-socket.service';
+import { EchoNativeWebSocketService } from './ws-echo/echo-ws-native.service';
 import { first } from 'rxjs/operators';
 import {formatDate} from '@angular/common';
+import { EchoStompWebSocketService } from './ws-echo/echo-ws-stomp.service';
+import { WsEchoService } from './ws-echo/echo-ws.service';
+import { Logger } from '../core/ws-stomp/logger';
 
 
 @Component({
@@ -20,12 +23,19 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   serverEcho: string;
   echoServiceSubscription: Subscription;
+  echoWsService: WsEchoService;
 
   get enableWebsocket(): boolean {
     return environment.enableWebsocket;
   }
 
-  constructor(public greetingService: GreetingService, public echoSocketService: EchoSocketService) {
+  constructor(
+    public greetingService: GreetingService, 
+    public echoNativeSocketService: EchoNativeWebSocketService,
+    public echoStompSocketService: EchoStompWebSocketService) {
+    
+      //this.echoWsService = echoNativeSocketService;
+    this.echoWsService = echoStompSocketService;
     this.callerName = 'visitor';
     this.greeting = new Greeting(0, 'nothing');
   }
@@ -48,20 +58,22 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private initWebsocketEchoSubscription() {
-    this.echoServiceSubscription = this.echoSocketService.getInputStream()
-    .subscribe(
-     msg => {
-       this.serverEcho = msg
-       console.debug('HomeComponent.echoServiceSubscription: Message received from socket-server: ' + msg)
-     },
-     err => {
-       this.serverEcho = "HomeComponent.echoServiceSubscription: Connection error to server"
-       console.error('Error with socket-server:' + err)
-     },
-     () => {
-       console.debug('HomeComponent.echoServiceSubscription: Connection to socket-server closed')
-     });
+    this.echoServiceSubscription = this.echoWsService.getInputStream()
+      .subscribe(
+        msg => {
+          this.serverEcho = msg
+          Logger.debug('HomeComponent.echoServiceSubscription: Message received from socket-server: ' + msg)
+        },
+        err => {
+          this.serverEcho = "HomeComponent.echoServiceSubscription: Connection error to server"
+          Logger.error('Error with socket-server:' + err)
+        },
+        () => {
+          Logger.debug('HomeComponent.echoServiceSubscription: Connection to socket-server closed')
+        }
+      );
 
-   this.echoSocketService.sendMessage("Hello backend, it is " + formatDate(new Date(), 'yyyy/MM/dd HH:mm:ss', 'en'));
+   this.echoWsService
+    .sendMessage("Hello backend, it is " + formatDate(new Date(), 'yyyy/MM/dd HH:mm:ss', 'en'));
   }
 }
