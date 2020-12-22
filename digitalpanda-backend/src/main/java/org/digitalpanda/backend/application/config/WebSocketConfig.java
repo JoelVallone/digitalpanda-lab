@@ -1,6 +1,6 @@
 package org.digitalpanda.backend.application.config;
 
-import org.digitalpanda.backend.application.northbound.ressource.echo.EchoUiHandler;
+import org.digitalpanda.backend.application.northbound.ressource.echo.EchoUiTextWsHandler;
 import org.springframework.boot.task.TaskSchedulerBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +10,6 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
-
-import java.io.IOException;
 
 @Configuration
 @EnableWebSocket
@@ -29,7 +27,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Bean
     public WebSocketHandler echoUiHandler() {
-        return new EchoUiHandler();
+        return new EchoUiTextWsHandler();
     }
 
     @Bean

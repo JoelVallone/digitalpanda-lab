@@ -4,6 +4,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
@@ -15,12 +16,13 @@ import org.springframework.web.socket.WebSocketSession;
  *  - https://docs.spring.io/spring-framework/docs/4.3.x/spring-framework-reference/html/websocket.html
  *  - https://github.com/ahmadmu/websocket-rxjs-ng8-spring
  */
-public class EchoUiHandler extends TextWebSocketHandler {
+public class EchoUiTextWsHandler extends TextWebSocketHandler {
 
 
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        session.sendMessage(new TextMessage(LocalDateTime.now() + ": server echoes \"" + message.getPayload() + "\""));
+        String textResponse = "[WS-text-full-duplex:" + getTimestamp() + "] echo \"" + message.getPayload() + "\"";
+        session.sendMessage(new TextMessage(textResponse));
     }
 
     @Override
@@ -41,5 +43,9 @@ public class EchoUiHandler extends TextWebSocketHandler {
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) {
         // hanedle transport error
+    }
+
+    private static String getTimestamp() {
+        return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }
