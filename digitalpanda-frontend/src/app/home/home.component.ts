@@ -34,8 +34,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     public echoNativeSocketService: EchoNativeWebSocketService,
     public echoStompSocketService: EchoStompWebSocketService) {
     
-      //this.echoWsService = echoNativeSocketService;
-    this.echoWsService = echoStompSocketService;
+    this.echoWsService = echoNativeSocketService;
+    //this.echoWsService = echoStompSocketService;
     this.callerName = 'visitor';
     this.greeting = new Greeting(0, 'nothing');
   }

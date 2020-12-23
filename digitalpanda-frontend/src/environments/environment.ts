@@ -9,9 +9,9 @@ export const environment: Environment = {
   // httpApiEndpoint: 'http://digitalpanda.org:8081',
   httpApiEndpoint: 'http://127.0.0.1:8081',
   wsApiEndpoint: 'ws://127.0.0.1:8081',
-  wsStompHandshakeEndpoint: "/ws-handshake",
-  wsStompOutPrefix: "/ui-input",
-  wsStompInPrefix: "/backend-output",
+  wsStompHandshakeEndpoint: "/ws/stomp/handshake",
+  wsStompPublishPrefix: "/ws/stomp/frontend-input",
+  wsStompSubscribePrefix: "/ws/stomp/backend-output",
   // httpApiEndpoint: 'http://127.0.0.1:8081',
   enableWebsocket: true,
   debugLogs: true

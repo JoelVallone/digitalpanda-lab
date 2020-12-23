@@ -3,8 +3,8 @@ export interface Environment {
     httpApiEndpoint : string,
     wsApiEndpoint : string,
     wsStompHandshakeEndpoint: string,
-    wsStompOutPrefix: string,
-    wsStompInPrefix: string,
+    wsStompPublishPrefix: string,
+    wsStompSubscribePrefix: string,
     enableWebsocket: boolean,
     debugLogs: boolean,
 }

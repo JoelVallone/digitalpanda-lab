@@ -12,17 +12,17 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableScheduling
 public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    public static final String BACKEND_WS_STOMP_URL_OUTPUT_PREFIX = "/backend-output";
+    public static final String BACKEND_WS_STOMP_URL_OUTPUT_PREFIX = "/ws/stomp/backend-output";
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-handshake")
+        registry.addEndpoint("/ws/stomp/handshake")
                 .setAllowedOrigins("*");
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/ui-input");
+        registry.setApplicationDestinationPrefixes("/ws/stomp/frontend-input");
         registry.enableSimpleBroker(BACKEND_WS_STOMP_URL_OUTPUT_PREFIX);
     }
 

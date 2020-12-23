@@ -19,8 +19,8 @@ import { WsEchoService } from './echo-ws.service';
 })
 export class EchoStompWebSocketService implements WsEchoService {
   
-  private echoSendEndpoint: string = environment.wsStompOutPrefix + "/echo";
-  private echoReceiveEndpoint: string = environment.wsStompInPrefix + "/echo";
+  private echoSendEndpoint: string = environment.wsStompPublishPrefix + "/echo";
+  private echoReceiveEndpoint: string = environment.wsStompSubscribePrefix + "/echo";
 
   private $backendRx: Observable<Message>;
   

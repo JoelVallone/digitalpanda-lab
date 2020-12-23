@@ -16,7 +16,7 @@ import { Logger } from 'src/app/core/ws-stomp/logger';
 })
 export class EchoNativeWebSocketService implements OnDestroy, WsEchoService{
   
-  private echoEndpoint: string = environment.wsApiEndpoint + "/ui/websocket/echo" //"ws://localhost:9998/echo"
+  private echoEndpoint: string = environment.wsApiEndpoint + "/ws/echo" //"ws://localhost:9998/echo"
   private socket$: WebSocketSubject<string>;
   
   public connect(): void {

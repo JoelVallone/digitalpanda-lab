@@ -15,8 +15,7 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
-
-    public static final String ECHO_BIDIRECTIONAL_ENDPOINT = "/ui/websocket/echo";
+    public static final String ECHO_BIDIRECTIONAL_ENDPOINT = "/ws/echo";
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
