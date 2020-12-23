@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormArray, FormControl, FormBuilder, AbstractControl, ValidationErrors, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { SensorService } from '../sensor.service';
+import { SensorBackendService } from '../service/sensor.backend.service';
 import { SensorMeasureMetaData, SensorMeasureTypeDetails, SensorMeasureType } from './../sensor.classes';
 
 export class SensorHistorySelection {
@@ -18,7 +18,7 @@ export class SensorHistorySelectorFormService {
   public form: FormGroup;
   private _measureTypesByLocationMap = new Map<string, Array<SensorMeasureMetaData>>();
 
-  constructor(public sensorService: SensorService, private fb: FormBuilder) {
+  constructor(public sensorService: SensorBackendService, private fb: FormBuilder) {
     const intervalTo: Date = new Date();
     const intervalFrom: Date = new Date(intervalTo.getTime() - SensorHistorySelectorFormService.DEFAULT_INTERVAL_LENGTH_MILLIS);
     this.form  = this.fb.group({

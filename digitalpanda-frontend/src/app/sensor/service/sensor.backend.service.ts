@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import { SensorMeasureMetaData, SensorMeasureLatestDto, SensorMeasuresHistoryDto } from './sensor.classes';
-import { environment } from '../../environments/environment';
+import { SensorMeasureMetaData, SensorMeasureLatestDto, SensorMeasuresHistoryDto } from '../sensor.classes';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
-export class SensorService {
+export class SensorBackendService {
   public static baseUrl: string  =  environment.httpApiEndpoint + `/ui/sensor`;
 
   constructor(private http: HttpClient) {}
@@ -19,7 +19,7 @@ export class SensorService {
       .set('startTimeMillisIncl', String(startTimeMillisIncl))
       .set('endTimeMillisExcl', String(endTimeMillisExcl))
       .set('dataPointCount', String(this.cappedDatapointCount(startTimeMillisIncl, endTimeMillisExcl, dataPointCount)));
-    return this.http.get<Array<SensorMeasuresHistoryDto>>(SensorService.baseUrl + `/history`, {params});
+    return this.http.get<Array<SensorMeasuresHistoryDto>>(SensorBackendService.baseUrl + `/history`, {params}).pipe(first());
   }
 
   cappedDatapointCount(startTimeMillisIncl: number, endTimeMillisExcl: number,
@@ -30,15 +30,16 @@ export class SensorService {
      }
      return dataPointCount;
   }
-  loadLatestMeasure(measureKey: SensorMeasureMetaData): Observable<SensorMeasureLatestDto> {
+
+  loadLatestMeasureOnce(measureKey: SensorMeasureMetaData): Observable<SensorMeasureLatestDto> {
     const params = new HttpParams()
       .set('type', JSON.stringify(measureKey.type).replace(/\"/g, ''))
       .set('location', measureKey.location);
-    return this.http.get<SensorMeasureLatestDto>(SensorService.baseUrl, {params})
+    return this.http.get<SensorMeasureLatestDto>(SensorBackendService.baseUrl, {params}).pipe(first())
   }
 
   loadMeasurekeys(): Observable<Array<SensorMeasureMetaData>> {
-    const url: string = SensorService.baseUrl + `/keys`;
-    return this.http.get<Array<SensorMeasureMetaData>>(url);
+    const url: string = SensorBackendService.baseUrl + `/keys`;
+    return this.http.get<Array<SensorMeasureMetaData>>(url).pipe(first());
   }
 }

@@ -38,17 +38,27 @@ public class SensorMeasureUiControllerTest {
     @Test
     public void should_get_latest_sensor_measure() {
         //Given
-        final SensorMeasure sensorMeasure = new SensorMeasure(33L,42.0);
-        final SensorMeasureDTO sensorMeasureDTO = new SensorMeasureDTO(sensorMeasure.getTimestamp(),sensorMeasure.getValue());
-        final SensorMeasureMetaData sensorMeasureMetaData = new SensorMeasureMetaData("home", SensorMeasureType.HUMIDITY);
+        final SensorMeasure sensorMeasure =
+                new SensorMeasure(33L,42.0);
+
+        final SensorMeasureMetaData sensorMeasureMetaData =
+                new SensorMeasureMetaData("home", SensorMeasureType.HUMIDITY);
+
+        final SensorMeasureDTO sensorMeasureDTO =
+                new SensorMeasureDTO(
+                        sensorMeasureMetaData.getLocation(), sensorMeasureMetaData.getType(),
+                        sensorMeasure.getTimestamp(),sensorMeasure.getValue());
+
         when(sensorMeasureLatestRepositoryMock.getLatestMeasure(any())).thenReturn(sensorMeasure);
+
 
         //When
         SensorMeasureDTO actual = sensorMeasureUiController.getLatestMeasure(sensorMeasureMetaData.getLocation(),sensorMeasureMetaData.getType().name());
 
+
         //Then
         verify(sensorMeasureLatestRepositoryMock, times(1))
                 .getLatestMeasure(Matchers.eq(sensorMeasureMetaData));
-        assertEquals(actual,sensorMeasureDTO);
+        assertEquals(sensorMeasureDTO, actual);
     }
 }

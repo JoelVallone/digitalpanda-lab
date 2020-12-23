@@ -16,7 +16,7 @@ import { HistorySensorComponent } from './history/history.sensor.component';
 import { SensorHistorySelectorComponent } from './selector/sensor-history-selector.component';
 import { SensorLocationSelectorComponent } from './selector/sensor-location-selector/sensor-location-selector.component';
 import { SensorHistorySelectorFormService } from './selector/sensor-history-selector-form.service';
-import { SensorService } from './sensor.service';
+import { SensorBackendService } from './service/sensor.backend.service';
 import { SensorIdentificationComponent } from './selector/sensor-identification/sensor-identification.component';
 import { TimeIntervalSelectorComponent } from './selector/time-interval-selector/time-interval-selector.component';
 import { MultiChartHistoryComponent } from './history/multi-chart/multi-chart.history.component';
@@ -33,7 +33,7 @@ import { MultiChartHistoryComponent } from './history/multi-chart/multi-chart.hi
     NgxChartsModule
   ],
   providers: [
-    SensorService, SensorHistorySelectorFormService
+    SensorBackendService, SensorHistorySelectorFormService
   ],
   declarations: [
     LocationValuesDisplayLatestComponent, SensorLocationSelectorComponent,

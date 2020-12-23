@@ -3,7 +3,7 @@ import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { SensorService } from './../sensor.service';
+import { SensorBackendService } from '../service/sensor.backend.service';
 import { SensorMeasureMetaData } from './../sensor.classes';
 import { SensorHistorySelectorFormService, SensorHistorySelection } from './sensor-history-selector-form.service';
 import { FormGroup, FormsModule } from '@angular/forms';
@@ -20,7 +20,7 @@ export class SensorHistorySelectorComponent {
   private measureTypesByLocationMap = new Map<string, Array<SensorMeasureMetaData>>();
   private _sensorForm: FormGroup;
 
-  constructor(public formService: SensorHistorySelectorFormService, public sensorService: SensorService) {
+  constructor(public formService: SensorHistorySelectorFormService, public sensorService: SensorBackendService) {
     this._sensorForm = this.formService.form;
     this.sensorService
       .loadMeasurekeys()

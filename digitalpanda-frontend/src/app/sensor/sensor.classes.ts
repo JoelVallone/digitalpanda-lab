@@ -1,7 +1,3 @@
-export class SensorMeasure {
-  public constructor(public value: number, public timestamp: number) { }
-}
-
 export class SensorMeasureMean {
   public constructor(
     public value: number,
@@ -22,7 +18,12 @@ export class SensorMeasuresHistoryDto {
 }
 
 export class SensorMeasureLatestDto {
-  public constructor(public value: number, public timestamp: number) { }
+
+  public constructor(public location: string, public type: SensorMeasureType, public value: number, public timestamp: number) { }
+
+  public static deepCopy(that): SensorMeasureLatestDto {
+    return new SensorMeasureLatestDto(that.location, that.type, that.value, that.timestamp)
+  }
 }
 
 export class SensorMeasureTypeDetails {

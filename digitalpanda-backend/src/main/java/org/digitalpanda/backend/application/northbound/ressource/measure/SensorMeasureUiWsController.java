@@ -2,6 +2,7 @@ package org.digitalpanda.backend.application.northbound.ressource.measure;
 
 import org.digitalpanda.backend.application.persistence.measure.latest.SensorMeasureLatestRepository;
 import org.digitalpanda.common.data.backend.SensorMeasure;
+import org.digitalpanda.common.data.backend.SensorMeasureMetaData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import static org.digitalpanda.backend.application.config.StompWebSocketConfig.B
 @Controller
 public class SensorMeasureUiWsController {
 
-    private static final String MEASURE_BROADCAST_OUTPUT_ENDPOINT = BACKEND_WS_STOMP_URL_OUTPUT_PREFIX + "/sensor/live/all";
+    private static final String MEASURE_BROADCAST_OUTPUT_ENDPOINT = BACKEND_WS_STOMP_URL_OUTPUT_PREFIX + "/sensor/live/";
 
     private final SensorMeasureLatestRepository sensorMeasureLatestRepository;
     private Logger logger = LoggerFactory.getLogger(SensorMeasureUiWsController.class);
@@ -34,11 +35,26 @@ public class SensorMeasureUiWsController {
 
     @Scheduled(fixedRate = 1000)
     public void refreshSensorMeasures() {
-        logger.debug("Refresh latest measures in " + MEASURE_BROADCAST_OUTPUT_ENDPOINT);
-        List<SensorMeasure> latestMeasures = sensorMeasureLatestRepository
-                .getKeys().stream()
-                .map(sensorMeasureLatestRepository::getLatestMeasure)
-                .collect(Collectors.toList());
-        template.convertAndSend(MEASURE_BROADCAST_OUTPUT_ENDPOINT, latestMeasures);
+        logger.debug("Refresh latest measures in " + MEASURE_BROADCAST_OUTPUT_ENDPOINT + "(all|${location})");
+
+        List<SensorMeasureDTO> allLatestMeasures =
+                sensorMeasureLatestRepository
+                        .getKeys().stream()
+                        .map(this::getLatestMeasureDto)
+                        .collect(Collectors.toList());
+
+        for (SensorMeasureDTO measure : allLatestMeasures) {
+            template.convertAndSend(MEASURE_BROADCAST_OUTPUT_ENDPOINT + "/" + measure.getLocation(), measure);
+        }
+        template.convertAndSend(MEASURE_BROADCAST_OUTPUT_ENDPOINT + "/all", allLatestMeasures);
+    }
+
+    private SensorMeasureDTO getLatestMeasureDto(SensorMeasureMetaData targetMeasure) {
+        SensorMeasure latestMeasure = sensorMeasureLatestRepository.getLatestMeasure(targetMeasure);
+        return new SensorMeasureDTO(
+                targetMeasure.getLocation(),
+                targetMeasure.getType(),
+                latestMeasure.getTimestamp(),
+                latestMeasure.getValue());
     }
 }

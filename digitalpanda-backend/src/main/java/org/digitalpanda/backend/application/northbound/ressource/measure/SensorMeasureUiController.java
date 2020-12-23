@@ -40,6 +40,8 @@ public class SensorMeasureUiController {
                 .getLatestMeasure(new SensorMeasureMetaData(location, SensorMeasureType.valueOf(type))))
                 .map(sensorMeasure ->
                         new SensorMeasureDTO(
+                                location,
+                                SensorMeasureType.valueOf(type),
                                 sensorMeasure.getTimestamp(),
                                 sensorMeasure.getValue()))
                 .orElse(null);

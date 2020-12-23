@@ -1,27 +1,25 @@
 <div class="card">
     <div class="card-header">
         <div class="row">
-            <div class="col-12 text-left"><b>{{viewMeasures[0]?.sensorKey?.location}}</b></div>
+            <div class="col-12 text-left"><b>{{location}}</b></div>
         </div>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item" *ngFor="let viewMeasure of viewMeasures; let i=index ">
+        <li class="list-group-item" *ngFor="let viewMeasure of viewMeasures$ | async; let i=index ">
             <div class="row">
                 <div class="col-7 text-left">
                     <i>{{viewMeasure.measureTypeDetails?.typeName}}</i>
                 </div>
                 <div class="col-5 text-left">
                     <b>
-                      <span *ngIf="viewMeasure.isLoaded">{{ viewMeasure.measure.value | number : '1.2-2' }}</span>
-                      <span *ngIf="!viewMeasure.isLoaded">&nbsp;</span>&nbsp;{{[ viewMeasure.measureTypeDetails?.unitSymbol]}}
+                      <span>{{ viewMeasure.measure.value | number : '1.2-2' }}</span>
                     </b>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 text-left small">
                     <i>
-                        <span *ngIf="viewMeasure.isLoaded">{{ viewMeasure.measure.timestamp | date:'yyyy-MM-dd'}} &nbsp;&nbsp;&nbsp;&nbsp; {{ viewMeasure.measure.timestamp | date:'HH:mm:ss'}}</span>
-                        <span *ngIf="!viewMeasure.isLoaded">-</span>
+                        <span>{{ viewMeasure.measure.timestamp | date:'yyyy-MM-dd'}} &nbsp;&nbsp;&nbsp;&nbsp; {{ viewMeasure.measure.timestamp | date:'HH:mm:ss'}}</span>
                     </i>
                 </div>
             </div>

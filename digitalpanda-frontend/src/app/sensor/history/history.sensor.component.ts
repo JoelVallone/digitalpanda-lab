@@ -1,12 +1,9 @@
 import { Component} from '@angular/core';
-import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, merge } from 'rxjs';
-import { mergeMap, flatMap, bufferCount } from 'rxjs/operators';
-import { SensorService } from './../sensor.service';
-import { SensorMeasureMetaData, SensorMeasuresHistoryDto } from './../sensor.classes';
-import { DebugDisplayHistoryComponent } from './debug-display/debug-display.history.component';
+import { Observable } from 'rxjs';
+import { SensorBackendService } from '../service/sensor.backend.service';
+import { SensorMeasuresHistoryDto } from './../sensor.classes';
 import { SensorHistorySelection } from '../selector/sensor-history-selector-form.service';
-import { SensorMeasure, SensorMeasureType } from '../sensor.classes';
+import { SensorMeasureType } from '../sensor.classes';
 
 @Component({
   selector: 'app-sensor-history',
@@ -43,7 +40,7 @@ export class HistorySensorComponent {
   };
 
 
-  constructor(public sensorService: SensorService) {
+  constructor(public sensorService: SensorBackendService) {
     this.historySelectionLoadedCount = 0;
     this.isSelectionCollapsed = true;
     this.isSelectionPristine = true;

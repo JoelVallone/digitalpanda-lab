@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { SensorService } from './../../sensor.service';
+import { SensorBackendService } from '../../service/sensor.backend.service';
 import { SensorMeasuresHistoryDto, SensorMeasureMetaData, SensorMeasureType,
           SensorMeasureTypeDetails, SensorMeasureMean} from './../../sensor.classes';
 import { SensorHistorySelection } from './../../selector/sensor-history-selector-form.service';
@@ -21,7 +21,7 @@ export class DebugDisplayHistoryComponent implements OnChanges {
 
   public measuresIntervals: Array<Array<SensorMeasureMean>>;
 
-  constructor(public sensorService: SensorService) {
+  constructor(public sensorService: SensorBackendService) {
     this.measureLoaded = false;
   }
 

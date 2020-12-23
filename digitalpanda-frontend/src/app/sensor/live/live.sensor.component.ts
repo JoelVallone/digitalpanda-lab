@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 
-import {SensorService} from './../sensor.service';
+import {SensorBackendService} from '../service/sensor.backend.service';
 import {SensorMeasureMetaData} from './../sensor.classes';
 
 @Component({
@@ -19,7 +19,7 @@ export class LiveSensorComponent implements OnInit {
 
   test: Set<string>;
 
-  constructor(public sensorService: SensorService) { }
+  constructor(public sensorService: SensorBackendService) { }
 
   ngOnInit() {
     const that = this;
