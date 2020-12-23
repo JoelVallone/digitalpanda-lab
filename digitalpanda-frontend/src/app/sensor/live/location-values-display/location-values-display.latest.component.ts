@@ -1,10 +1,12 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SensorMeasureLatestDto, SensorMeasureMetaData, SensorMeasureType, SensorMeasureTypeDetails } from './../../sensor.classes';
 import { SensorBackendService } from '../../service/sensor.backend.service';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { SensorLatestHttpPollingService } from '../../service/sensor-latest-http-polling.service';
 import { SensorLatestService } from '../../service/sensor-latest.service';
+import { SensorLatestWsService } from '../../service/sensor-latest-ws.service';
+import { environment } from 'src/environments/environment';
 
 
 export class ViewMeasure {
@@ -20,21 +22,30 @@ export class ViewMeasure {
   templateUrl: './location-values-display.latest.component.html',
   styleUrls: ['./location-values-display.latest.component.scss']
 })
-export class LocationValuesDisplayLatestComponent implements OnChanges {
+export class LocationValuesDisplayLatestComponent implements OnInit {
 
   @Input() public location: string;
   @Input() public sensorKeys: Array<SensorMeasureMetaData>;
 
   public viewMeasures$: Observable<Array<ViewMeasure>>;
+  public viewMeasures: Array<ViewMeasure>;
   private sensorLatestService: SensorLatestService;
 
-  constructor(public sensorBackendService: SensorBackendService) {
-    this.sensorLatestService = new SensorLatestService(sensorBackendService);
+  constructor(public sensorBackendService: SensorBackendService, sensorLatestWsService: SensorLatestWsService) {
+    if (environment.enableWebsocket && window.WebSocket) {
+      this.sensorLatestService = sensorLatestWsService;
+    } else {
+      this.sensorLatestService = new SensorLatestHttpPollingService(sensorBackendService);
+    }
+    this.viewMeasures = new Array();
+  }
+
+  ngOnInit(): void {
     this.viewMeasures$ = this.sensorLatestService
-    .getLatestMeasuresAsync()
-    .pipe(
-      map( measureByType =>  [ ...measureByType.values()].map(m => this.asViewMeasure(m)))
-    );
+      .getLatestMeasuresAsync(this.sensorKeys, this.location)
+      .pipe(
+        map( measureByType =>  [ ...measureByType.values()].map(m => this.asViewMeasure(m)))
+      );
   }
 
   private asViewMeasure(measureDto: SensorMeasureLatestDto): ViewMeasure{
@@ -42,19 +53,5 @@ export class LocationValuesDisplayLatestComponent implements OnChanges {
       SensorMeasureMetaData.getTypeDetail(measureDto.type),
       new SensorMeasureMetaData(measureDto.location, measureDto.type),
       measureDto);
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if ( this.isSetAndhasChanged(changes, 'location') || this.isSetAndhasChanged(changes, 'sensorKeys')) {
-      this.sensorLatestService.updateTargetMeasures(
-        changes.sensorKeys.currentValue as Array<SensorMeasureMetaData>,
-        changes.location.currentValue as string);
-    }
-  }
-
-  private isSetAndhasChanged(changes: SimpleChanges, key: string): boolean {
-      return changes[key]
-      && changes[key].currentValue
-      && JSON.stringify(changes[key].previousValue) !== JSON.stringify(changes[key].currentValue);
   }
 }

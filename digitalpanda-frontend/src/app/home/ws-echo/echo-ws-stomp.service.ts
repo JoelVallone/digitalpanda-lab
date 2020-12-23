@@ -1,10 +1,9 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RxStompService, StompConfig, StompService } from '@stomp/ng2-stompjs';
-import { Message, IMessage} from '@stomp/stompjs';
+import { RxStompService } from '@stomp/ng2-stompjs';
+import { Message } from '@stomp/stompjs';
 import { map } from 'rxjs/operators';
-import { rxStompConfig } from '../../core/ws-stomp/rx-stomp.config';
 import { WsEchoService } from './echo-ws.service';
 
 /*
@@ -19,8 +18,8 @@ import { WsEchoService } from './echo-ws.service';
 })
 export class EchoStompWebSocketService implements WsEchoService {
   
-  private echoSendEndpoint: string = environment.wsStompPublishPrefix + "/echo";
-  private echoReceiveEndpoint: string = environment.wsStompSubscribePrefix + "/echo";
+  private readonly echoSendEndpoint: string = environment.wsStompPublishPrefix + "/echo";
+  private readonly echoReceiveEndpoint: string = environment.wsStompSubscribePrefix + "/echo";
 
   private $backendRx: Observable<Message>;
   

@@ -18,7 +18,7 @@ import static org.digitalpanda.backend.application.config.StompWebSocketConfig.B
 @Controller
 public class SensorMeasureUiWsController {
 
-    private static final String MEASURE_BROADCAST_OUTPUT_ENDPOINT = BACKEND_WS_STOMP_URL_OUTPUT_PREFIX + "/sensor/live/";
+    private static final String MEASURE_BROADCAST_OUTPUT_ENDPOINT = BACKEND_WS_STOMP_URL_OUTPUT_PREFIX + "/sensor/live";
 
     private final SensorMeasureLatestRepository sensorMeasureLatestRepository;
     private Logger logger = LoggerFactory.getLogger(SensorMeasureUiWsController.class);
