@@ -6,5 +6,6 @@ export interface Environment {
     wsStompPublishPrefix: string,
     wsStompSubscribePrefix: string,
     enableWebsocket: boolean,
+    enableWebworker: boolean,
     debugLogs: boolean,
 }

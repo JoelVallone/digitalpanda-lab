@@ -20,7 +20,7 @@ import { SensorBackendService } from './service/sensor.backend.service';
 import { SensorIdentificationComponent } from './selector/sensor-identification/sensor-identification.component';
 import { TimeIntervalSelectorComponent } from './selector/time-interval-selector/time-interval-selector.component';
 import { MultiChartHistoryComponent } from './history/multi-chart/multi-chart.history.component';
-import { SensorLatestWsService } from './service/sensor-latest-ws.service';
+import { SensorLatestWsService } from './service/ws/sensor-latest-ws.service';
 
 @NgModule({
   imports: [

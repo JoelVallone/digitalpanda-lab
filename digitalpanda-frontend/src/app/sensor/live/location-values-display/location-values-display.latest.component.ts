@@ -5,7 +5,7 @@ import { SensorBackendService } from '../../service/sensor.backend.service';
 import { map } from 'rxjs/operators';
 import { SensorLatestHttpPollingService } from '../../service/sensor-latest-http-polling.service';
 import { SensorLatestService } from '../../service/sensor-latest.service';
-import { SensorLatestWsService } from '../../service/sensor-latest-ws.service';
+import { SensorLatestWsService } from '../../service/ws/sensor-latest-ws.service';
 import { environment } from 'src/environments/environment';
 
 

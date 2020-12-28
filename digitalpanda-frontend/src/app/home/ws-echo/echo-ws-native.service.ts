@@ -3,7 +3,7 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import {  Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { WsEchoService } from './echo-ws.service';
-import { Logger } from 'src/app/core/ws-stomp/logger';
+import { Logger } from 'src/app/core/logger';
 
 /*
   Example service for websocket backend connection.

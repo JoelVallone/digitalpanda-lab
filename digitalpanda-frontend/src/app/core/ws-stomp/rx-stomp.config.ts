@@ -1,9 +1,7 @@
-import { formatDate } from '@angular/common';
-import { InjectableRxStompConfig } from '@stomp/ng2-stompjs';
 import { environment } from 'src/environments/environment';
-import { Logger } from './logger';
+import { Logger } from '../logger';
 
-export const rxStompConfig: InjectableRxStompConfig = {
+export const rxStompConfig = {
   // Which server?
   brokerURL: environment.wsApiEndpoint + environment.wsStompHandshakeEndpoint,
 
@@ -22,12 +20,12 @@ export const rxStompConfig: InjectableRxStompConfig = {
   // Wait in milliseconds before attempting auto reconnect
   // Set to 0 to disable
   // Typical value 500 (500 milli seconds)
-  reconnectDelay: 1000,
+  reconnectDelay: 0,
 
   // Will log diagnostics on console
   // It can be quite verbose, not recommended in production
   // Skip this key to stop logging to console
   debug: (msg: string): void => {
-    Logger.debug("[RxStomp-" +formatDate(new Date(), 'yyyy/MM/dd HH:mm:ss', 'en') + "] " +  msg);
+    Logger.debug("[RxStomp-" + new Date().toISOString() + "] " +  msg);
   },
 };

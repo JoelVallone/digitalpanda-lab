@@ -8,5 +8,6 @@ export const environment : Environment = {
   wsStompPublishPrefix: "/ws/stomp/frontend-input",
   wsStompSubscribePrefix: "/ws/stomp/backend-output",
   enableWebsocket: false,
+  enableWebworker: false,
   debugLogs: false
 };

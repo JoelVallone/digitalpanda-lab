@@ -13,7 +13,8 @@ export const environment: Environment = {
   wsStompPublishPrefix: "/ws/stomp/frontend-input",
   wsStompSubscribePrefix: "/ws/stomp/backend-output",
   // httpApiEndpoint: 'http://127.0.0.1:8081',
-  enableWebsocket: true,
+  enableWebsocket: false,
+  enableWebworker: false,
   debugLogs: true
 };
 

@@ -8,7 +8,7 @@ import { first } from 'rxjs/operators';
 import {formatDate} from '@angular/common';
 import { EchoStompWebSocketService } from './ws-echo/echo-ws-stomp.service';
 import { WsEchoService } from './ws-echo/echo-ws.service';
-import { Logger } from '../core/ws-stomp/logger';
+import { Logger } from '../core/logger';
 
 
 @Component({
