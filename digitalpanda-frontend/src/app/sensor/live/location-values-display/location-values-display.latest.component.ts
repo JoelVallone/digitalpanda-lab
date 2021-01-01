@@ -7,6 +7,8 @@ import { SensorLatestHttpPollingService } from '../../service/sensor-latest-http
 import { SensorLatestService } from '../../service/sensor-latest.service';
 import { SensorLatestWsService } from '../../service/ws/sensor-latest-ws.service';
 import { environment } from 'src/environments/environment';
+import { RxStompClient } from 'src/app/core/ws-stomp/rx-stomp.client';
+import { ConfigHelper } from 'src/app/core/config-helper';
 
 
 export class ViewMeasure {
@@ -32,7 +34,7 @@ export class LocationValuesDisplayLatestComponent implements OnInit {
   private sensorLatestService: SensorLatestService;
 
   constructor(public sensorBackendService: SensorBackendService, sensorLatestWsService: SensorLatestWsService) {
-    if (environment.enableWebsocket && window.WebSocket) {
+    if (ConfigHelper.isWebSocketAllowed()) {
       this.sensorLatestService = sensorLatestWsService;
     } else {
       this.sensorLatestService = new SensorLatestHttpPollingService(sensorBackendService);

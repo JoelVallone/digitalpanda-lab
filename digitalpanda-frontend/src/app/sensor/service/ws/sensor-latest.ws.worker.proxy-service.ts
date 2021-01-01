@@ -1,4 +1,5 @@
 import { BehaviorSubject, Observable, Subject } from "rxjs";
+import { ConfigHelper } from "src/app/core/config-helper";
 import { Logger } from "src/app/core/logger";
 import { environment } from "src/environments/environment";
 import { SensorMeasureMetaData, SensorMeasureType, SensorMeasureLatestDto } from "../../sensor.classes";
@@ -21,7 +22,7 @@ export class SensorLatestWsWorkerProxyService implements SensorLatestService {
     }
 
     private initWorkerThread(): Worker {
-        if (SensorLatestWsWorkerProxyService.isWorkerAllowed()) {
+        if (ConfigHelper.isWebWorkerAllowed()) {
             const worker = new Worker('./sensor-latest.ws.worker', { type: 'module' });
             worker.onmessage = (event) => this.handleSensorUpdate(event);
             return worker;
@@ -31,19 +32,15 @@ export class SensorLatestWsWorkerProxyService implements SensorLatestService {
         }
     }
 
-    public static isWorkerAllowed(): boolean {
-        return environment.enableWebworker && typeof Worker !== 'undefined';
-    }
-
     private handleSensorUpdate(event: MessageEvent) {
-        //TODO: handle 0 ui listener case
         const jsonText = event.data
         const measuresByLocationByTypeRaw = JSON.parse(jsonText)
-        Logger.debug(`UI Thread got update: ${measuresByLocationByTypeRaw}`);
         for (const [location, measuresByTypeRaw] of Object.entries(measuresByLocationByTypeRaw)) {
             const latestMeasureByType = SensorLatestWsWorkerProxyService.deserialize(measuresByTypeRaw)
-            const lastMeasuresByType$ = this.getLastMeasuresByType$(location);
-            if (!lastMeasuresByType$.closed) {
+            const lastMeasuresByType$ = this.lastMeasuresByType$ByLocation.get(location);
+            if (!lastMeasuresByType$) {
+                continue; //already sent delete message for location to worker
+            } else if (lastMeasuresByType$.observers.length > 0) {
                 lastMeasuresByType$.next(latestMeasureByType);
             } else {
                 this.deleteLastMeasuresByType$(location);
@@ -60,11 +57,11 @@ export class SensorLatestWsWorkerProxyService implements SensorLatestService {
     }
 
     getLatestMeasuresAsync(newSensorKeys: SensorMeasureMetaData[], location: string): Observable<Map<SensorMeasureType, SensorMeasureLatestDto>> {
-        const measureByType$ = this.getLastMeasuresByType$(location);
+        const measureByType$ = this.getOrCreateLastMeasuresByType$(location);
         return SensorLatestWsServiceNative.filterLatestMeasuresAsync(measureByType$, newSensorKeys)
     }
 
-    private getLastMeasuresByType$(location: string): Subject<Map<SensorMeasureType, SensorMeasureLatestDto>> {
+    private getOrCreateLastMeasuresByType$(location: string): Subject<Map<SensorMeasureType, SensorMeasureLatestDto>> {
         if (!this.lastMeasuresByType$ByLocation.has(location)) {
             this.lastMeasuresByType$ByLocation.set(location, new BehaviorSubject(new Map()));
             this.worker.postMessage(new WorkerTaskUpdate(WorkerTaskState.LOADING_MEASURES, location))

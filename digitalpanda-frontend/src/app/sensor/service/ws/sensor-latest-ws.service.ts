@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { RxStompService } from "@stomp/ng2-stompjs";
 import { Observable } from "rxjs";
-import { environment } from "src/environments/environment";
+import { ConfigHelper } from "src/app/core/config-helper";
+import { RxStompClient } from "src/app/core/ws-stomp/rx-stomp.client";
 import { SensorMeasureMetaData, SensorMeasureType, SensorMeasureLatestDto } from "../../sensor.classes";
 import { SensorLatestService } from "../sensor-latest.service";
 import { SensorLatestWsServiceNative } from "./sensor-latest.ws.native-service";
@@ -15,11 +15,11 @@ export class SensorLatestWsService implements SensorLatestService, OnDestroy {
     private sensorLatestWsWorkerProxyService: SensorLatestWsWorkerProxyService;
     private sensorLatestWsServiceDelegate: SensorLatestService;
 
-    constructor(public ngRxStompService: RxStompService) {
-        if (SensorLatestWsWorkerProxyService.isWorkerAllowed()) {
+    constructor() {
+        if (ConfigHelper.isWebWorkerAllowed()) {
             this.sensorLatestWsServiceDelegate = new SensorLatestWsWorkerProxyService();
         } else{
-            this.sensorLatestWsServiceDelegate = new SensorLatestWsServiceNative(ngRxStompService)
+            this.sensorLatestWsServiceDelegate = new SensorLatestWsServiceNative(RxStompClient.loadWsRxStompClientSingleton())
         }
     }
 

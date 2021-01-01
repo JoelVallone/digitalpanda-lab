@@ -21,6 +21,8 @@ import { SensorIdentificationComponent } from './selector/sensor-identification/
 import { TimeIntervalSelectorComponent } from './selector/time-interval-selector/time-interval-selector.component';
 import { MultiChartHistoryComponent } from './history/multi-chart/multi-chart.history.component';
 import { SensorLatestWsService } from './service/ws/sensor-latest-ws.service';
+import { SensorLatestWsWorkerProxyService } from './service/ws/sensor-latest.ws.worker.proxy-service';
+import { Logger } from '../core/logger';
 
 @NgModule({
   imports: [
@@ -34,7 +36,7 @@ import { SensorLatestWsService } from './service/ws/sensor-latest-ws.service';
     NgxChartsModule
   ],
   providers: [
-    SensorLatestWsService, SensorBackendService, SensorHistorySelectorFormService
+    SensorLatestWsWorkerProxyService, SensorLatestWsService, SensorBackendService, SensorHistorySelectorFormService
   ],
   declarations: [
     LocationValuesDisplayLatestComponent, SensorLocationSelectorComponent,
@@ -45,4 +47,8 @@ import { SensorLatestWsService } from './service/ws/sensor-latest-ws.service';
     LiveSensorComponent, HistorySensorComponent
   ]
 })
-export class SensorModule { }
+export class SensorModule {
+  constructor() {
+    Logger.debug('SensorModule loaded.');
+  }
+}

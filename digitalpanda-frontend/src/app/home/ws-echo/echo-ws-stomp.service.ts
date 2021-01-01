@@ -5,6 +5,7 @@ import { RxStompService } from '@stomp/ng2-stompjs';
 import { Message } from '@stomp/stompjs';
 import { map } from 'rxjs/operators';
 import { WsEchoService } from './echo-ws.service';
+import { RxStompClient } from 'src/app/core/ws-stomp/rx-stomp.client';
 
 /*
   Example service for websocket backend connection.
@@ -23,16 +24,16 @@ export class EchoStompWebSocketService implements WsEchoService {
 
   private $backendRx: Observable<Message>;
   
-  constructor(public rxStompService: RxStompService) { }
+  constructor() { }
 
   public connect(): void {
     if(!this.$backendRx){
-      this.$backendRx = this.rxStompService.watch(this.echoReceiveEndpoint);
+      this.$backendRx = RxStompClient.loadWsRxStompClientSingleton().watch(this.echoReceiveEndpoint);
     }
   }
 
   sendMessage(message: string): void {
-    this.rxStompService
+    RxStompClient.loadWsRxStompClientSingleton()
       .publish({destination: this.echoSendEndpoint, body: message})
   }
 

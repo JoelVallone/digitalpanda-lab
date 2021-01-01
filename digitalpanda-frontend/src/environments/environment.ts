@@ -14,7 +14,7 @@ export const environment: Environment = {
   wsStompPublishPrefix: "/ws/stomp/frontend-input",
   wsStompSubscribePrefix: "/ws/stomp/backend-output",
   enableWebsocket: true,
-  enableWebworker: false, // TODO: before enabling: fix bad worker lifecycle managment and ng-stomp failing init
+  enableWebworker: true,
   debugLogs: true
 };
 

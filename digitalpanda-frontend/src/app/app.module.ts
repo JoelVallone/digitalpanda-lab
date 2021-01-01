@@ -14,36 +14,33 @@ import {
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { 
-  LocationStrategy, 
-  HashLocationStrategy } from '@angular/common';
+import {
+  LocationStrategy,
+  HashLocationStrategy
+} from '@angular/common';
 
 import { GreetingService } from './home/greeting.service';
 import { EchoNativeWebSocketService } from './home/ws-echo/echo-ws-native.service';
 import { HomeComponent } from './home/home.component';
 import { SensorModule } from './sensor/sensor.module';
 import { UiModule } from './ui/ui.module';
-import { rxStompConfig } from './core/ws-stomp/rx-stomp.config';
+import { Logger } from './core/logger';
+import { SensorLatestWsService } from './sensor/service/ws/sensor-latest-ws.service';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
-  imports     : [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule, NgbModule, SensorModule, UiModule],
-  providers   : [
-    { 
-      provide: InjectableRxStompConfig, 
-      useValue: rxStompConfig}, ,
-    {
-      provide: RxStompService,
-      useFactory: rxStompServiceFactory,
-      deps: [InjectableRxStompConfig],
-    },
-    EchoNativeWebSocketService, 
-    GreetingService, 
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+  imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule, NgbModule, SensorModule, UiModule],
+  providers: [
+    EchoNativeWebSocketService,
+    GreetingService,
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
-  bootstrap   : [AppComponent]
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    Logger.debug('AppModule loaded.');
+  }
+}
