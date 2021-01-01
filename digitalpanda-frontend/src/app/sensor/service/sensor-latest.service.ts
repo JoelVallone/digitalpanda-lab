@@ -15,3 +15,12 @@ export class SensorLatestServiceCompanion {
         return copy;
     }
 }
+
+export enum WorkerTaskState {
+    LOADING_MEASURES = 'LOADING_MEASURES',
+    STOPPED = 'STOPPED'
+}
+
+export class WorkerTaskUpdate {
+    constructor(public state: WorkerTaskState, public location: string) { }
+}

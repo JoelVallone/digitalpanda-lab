@@ -2,9 +2,9 @@ import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { Logger } from "src/app/core/logger";
 import { environment } from "src/environments/environment";
 import { SensorMeasureMetaData, SensorMeasureType, SensorMeasureLatestDto } from "../../sensor.classes";
-import { SensorLatestService } from "../sensor-latest.service";
+import { SensorLatestService, WorkerTaskState, WorkerTaskUpdate } from "../sensor-latest.service";
 import { SensorLatestWsServiceNative } from "./sensor-latest.ws.native-service";
-import { WorkerTaskState, WorkerTaskUpdate } from "./sensor-latest.ws.worker";
+
 
 export class SensorLatestWsWorkerProxyService implements SensorLatestService {
 
@@ -17,12 +17,12 @@ export class SensorLatestWsWorkerProxyService implements SensorLatestService {
     }
 
     terminateWorker(): void {
-        this.worker &&  this.worker.terminate();
+        this.worker && this.worker.terminate();
     }
 
     private initWorkerThread(): Worker {
         if (SensorLatestWsWorkerProxyService.isWorkerAllowed()) {
-            const worker = new Worker('./sensor/service/ws/sensor-latest.ws.worker', { type: 'module' });
+            const worker = new Worker('./sensor-latest.ws.worker', { type: 'module' });
             worker.onmessage = (event) => this.handleSensorUpdate(event);
             return worker;
         } else {
@@ -45,7 +45,7 @@ export class SensorLatestWsWorkerProxyService implements SensorLatestService {
             const lastMeasuresByType$ = this.getLastMeasuresByType$(location);
             if (!lastMeasuresByType$.closed) {
                 lastMeasuresByType$.next(latestMeasureByType);
-            }else {
+            } else {
                 this.deleteLastMeasuresByType$(location);
             }
         }
@@ -72,7 +72,7 @@ export class SensorLatestWsWorkerProxyService implements SensorLatestService {
         return this.lastMeasuresByType$ByLocation.get(location);
     }
 
-    private deleteLastMeasuresByType$(location: string){
+    private deleteLastMeasuresByType$(location: string) {
         this.worker.postMessage(new WorkerTaskUpdate(WorkerTaskState.STOPPED, location));
         this.lastMeasuresByType$ByLocation.delete(location);
     }

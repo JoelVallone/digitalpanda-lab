@@ -12,9 +12,8 @@ export const environment: Environment = {
   wsStompHandshakeEndpoint: "/ws/stomp/handshake",
   wsStompPublishPrefix: "/ws/stomp/frontend-input",
   wsStompSubscribePrefix: "/ws/stomp/backend-output",
-  // httpApiEndpoint: 'http://127.0.0.1:8081',
-  enableWebsocket: false,
-  enableWebworker: false,
+  enableWebsocket: true,
+  enableWebworker: false, // TODO: before enabling: fix bad worker lifecycle managment and ng-stomp failing init
   debugLogs: true
 };
 

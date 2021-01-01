@@ -1,6 +1,7 @@
 import { Injectable, OnDestroy } from "@angular/core";
 import { RxStompService } from "@stomp/ng2-stompjs";
 import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
 import { SensorMeasureMetaData, SensorMeasureType, SensorMeasureLatestDto } from "../../sensor.classes";
 import { SensorLatestService } from "../sensor-latest.service";
 import { SensorLatestWsServiceNative } from "./sensor-latest.ws.native-service";
