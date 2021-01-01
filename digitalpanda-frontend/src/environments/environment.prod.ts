@@ -7,7 +7,7 @@ export const environment : Environment = {
   wsStompHandshakeEndpoint: "/ws/stomp/handshake",
   wsStompPublishPrefix: "/ws/stomp/frontend-input",
   wsStompSubscribePrefix: "/ws/stomp/backend-output",
-  enableWebsocket: false,
+  enableWebsocket: true,
   enableWebworker: false,
   debugLogs: false
 };
