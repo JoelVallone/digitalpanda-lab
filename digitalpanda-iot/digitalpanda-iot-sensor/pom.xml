@@ -16,6 +16,7 @@
     <properties>
         <io.confluent.version>5.3.1</io.confluent.version>
         <org.apache.avro.version>1.9.1</org.apache.avro.version>
+        <org.apache.commons.io.version>2.7</org.apache.commons.io.version>
     </properties>
 
     <repositories>
@@ -54,6 +55,11 @@
             <groupId>org.apache.avro</groupId>
             <artifactId>avro</artifactId>
             <version>${org.apache.avro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${org.apache.commons.io.version}</version>
         </dependency>
         <dependency>
             <groupId>com.pi4j</groupId>

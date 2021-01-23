@@ -3,8 +3,10 @@ package org.digitalpanda.common.data.backend;
 public enum SensorMeasureType {
 
     TEMPERATURE("Degree Celcius", "°C"),
-    HUMIDITY("Percentage", "%"),
-    PRESSURE("Hecto-Pascal","hPa");
+    HUMIDITY("Relative humidity", "%"),
+    PRESSURE("Hecto-Pascal","hPa"),
+    eCO2("Equivalent CO2 particle Part Per Million","ppm"),
+    TVOC("Total Volatile Organic Compounds Part Per Million","ppm");
 
     private final String unit;
     private final String description;

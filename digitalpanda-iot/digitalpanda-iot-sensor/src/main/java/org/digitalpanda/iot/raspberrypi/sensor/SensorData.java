@@ -47,7 +47,6 @@ public class SensorData {
     }
 
     public String csvData(){
-        sensorData.values().stream().filter( sensorData -> sensorData != null).findFirst().orElse(null);
         SensorMeasure sensorMeasure = sensorData.values().iterator().next();
         long timestamp = 0;
         if(sensorMeasure != null){

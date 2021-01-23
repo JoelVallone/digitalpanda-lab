@@ -98,7 +98,9 @@ public class Configuration {
         REST_BACKEND_URL     (true, "rest-backend.url"),
 
         SENSOR_LOCATION (true, "sensor.location"),
-        SENSOR_MODEL    (true, "sensor.model");
+        SENSOR_MODELS(true, "sensor.models"),
+        SENSOR_SGP30_JSON_STATE_FILE_PATH(false, "sensor.sgp30.json-state-file-path");
+
 
         ConfigurationKey(boolean mandatory, String name) {
             this.mandatory = mandatory;

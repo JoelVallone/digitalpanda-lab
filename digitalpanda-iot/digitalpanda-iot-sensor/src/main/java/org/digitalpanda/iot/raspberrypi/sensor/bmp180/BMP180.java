@@ -4,12 +4,14 @@ import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 import org.digitalpanda.common.data.backend.SensorMeasureType;
+import org.digitalpanda.common.data.backend.SensorMeasures;
 import org.digitalpanda.iot.raspberrypi.sensor.Sensor;
 import org.digitalpanda.iot.raspberrypi.sensor.SensorData;
 import org.digitalpanda.iot.raspberrypi.sensor.SensorModel;
 import org.digitalpanda.iot.raspberrypi.sensor.utils.EndianReaders;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Temperature and pressure senor from Bosh
@@ -65,7 +67,8 @@ public class BMP180 implements Sensor{
     private boolean initialized;
 
     public BMP180(){
-        this.initialized = false;}
+        this.initialized = false;
+    }
 
     private int readU16(int register) throws Exception
     {
@@ -293,6 +296,11 @@ public class BMP180 implements Sensor{
             initialized =  false;
         }
         return this.initialized = initialized;
+    }
+
+    @Override
+    public void calibrate(List<SensorMeasures> allAvailableMeasures) {
+        // nop
     }
 
     @Override

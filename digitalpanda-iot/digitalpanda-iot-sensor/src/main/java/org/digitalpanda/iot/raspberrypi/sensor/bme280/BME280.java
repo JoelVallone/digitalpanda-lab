@@ -4,11 +4,13 @@ import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 import org.digitalpanda.common.data.backend.SensorMeasureType;
+import org.digitalpanda.common.data.backend.SensorMeasures;
 import org.digitalpanda.iot.raspberrypi.sensor.Sensor;
 import org.digitalpanda.iot.raspberrypi.sensor.SensorData;
 import org.digitalpanda.iot.raspberrypi.sensor.SensorModel;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Humidity, Temperature and pressure senor from Bosh
@@ -44,7 +46,7 @@ public class BME280 implements Sensor {
         this.initialized = false;
     }
 
-    public SensorData fetchAndComputeValues() throws IOException{
+    public SensorData fetchAndComputeValues() throws IOException {
         if(!initialized){
             if(!initialize()){
                 return null;
@@ -153,6 +155,11 @@ public class BME280 implements Sensor {
             initialized = false;
         }
         return this.initialized = initialized;
+    }
+
+    @Override
+    public void calibrate(List<SensorMeasures> allAvailableMeasures) {
+        // nop
     }
 
     private void preProcessTrimmingDigits_TorP(int[] dig_TorP, byte[] buffer){

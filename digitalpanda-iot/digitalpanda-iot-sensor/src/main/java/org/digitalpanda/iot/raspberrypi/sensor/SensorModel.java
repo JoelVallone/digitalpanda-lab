@@ -9,7 +9,8 @@ import java.util.List;
 
 public enum SensorModel {
     BME280("Bosh",  Arrays.asList(SensorMeasureType.HUMIDITY, SensorMeasureType.PRESSURE, SensorMeasureType.TEMPERATURE)),
-    BMP180("Bosh", Arrays.asList(SensorMeasureType.PRESSURE, SensorMeasureType.TEMPERATURE));
+    BMP180("Bosh", Arrays.asList(SensorMeasureType.PRESSURE, SensorMeasureType.TEMPERATURE)),
+    SGP30("Sensirion", Arrays.asList(SensorMeasureType.eCO2, SensorMeasureType.TVOC));
 
     private final String constructor;
     private final List<SensorMeasureType> availableMetrics;

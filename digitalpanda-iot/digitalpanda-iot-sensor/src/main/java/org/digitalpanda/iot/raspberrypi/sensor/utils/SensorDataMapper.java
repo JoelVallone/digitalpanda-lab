@@ -8,6 +8,7 @@ import org.digitalpanda.iot.raspberrypi.sensor.SensorData;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SensorDataMapper {
 
@@ -44,5 +45,13 @@ public class SensorDataMapper {
             measureList = measures.getMeasures();
         }
         measureList.add(sensorMeasure);
+    }
+
+    public static Optional<Double> latestValueOf(List<SensorMeasures> measures, SensorMeasureType measureType) {
+        return measures.stream()
+                .filter(measure -> measure.getSensorMeasureMetaData().getType() == measureType)
+                .flatMap(m -> m.getMeasures().stream())
+                .max(SensorMeasure::compareTo)
+                .map(SensorMeasure::getValue);
     }
 }
