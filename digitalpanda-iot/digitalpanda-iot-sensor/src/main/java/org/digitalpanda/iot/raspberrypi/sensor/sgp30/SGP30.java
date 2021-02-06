@@ -1,8 +1,6 @@
 package org.digitalpanda.iot.raspberrypi.sensor.sgp30;
 
 import com.google.gson.*;
-import com.pi4j.io.i2c.I2CBus;
-import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 import org.apache.commons.io.FileUtils;
 import org.digitalpanda.common.data.backend.SensorMeasureType;
@@ -49,7 +47,7 @@ public class SGP30 implements Sensor {
 
     private Integer fileInitECO2Baseline;
     private Integer fileInitTVOCBaseline;
-    private Long lastBaselineDumpToFileMillis;
+    private long lastBaselineDumpToFileMillis;
     private final long baselineFileDumpRefreshPeriodMillis;
     static final long BASELINE_FILE_DUMP_REFRESH_PERIOD_MILLIS  = TimeUnit.MINUTES.toMillis(10);
     private final long fileBaselineValidityDelayMillis;
@@ -111,7 +109,6 @@ public class SGP30 implements Sensor {
     @Override
     public boolean initialize() {
         try {
-            tryLoadBaselineFromFile();
             sgp30i2c.initialize();
             iaqInit();
             this.initialized = true;
@@ -123,7 +120,7 @@ public class SGP30 implements Sensor {
     }
 
     private void iaqInit() throws IOException, InterruptedException {
-        if (isBaselineFromFileAvailable()) {
+        if (tryLoadBaselineFromFile()) {
             sgp30i2c.setIaqBaseline(fileInitECO2Baseline, fileInitTVOCBaseline);
         }
         sgp30i2c.iaqInit();
@@ -193,7 +190,7 @@ public class SGP30 implements Sensor {
         }
     }
 
-    void tryLoadBaselineFromFile() {
+    boolean tryLoadBaselineFromFile() {
         File file = new File(jsonStateFilePath);
         if (file.exists()) {
             try {
@@ -208,24 +205,27 @@ public class SGP30 implements Sensor {
                         .orElse(null);
             } catch (Exception e) {
                 e.printStackTrace();
-                lastBaselineDumpToFileMillis = null;
+                lastBaselineDumpToFileMillis = 0L;
             }
         }
-        if (fileInitECO2Baseline == null || fileInitTVOCBaseline == null  || lastBaselineDumpToFileMillis == null) {
+        boolean isBaselineFromFileAvailable = isBaselineFromFileAvailable();
+        if (!isBaselineFromFileAvailable) {
             fileInitECO2Baseline = null;
             fileInitTVOCBaseline = null;
             lastBaselineDumpToFileMillis = 0L;
         }
+        return isBaselineFromFileAvailable;
     }
 
     private boolean isBaselineAvailable() {
-        return isBaselineFromFileAvailable()
-                || ((baselineInitStartMillis + baselineInitDelayMillis) < System.currentTimeMillis());
+        long baselineFullInitReadyTimeMillis = baselineInitStartMillis + baselineInitDelayMillis;
+        return (baselineFullInitReadyTimeMillis < System.currentTimeMillis()) || isBaselineFromFileAvailable();
     }
 
     private boolean isBaselineFromFileAvailable() {
-        return fileInitECO2Baseline != null && fileInitTVOCBaseline != null && lastBaselineDumpToFileMillis != null
-                && ((lastBaselineDumpToFileMillis + fileBaselineValidityDelayMillis) < System.currentTimeMillis());
+        long baselineValidityEndMillis = lastBaselineDumpToFileMillis + fileBaselineValidityDelayMillis;
+        return baselineValidityEndMillis > System.currentTimeMillis()
+                && fileInitECO2Baseline != null && fileInitTVOCBaseline != null;
     }
 
     @Override
