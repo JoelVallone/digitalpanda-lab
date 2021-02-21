@@ -94,6 +94,8 @@ public class Configuration {
         KAFKA_PRODUCER_ID(true, "kafka-producer.client.id"),
         KAFKA_PRODUCER_TOPIC(true, "kafka-producer.topic"),
 
+        CONSOLE_LOGGER_ENABLED(true, "console-logger.enabled"),
+
         REST_BACKEND_ENABLED (true, "rest-backend.enabled"),
         REST_BACKEND_URL     (true, "rest-backend.url"),
 

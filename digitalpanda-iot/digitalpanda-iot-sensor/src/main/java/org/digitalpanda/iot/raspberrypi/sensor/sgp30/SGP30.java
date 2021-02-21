@@ -78,7 +78,7 @@ public class SGP30 implements Sensor {
      */
     public SGP30(Configuration conf) {
         this(Optional
-                .of(conf.getString(Configuration.ConfigurationKey.SENSOR_SGP30_JSON_STATE_FILE_PATH))
+                .ofNullable(conf.getString(Configuration.ConfigurationKey.SENSOR_SGP30_JSON_STATE_FILE_PATH))
                 .orElse(DEFAULT_JSON_STATE_FILE_PATH),
                 HUMIDITY_IAQ_REFRESH_PERIOD_MILLIS,
                 BASELINE_FILE_DUMP_REFRESH_PERIOD_MILLIS,
@@ -108,8 +108,13 @@ public class SGP30 implements Sensor {
 
     @Override
     public boolean initialize() {
+        log("Initialize device");
         try {
+
+            log("- Initialize i2c bus");
             sgp30i2c.initialize();
+
+            log("- Initialize 'iaq' compensation");
             iaqInit();
             this.initialized = true;
         } catch (I2CFactory.UnsupportedBusNumberException | IOException | InterruptedException e) {
@@ -121,7 +126,10 @@ public class SGP30 implements Sensor {
 
     private void iaqInit() throws IOException, InterruptedException {
         if (tryLoadBaselineFromFile()) {
+            log("  -> Load 'iaq' baseline from file");
             sgp30i2c.setIaqBaseline(fileInitECO2Baseline, fileInitTVOCBaseline);
+        } else {
+            log("  -> No baseline file. Start 'iaq' baseline calibration cycle of " + BASELINE_INIT_DELAY_MILLIS + " milliseconds");
         }
         sgp30i2c.iaqInit();
         baselineInitStartMillis = System.currentTimeMillis();
@@ -133,6 +141,7 @@ public class SGP30 implements Sensor {
             tryComputeHumidityGramsPerCubicMeter(allLatestAvailableMeasures)
                     .ifPresent( humidityGramsPerCubicMeter -> {
                         try {
+                            log("- Calibrate sensor with humidity data: " + humidityGramsPerCubicMeter + " [g/m^3]");
                             sgp30i2c.setIaqHumidity(humidityGramsPerCubicMeter);
                             lastHumidityRefreshMillis = System.currentTimeMillis();
                         } catch (IOException | InterruptedException e) {
@@ -180,6 +189,7 @@ public class SGP30 implements Sensor {
                         sgp30i2c.getBaseLineECO2(),
                         sgp30i2c.getBaseLineTVOC(),
                         ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+            log("- Save baseline results to file '" + jsonStateFilePath+ "' \n" + baselineStateJson);
             try {
                 File file = new File(jsonStateFilePath);
                 FileUtils.write(file, baselineStateJson, Charset.defaultCharset());
@@ -246,4 +256,7 @@ public class SGP30 implements Sensor {
     }
 
 
+    private void log(String message) {
+        System.out.println(ZonedDateTime.now().toString() + "-SGP30> " + message);
+    }
 }

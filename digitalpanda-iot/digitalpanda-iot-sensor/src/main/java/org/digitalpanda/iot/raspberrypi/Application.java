@@ -73,13 +73,13 @@ public class Application {
     private  static List<Sensor> loadSensors(Configuration conf) {
         String sensorModels = Optional.ofNullable(conf.getString(SENSOR_MODELS)).orElse("");
         return Arrays.stream(sensorModels.split(","))
-                .map(s -> loadSensor(s, conf))
+                .map(s -> loadSensor(s.trim().toUpperCase(), conf))
                 .collect(toList());
     }
 
     private static Sensor loadSensor(String sensorModelName, Configuration conf) {
         SensorModel sensorModel = SensorModel.valueOf(sensorModelName);
-        System.out.println(sensorModelName + ">," + (new SensorData(sensorModel)).csvHeader());
+        // System.out.println(sensorModelName + ">," + (new SensorData(sensorModel)).csvHeader());
         return SensorFactory.buildSensor(sensorModel, conf);
     }
 
@@ -108,7 +108,7 @@ public class Application {
     private Stream<SensorMeasures> fetchAndDisplayMeasuresFromSensor(Sensor sensor)  {
         try {
             SensorData sensorData = sensor.fetchAndComputeValues();
-            System.out.println(">," + sensorData.csvData());
+            // System.out.println(">," + sensorData.csvData());
             return SensorDataMapper.create(sensorData, conf.getString(SENSOR_LOCATION)).stream();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

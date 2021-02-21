@@ -1,6 +1,7 @@
 package org.digitalpanda.iot.raspberrypi.communication;
 
 import org.digitalpanda.iot.raspberrypi.Configuration;
+import org.digitalpanda.iot.raspberrypi.communication.console.ConsoleTransmitter;
 import org.digitalpanda.iot.raspberrypi.communication.http.HttpTransmitter;
 import org.digitalpanda.iot.raspberrypi.communication.kafka.KafkaTransmitter;
 
@@ -13,6 +14,11 @@ public class TransmitterFactory {
 
     public static List<MeasureTransmitter> loadMeasureTransmitters(Configuration conf) {
         List<MeasureTransmitter> transmitters = new LinkedList<>();
+
+        if (conf.getBoolean(CONSOLE_LOGGER_ENABLED)) {
+            transmitters.add(new ConsoleTransmitter());
+        }
+
         if (conf.getBoolean(REST_BACKEND_ENABLED)) {
             try {
                 transmitters.add(new HttpTransmitter(conf.getString(REST_BACKEND_URL)));

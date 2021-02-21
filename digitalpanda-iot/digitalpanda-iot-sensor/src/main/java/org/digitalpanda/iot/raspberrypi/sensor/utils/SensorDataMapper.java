@@ -5,8 +5,10 @@ import org.digitalpanda.common.data.backend.SensorMeasureMetaData;
 import org.digitalpanda.common.data.backend.SensorMeasureType;
 import org.digitalpanda.common.data.backend.SensorMeasures;
 import org.digitalpanda.iot.raspberrypi.sensor.SensorData;
+import org.digitalpanda.iot.raspberrypi.sensor.SensorModel;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +53,7 @@ public class SensorDataMapper {
         return measures.stream()
                 .filter(measure -> measure.getSensorMeasureMetaData().getType() == measureType)
                 .flatMap(m -> m.getMeasures().stream())
-                .max(SensorMeasure::compareTo)
+                .max(Comparator.comparingLong(SensorMeasure::getTimestamp))
                 .map(SensorMeasure::getValue);
     }
 }
