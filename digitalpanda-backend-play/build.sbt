@@ -1,7 +1,8 @@
 name := """digitalpanda-backend-play"""
 organization := "org.digitalpanda"
+maintainer := "joel.vallone@gmail.com"
 
-version := "1.0-SNAPSHOT"
+version := "0.1.0"
 
 lazy val root = (project in file("."))
     .enablePlugins(PlayScala)
