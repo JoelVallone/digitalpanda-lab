@@ -2,4 +2,4 @@
 pristine_instance: false
 absent_from_node: false
 
-docker_runtime_user: "{{ cluster_config_user }}"
+docker_runtime_user: "{{ cluster_user }}"

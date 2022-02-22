@@ -1,0 +1,6 @@
+- hosts:
+    - cassandra_nodes
+    - backends
+    - frontends
+  roles:
+    - digitalpanda-base

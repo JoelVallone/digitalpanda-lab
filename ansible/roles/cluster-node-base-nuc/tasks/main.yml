@@ -17,45 +17,31 @@
     state: started
     masked: no
 
-- name: "Create configuration user: {{ cluster_config_user }}"
+- name: "Ensure group 'docker' exists"
+  become: yes
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: "Create cluster user: {{ cluster_user }}"
   become: yes
   user:
-    name: "{{ cluster_config_user }}"
-    uid: "{{ cluster_config_user_id }}"
+    name: "{{ cluster_user }}"
+    uid: "{{ cluster_user_id }}"
     create_home: True
-    comment: "Cluster configuration account"
+    groups:
+      - "{{ cluster_user }}"
+      - docker
+    comment: "Cluster account"
     generate_ssh_key: yes
 
-- name: "Create runtime user: {{ cluster_runtime_user }}"
-  become: yes
-  user:
-    name: "{{ cluster_runtime_user }}"
-    uid: "{{ cluster_runtime_user_id }}"
-    create_home: True
-    comment: "Cluster runtime account"
-    generate_ssh_key: yes
-  
-- name: "Enable pasword-less sudo for user {{ cluster_config_user }}"
-  become: yes
-  lineinfile:
-    dest=/etc/sudoers
-    line="{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL"
-
-- name: "Register ssh autorized_keys into {{ cluster_config_user }}"
+- name: "Register ssh autorized_keys into {{ cluster_user }}"
   become: yes
   authorized_key:
-    user: "{{ cluster_config_user }}"
+    user: "{{ cluster_user }}"
     state: present
     key: '{{ item }}'
-  with_lines: cat '{{ role_path }}/files/authorized_keys'
-
-- name: "Register ssh autorized_keys into {{ ansible_user }}"
-  become: yes
-  authorized_key:
-    user: "{{ ansible_user }}"
-    state: present
-    key: '{{ item }}'
-  with_lines: cat '{{ role_path }}/files/authorized_keys'
+  with_items: "{{ authorized_keys }}"
 
 - name: "Copy static host name resolution file & define node FQDN"
   become: yes

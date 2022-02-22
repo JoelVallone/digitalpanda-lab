@@ -1,35 +1,30 @@
 ---
 
 - name: "Remove cassandra root directory on host"
-  become: true
   file:
     path: "{{docker.host.base_folder}}"
     state: absent
   when: clear_state
 
 - name: "Create cassandra directories on host"
-  become: true
   file:
     path: "{{item.value}}"
     state: directory
     recurse: yes
-    owner: "{{cluster_config_user}}"
-    group: "{{cluster_config_user}}"
+    owner: "{{cluster_user}}"
+    group: "{{cluster_user}}"
     mode: 0775
   with_dict: "{{docker.host.exposed_folders}}"
 
 - name: "Add cassandra configuration files on host"
-  become: true
   template:
     src: "{{item}}.j2"
     dest: "{{docker.host.exposed_folders.conf}}/{{item}}"
   with_items:
     - cassandra.yaml
     - logback.xml
-  when: clear_state
 
 - name: "Pull image 'cassandra' and (re)start container with name 'cassandra-node-0'"
-  become: yes
   docker_container:
     name: "cassandra-node-0"
     hostname: "cassandra-node-0"
@@ -52,9 +47,9 @@
     networks:
     - name: digitalpanda
     env:
-      CONTAINER_AUTO_START: true
+      CONTAINER_AUTO_START: "True"
     restart_policy: always
     tty: yes
 
 - pause:
-    seconds: 5
+    seconds: 30

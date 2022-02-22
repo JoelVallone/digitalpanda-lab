@@ -1,13 +1,10 @@
 ---
-cluster_config_user: panda-config
-cluster_config_user_id: 1001
-cluster_runtime_user: panda-worker
-cluster_runtime_user_id: 1002
-ansible_user: "{{cluster_config_user}}"
+cluster_user: panda-config
+cluster_user_id: 1001
 cluster_config_domain_name: lab.digitalpanda.org
 
 lab_repo:
-  target_path: "/home/{{ansible_user}}/digitalpanda/digitalpanda-lab"
+  target_path: "/home/{{cluster_user}}/digitalpanda/digitalpanda-lab"
   clone_url: "https://github.com/JoelVallone/digitalpanda-lab.git"
 
 home_gateway: 192.168.0.1
@@ -17,7 +14,7 @@ external_dns_server_ip : 8.8.8.8
 int_ip_bridge : 192.168.1.1
 cluster_master: fanless1
 cluster_domain : lab.digitalpanda.org
-cluster_size : 4
+pi_cluster_size : 4
 nuc_cluster_size: 2
 
 gateway_domain: digitalpanda.org
@@ -32,7 +29,7 @@ build_code: false
 
 cassandra:
     version: "3.11.3"
-    base_folder: "/home/{{cluster_config_user}}/cassandra"
+    base_folder: "/home/{{cluster_user}}/cassandra"
 
 confluent_platform_docker_version: 5.3.1
 
@@ -40,9 +37,9 @@ toolbox:
     docker_tag: "latest"
     host:
         folders:
-            base: "/home/{{ cluster_config_user }}/panda-toolbox"
-            config: "/home/{{ cluster_config_user }}/panda-toolbox/config"
-            state: "/home/{{ cluster_config_user }}/panda-toolbox/state"
+            base: "/home/{{ cluster_user }}/panda-toolbox"
+            config: "/home/{{ cluster_user }}/panda-toolbox/config"
+            state: "/home/{{ cluster_user }}/panda-toolbox/state"
     container:
         base_folder: "/opt/panda-toolbox"
         exposed_folder:
@@ -85,7 +82,11 @@ hadoop:
       memory_MB: 6144
       vCPU: 4
 
-inject_test_data: false
 
 digitalpanda_backend_version: 1.2.0
 digitalpanda_frontend_version: 1.2.1
+
+
+authorized_keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCkwQftn/xGx4ZkifWxwWsMcHZF1s2m0BQnwbzTMNBMZHN0tCCKu5aDqHFofTvmQD7of16RbBBagwjJYXcjNAvhVJILdvkZTFITwpt5n1yrycgcTK7hDIcUwq931LvfcqYTBdjsH8pgmrAkXaEitmtULOcZB6npz35oOmaGpOb6N7VsHD3V2lGPkSRuDjcVIyYaM/miQ0vQ7kBtXOg4OyTq6D3wwK14a0VP5I3q395dQx1kHEbz4OrKTwsb7fxKT37SRfQXKyfmMoLqJqP+LZRa2FWGTiDDRrcF1YreWhEO6PyXyadIQrbbyptc/qZluAkZ2vxxOXnaNP4O1oK4bJsogTKi6kkexno5VKF+DTVbtN0g6cxaHIACXeOwq4hFaqfqsolcGZd2jqqTUkLuTVpz8280YU3AxIjUcYShAnTBjx0Y4dvnddhlD83WIZEAq0pCwce1Kp+2uMrrJ4QY/r9N3TPo+ESh7RSzKzVaB1r9LdOm7lZo+iy17dY5qToBkKX3CmXJ2CsaPHEAmSlE3/kMjlv0HnaVTab3Cf/qbWM/tnABbgABGaqPUT8+rzUSHxdNR4fyofOteViJTvnjfTKfFet4WYhM8F0FqvRyKNgdEa+WSyUw39XchbvJjtMcY3gzEAxg1uT209FG3SUostcpf740wNWcPbdS9QijGYcNw== jva@fanless1
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCyeDWdQ59DUXw4UWMCqprIPRG2EyYunBFOw4gs39N3XnY43o3TgrSIyd76IyxBBuwRoEyzBD/8kZgRbLXptgs9C+XUBhFI787b8fhfoZbkfqYH2o+bZXFCzWS8P6IfZtP6MHXKTlYa1INiK0K2+DvE1J/1ubSNS8w95SiCIDfsiy70ttYqaA3RiSqSwACld0iLVgcQydS1z/qqVpoh9ukOiwxfm+BXgqhjPSB7dlKnTQiTvhnCbbHUBOYkquzNi+PqN2D3L2bKIcAnDUYIN+RsSwC6Zjj+mGL8YKGrNE9kjlXYrMo/LpSxtPd1LiStUG1Xk20mZzrsxji9J0i1brCD jva@T450s

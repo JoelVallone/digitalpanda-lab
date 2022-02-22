@@ -1,5 +1,30 @@
 ---
-- name: Create digitalpanda docker bridge network
+- name: "Ensure group 'docker' exists"
   become: yes
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: "Create cluster user: {{ cluster_user }}"
+  become: yes
+  user:
+    name: "{{ cluster_user }}"
+    uid: "{{ cluster_user_id }}"
+    groups:
+      - "{{ cluster_user }}"
+      - docker
+    create_home: True
+    comment: "Cluster account"
+    generate_ssh_key: yes
+
+
+- name: "Register ssh autorized_keys into {{ cluster_user }}"
+  authorized_key:
+    user: "{{ cluster_user }}"
+    state: present
+    key: '{{ item }}'
+  with_items: "{{ authorized_keys }}"
+
+- name: Create digitalpanda docker bridge network
   docker_network:
     name: digitalpanda

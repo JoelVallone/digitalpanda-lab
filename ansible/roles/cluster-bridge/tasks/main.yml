@@ -1,23 +1,23 @@
 ---
 # This role sets up machine as network bridge based on an internal and external interface
 
-- name: "Create {{ cluster_config_user }} user"
+- name: "Create {{ cluster_user }} user"
   become: yes
   user:
-    name: "{{ cluster_config_user }}"
+    name: "{{ cluster_user }}"
     comment: "Cluster configuration account"
     generate_ssh_key: yes
 
-- name: "Enable pasword-less sudo for user {{ cluster_config_user }}"
+- name: "Enable pasword-less sudo for user {{ cluster_user }}"
   become: yes
   lineinfile:
     dest=/etc/sudoers
-    line="{{ cluster_config_user }} ALL=(ALL) NOPASSWD:ALL"
+    line="{{ cluster_user }} ALL=(ALL) NOPASSWD:ALL"
 
-- name: "Register ssh autorized_keys into {{ cluster_config_user }}"
+- name: "Register ssh autorized_keys into {{ cluster_user }}"
   become: yes
   authorized_key:
-    user: "{{ cluster_config_user }}"
+    user: "{{ cluster_user }}"
     state: present
     key: '{{ item }}'
   with_lines: cat '{{ role_path }}/files/authorized_keys'

@@ -62,7 +62,7 @@ RUN pip3 install --upgrade pip && \
     pip3 install virtualenv pathlib2;
 
 # Jupyter-lab environment setup with special user
-ENV USER_ID 1002
+ENV USER_ID 1001
 ENV USER_NAME panda-worker
 RUN useradd -m --uid ${USER_ID} ${USER_NAME}
 

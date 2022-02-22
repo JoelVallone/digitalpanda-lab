@@ -1,6 +1,5 @@
 ---
 - name: "Stop container with name {{ docker_instance_name }} if any"
-  become: yes
   docker_container:
     name: "{{ docker_instance_name }}"
     state: stopped
@@ -9,7 +8,6 @@
   ignore_errors: yes
 
 - name: "Remove {{ docker_instance_name }} root directory on host"
-  become: true
   file:
     path: "{{ host_base_folder }}"
     state: absent
@@ -18,7 +16,6 @@
     - host_base_folder is defined
 
 - name: "Remove container with name {{ docker_instance_name }}  if any"
-  become: yes
   docker_container:
     name: "{{ docker_instance_name }}"
     cleanup: yes
@@ -26,7 +23,6 @@
   ignore_errors: yes
 
 - name: "Create {{ docker_instance_name }} directories on host"
-  become: yes
   file:
     path: "{{ item.value }}"
     state: directory

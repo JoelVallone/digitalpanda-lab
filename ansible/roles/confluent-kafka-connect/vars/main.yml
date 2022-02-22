@@ -3,7 +3,7 @@ docker_image: "confluentinc/cp-kafka-connect:{{confluent_platform_docker_version
 
 # Docker pre-image variables
 docker_instance_name: "cp-kafka-connect-{{ node_id }}"
-host_base_folder: "/home/{{ cluster_config_user }}/cp-kafka-connect"
+host_base_folder: "/home/{{ cluster_user }}/cp-kafka-connect"
 host_data_folders:
   jar_folder: "{{ host_base_folder }}/jars"
   file_sink_folder: "{{ host_base_folder }}/file-sink"

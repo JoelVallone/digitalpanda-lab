@@ -104,8 +104,8 @@
   copy:
     src: "{{ sensor_digestion_flink_path }}/target/scala-2.11/sensor-digestion-flink-assembly-0.1-SNAPSHOT.jar"
     dest: "{{ toolbox.host.folders.state }}/sensor-digestion-flink-assembly.jar"
-    owner: "{{ cluster_config_user }}"
-    group: "{{ cluster_config_user }}"
+    owner: "{{ cluster_user }}"
+    group: "{{ cluster_user }}"
     mode: "u=rx,g=rx"
   when: flink_build_digestion_project
 
@@ -130,8 +130,8 @@
   template:
     src: "digestion_tables.cql.j2"
     dest: "{{ toolbox.host.folders.config }}/digestion_tables.cql"
-    owner: "{{ cluster_config_user }}"
-    group: "{{ cluster_config_user }}"
+    owner: "{{ cluster_user }}"
+    group: "{{ cluster_user }}"
     mode: "u=rx,g=rx"
 
 - name: "Cassandra tables definition up to date"

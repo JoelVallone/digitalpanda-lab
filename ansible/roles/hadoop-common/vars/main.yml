@@ -3,7 +3,7 @@
 docker_image: "to-define-at-runtime"
 
 # Docker pre-image variables
-host_base_folder: "/home/{{ cluster_config_user }}/{{ hadoop_role }}"
+host_base_folder: "/home/{{ cluster_user }}/{{ hadoop_role }}"
 host_data_folders:
   config: "{{ host_base_folder }}/config"
   log: "{{ host_base_folder }}/log"

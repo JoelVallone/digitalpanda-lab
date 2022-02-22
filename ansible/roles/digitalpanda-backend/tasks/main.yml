@@ -5,7 +5,6 @@
 
 
 - name: "Pull image 'digitalpanda-backend:{{ digitalpanda_backend_version }}' and (re)start container with name '{{ docker_instance_name }}'"
-  become: yes
   docker_container:
     name: "{{ docker_instance_name }}"
     state: started

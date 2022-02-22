@@ -3,14 +3,7 @@
   roles:
     - { role: docker-registry,
         required_containers: ['cassandra'] ,
-        when: build_code}
-
-- hosts:
-    - cassandra_nodes
-    - backends
-    - frontends
-  roles:
-    - digitalpanda-base
+        when: (build_code | default(False))}
 
 - hosts: cassandra_nodes
   roles:
@@ -23,11 +16,12 @@
 - hosts: cassandra_test_data_injector
   roles:
   - { role: test-data-injector,
-      when: inject_test_data}
+      when: (inject_test_data | default(False))}
 
 - hosts: frontends
   roles:
-    - digitalpanda-frontend
+  - { role: digitalpanda-frontend,
+      when: (deploy_frontend | default(True))}
 
 
 

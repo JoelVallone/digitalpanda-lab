@@ -1,7 +1,7 @@
 ---
 docker_instance_name: "digitalpanda-backend"
-docker_runtime_user: "{{ cluster_runtime_user }}"
+docker_runtime_user: "{{ cluster_user }}"
 
 host_base_folder: "{{ backend.host.base_folder }}"
 host_data_folders:
-  log: "/home/{{cluster_config_user}}/digitalpanda-backend/log"
+  log: "/home/{{cluster_user}}/digitalpanda-backend/log"

@@ -1,6 +1,5 @@
 ---
 - name: "Pull image 'digitalpanda-frontend' and (re)start container with name 'digitalpanda-frontend'"
-  become: yes
   docker_container:
     name: "digitalpanda-frontend"
     state: started
