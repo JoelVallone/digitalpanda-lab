@@ -29,7 +29,7 @@ RUN apt-get update && \
 # Install cassandra ${CASSANDRA_VERSION}
 RUN mkdir -p ${BASE_DIR} && \
     cd ${BASE_DIR} && \
-    wget mirror.easyname.ch/apache/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz && \
+    wget archive.apache.org/dist/cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz && \
     tar -zxf apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz && \
     rm apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz;
 

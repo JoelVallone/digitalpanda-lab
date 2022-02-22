@@ -28,6 +28,7 @@
   docker_container:
     name: "cassandra-node-0"
     hostname: "cassandra-node-0"
+    user: "{{cluster_user_id}}"
     pull: true
     state: started
     restart: "{% if clear_state %}yes{% else %}no{% endif %}"
