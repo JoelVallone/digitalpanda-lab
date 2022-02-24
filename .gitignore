@@ -63,6 +63,7 @@ scripts/apache-cassandra-*
 .c9/
 *.launch
 .settings/
+.angular/
 *.sublime-workspace
 
 ## IDE - VSCode
