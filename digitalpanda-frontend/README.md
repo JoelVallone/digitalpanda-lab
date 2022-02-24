@@ -33,7 +33,7 @@ Precondition: nodeJS http-server is installed : `npm install http-server -g`
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `export CHROME_BIN=/snap/bin/chromium; ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
 

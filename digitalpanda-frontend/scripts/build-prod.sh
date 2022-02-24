@@ -12,7 +12,7 @@ rm -rf ${PROD_FOLDER}
 npm install
 # https://update.angular.io/
 # ng update @angular/cli @angular/core
-npm run ng build -- --prod
+npm run ng build -- --configuration production
 
 echo "=> Copy frontend data to docker image external folder"
 rm -rf ${DOCKER_IMAGE_BIN_FOLDER}
