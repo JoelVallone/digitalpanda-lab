@@ -23,7 +23,7 @@ export class SensorLatestWsWorkerProxyService implements SensorLatestService {
 
     private initWorkerThread(): Worker {
         if (ConfigHelper.isWebWorkerAllowed()) {
-            const worker = new Worker('./sensor-latest.ws.worker', { type: 'module' });
+            const worker = new Worker(new URL('./sensor-latest.ws.worker', import.meta.url), { type: 'module' });
             worker.onmessage = (event) => this.handleSensorUpdate(event);
             return worker;
         } else {
