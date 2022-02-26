@@ -15,8 +15,8 @@ rm -f "${JAR_OUTPUT_FOLDER}/"*backend*.jar
 cp "${SCRIPTS_FOLDER}/../target/"*backend*.jar "${JAR_OUTPUT_FOLDER}/"
 
 echo "=>Build and push image to registry"
-VERSION="1.2.0"
+VERSION="1.3.0"
 REGISTRY="fanless1.digitalpanda.org:5000"
 IMAGE_NAME=${REGISTRY}/digitalpanda-backend:${VERSION}
-sudo docker build -t ${IMAGE_NAME} ${SCRIPTS_FOLDER}/../
-sudo docker push ${IMAGE_NAME}
+docker build -t ${IMAGE_NAME} ${SCRIPTS_FOLDER}/../
+docker push ${IMAGE_NAME}

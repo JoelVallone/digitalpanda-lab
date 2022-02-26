@@ -19,6 +19,7 @@
 
 
 - name: "Register ssh autorized_keys into {{ cluster_user }}"
+  become: yes
   authorized_key:
     user: "{{ cluster_user }}"
     state: present
@@ -26,5 +27,6 @@
   with_items: "{{ authorized_keys }}"
 
 - name: Create digitalpanda docker bridge network
+  become: yes
   docker_network:
     name: digitalpanda
