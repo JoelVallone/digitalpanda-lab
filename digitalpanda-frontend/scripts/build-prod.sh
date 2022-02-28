@@ -19,8 +19,8 @@ rm -rf ${DOCKER_IMAGE_BIN_FOLDER}
 cp -r ${PROD_FOLDER} ${DOCKER_IMAGE_BIN_FOLDER}
 
 echo "Build & push image to registry"
-VERSION="1.2.1"
+VERSION="1.3.0"
 REGISTRY="fanless1.digitalpanda.org:5000"
 IMAGE_NAME=${REGISTRY}/digitalpanda-frontend:${VERSION}
-sudo docker build -t ${IMAGE_NAME} ${SCRIPT_FOLDER}/../
-sudo docker push ${IMAGE_NAME}
+docker build -t ${IMAGE_NAME} ${SCRIPT_FOLDER}/../
+docker push ${IMAGE_NAME}

@@ -18,7 +18,7 @@
 <div class="row">
     <div class="col-12 text-center">
         <div class="btn-group btn-group-toggle" *ngFor="let selectableLocation of selectableLocations | keyvalue">
-            <label class="btn btn-outline-primary btn-sm" ngbButtonLabel>
+            <label class="btn btn-outline-secondary btn-sm" ngbButtonLabel>
             <input type="checkbox" ngbButton [ngModel]="selectableLocation.value" (click)="toggleLocation(selectableLocation.key)" >{{selectableLocation.key}}
           </label>
         </div>

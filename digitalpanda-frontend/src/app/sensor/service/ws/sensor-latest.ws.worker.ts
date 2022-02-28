@@ -1,4 +1,4 @@
-/// <reference lib="webworker" />
+
 
 import { SensorLatestWsServiceNative } from "./sensor-latest.ws.native-service";
 
@@ -7,7 +7,6 @@ import { Subscription, timer } from "rxjs";
 import { WorkerTaskState, WorkerTaskUpdate } from "../sensor-latest.service";
 import { RxStompClient } from "src/app/core/ws-stomp/rx-stomp.client";
 import { SensorMeasureLatestDto, SensorMeasureType } from "../../sensor.classes";
-
 
 class SensorLatestWsWorkerService {
 

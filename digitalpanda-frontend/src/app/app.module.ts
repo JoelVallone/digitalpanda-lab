@@ -27,7 +27,6 @@ import { HomeComponent } from './home/home.component';
 import { SensorModule } from './sensor/sensor.module';
 import { UiModule } from './ui/ui.module';
 import { Logger } from './core/logger';
-import { SensorLatestWsService } from './sensor/service/ws/sensor-latest-ws.service';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],

@@ -22,7 +22,7 @@
             </h5>
             <form class="card-text text-center">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-outline-primary btn-sm {{ relativeTime == selectedRelativeTime ? 'active' : '' }}" *ngFor="let relativeTime of relativeTimeKeys">
+                    <label class="btn btn-outline-secondary btn-sm {{ relativeTime == selectedRelativeTime ? 'active' : '' }}" *ngFor="let relativeTime of relativeTimeKeys">
                     <input name="relativeTimeSelection" type="radio" value="{{ relativeTime }}" (click)="selectRelativeTime(relativeTime)">{{relativeTime}}
                   </label>
                 </div>

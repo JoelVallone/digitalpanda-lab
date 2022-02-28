@@ -1,4 +1,4 @@
-FROM node:10.13-alpine
+FROM node:16.14.0-alpine
 LABEL mainatiner "Joel Vallone <joel.vallone@gmail.com>"
 
 ENV USER_ID 100

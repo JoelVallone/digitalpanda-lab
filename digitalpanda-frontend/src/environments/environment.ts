@@ -6,8 +6,8 @@ import { Environment } from "./environment.type";
 
 export const environment: Environment = {
   production: false,
-  httpApiEndpoint: 'http://localhost:8081',
-  wsApiEndpoint: 'ws://localhost:8081',
+  httpApiEndpoint: 'http://digitalpanda.org:8081',
+  wsApiEndpoint: 'ws://digitalpanda.org:8081',
   //httpApiEndpoint: 'http://127.0.0.1:8081',
   //wsApiEndpoint: 'ws://127.0.0.1:8081',
   wsStompHandshakeEndpoint: "/ws/stomp/handshake",

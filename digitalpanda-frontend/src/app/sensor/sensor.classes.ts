@@ -34,14 +34,18 @@ export class SensorMeasureTypeDetails {
 export enum SensorMeasureType {
   TEMPERATURE = 'TEMPERATURE',
   HUMIDITY = 'HUMIDITY',
-  PRESSURE = 'PRESSURE'
+  PRESSURE = 'PRESSURE',
+  eCO2 = 'eCO2',
+  TVOC = 'TVOC'
 }
 
 export class SensorMeasureMetaData {
   private static typeDetails  = {
      TEMPERATURE : new SensorMeasureTypeDetails('Temperature', 'Degree Celcius', '°C'),
      HUMIDITY :  new SensorMeasureTypeDetails('Humidity', 'Percentage', '%'),
-     PRESSURE : new SensorMeasureTypeDetails('Pressure', 'Hecto-Pascal', 'hPa')
+     PRESSURE : new SensorMeasureTypeDetails('Pressure', 'Hecto-Pascal', 'hPa'),
+     eCO2 : new SensorMeasureTypeDetails('Equivalent CO2 particle', 'Part Per Million', 'ppm'),
+     TVOC : new SensorMeasureTypeDetails('Total Volatile Organic Compounds', 'Part Per Million', 'ppm')
    };
 
   public constructor(public location: string, public type: SensorMeasureType) { }
