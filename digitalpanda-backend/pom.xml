@@ -16,7 +16,7 @@
         <maven.compiler.version>3.5.1</maven.compiler.version>
         <maven.exec.version>1.5.0</maven.exec.version>
         <org.codehaus.mojo.version>1.2.1</org.codehaus.mojo.version>
-        <spring.boot.version>2.3.7.RELEASE</spring.boot.version>
+        <spring.boot.version>2.5.12</spring.boot.version>
         <springframework.version>5.2.2.RELEASE</springframework.version>
         <spring.data.cassandra.version>2.2.12.RELEASE</spring.data.cassandra.version>
         <datastax.version>3.2.0</datastax.version>
