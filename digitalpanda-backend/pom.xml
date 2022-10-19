@@ -20,7 +20,7 @@
         <springframework.version>5.2.2.RELEASE</springframework.version>
         <spring.data.cassandra.version>2.2.12.RELEASE</spring.data.cassandra.version>
         <datastax.version>3.2.0</datastax.version>
-        <jackson-2-version>2.11.3</jackson-2-version>
+        <jackson-2-version>2.13.4.1</jackson-2-version>
         <org.cassandraunit.version>3.5.0.1</org.cassandraunit.version>
     </properties>
 
